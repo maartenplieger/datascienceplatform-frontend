@@ -1,6 +1,6 @@
 import React from 'react';
 import { default as BaseLayout } from './BaseLayout';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 
 const STORE = {
