@@ -1,9 +1,9 @@
 import React from 'react';
-import MainComponent from './MainComponent';
+import LoginComponent from './LoginComponent';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 
-describe('(Component) MainComponent', () => {
+describe('(Component) LoginComponent', () => {
   let _component;
   const _dispatch = sinon.spy();
   const incrementFunc = sinon.spy();
@@ -11,11 +11,11 @@ describe('(Component) MainComponent', () => {
     incrementCounter: incrementFunc
   };
   beforeEach(() => {
-    _component = mount(<MainComponent count={0} dispatch={_dispatch} actions={_actions} />);
+    _component = mount(<LoginComponent count={0} dispatch={_dispatch} actions={_actions} />);
   });
 
   it('Can mount', () => {
-    expect(_component.type()).to.equal(MainComponent);
+    expect(_component.type()).to.equal(LoginComponent);
     expect(_component.html()).to.equal('<div>hi!</div>');
   });
 });
