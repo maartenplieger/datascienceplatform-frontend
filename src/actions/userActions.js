@@ -1,5 +1,5 @@
 // This is where action creators are put
-import { SET_ACCESS_TOKEN, SET_CLIENT_ID, SET_EMAIL_ADDRESS } from '../constants/userLabels';
+import { SET_ACCESS_TOKEN, SET_CLIENT_ID, SET_EMAIL_ADDRESS, SET_DOMAIN } from '../constants/userLabels';
 
 const setAccessToken = (token) => {
   return {
@@ -28,10 +28,20 @@ const setEmailAddress = (email) => {
   };
 };
 
+const setDomain = (domain) => {
+  return {
+    type: SET_DOMAIN,
+    payload: {
+      domain: domain
+    }
+  };
+};
+
 const actions = {
   setAccessToken,
   setClientId,
-  setEmailAddress
+  setEmailAddress,
+  setDomain
 };
 
 export default actions;

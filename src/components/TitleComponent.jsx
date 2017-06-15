@@ -16,7 +16,7 @@ export default class TitleComponent extends Component {
   }
 
   render () {
-    const { accessToken, emailAddress, clientId } = this.props;
+    const { accessToken, emailAddress, clientId, domain } = this.props;
     return (
       <Row>
         <Col xs='auto' className='welcomeSign'>
@@ -24,10 +24,13 @@ export default class TitleComponent extends Component {
             clientId !== null ? <h2>Hello {emailAddress}!</h2> : <h2>Not logged in</h2>
           }
           {
-            clientId !== null ? <h4>Your clientID: {clientId}!</h4> : <h4>Your clientID: Not logged in</h4>
+            clientId !== null ? <h4>Your clientID: {clientId}</h4> : <h4>Your clientID: Not logged in</h4>
           }
           {
-            clientId !== null ? <h4>Your Access Token: {accessToken}!</h4> : <h4>Your Access Token: Not logged in</h4>
+            clientId !== null ? <h4>Your Access Token: {accessToken}</h4> : <h4>Your Access Token: Not logged in</h4>
+          }
+          {
+            clientId !== null ? <h4>Your Domain: {domain}</h4> : <h4>Your Domain: Not logged in</h4>
           }
         </Col>
         <Col xs='auto' className='signInOffButton'>
@@ -54,10 +57,12 @@ export default class TitleComponent extends Component {
         dispatch(actions.setAccessToken(null));
         dispatch(actions.setClientId(null));
         dispatch(actions.setEmailAddress(null));
+        dispatch(actions.setDomain(null));
       } else {
         dispatch(actions.setAccessToken(obj.services_access_token));
         dispatch(actions.setClientId(obj.id));
         dispatch(actions.setEmailAddress(obj.email_address));
+        dispatch(actions.setDomain(obj.domain));
       }
     });
   }
@@ -85,6 +90,7 @@ TitleComponent.propTypes = {
   accessToken: PropTypes.string,
   emailAddress: PropTypes.string,
   clientId: PropTypes.string,
+  domain: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired
 };
