@@ -1,0 +1,3 @@
+export const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN';
+export const SET_CLIENT_ID = 'SET_CLIENT_ID';
+export const SET_EMAIL_ADDRESS = 'SET_EMAIL_ADDRESS';
