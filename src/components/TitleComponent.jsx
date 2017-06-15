@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { config } from 'static/config.js';
+import { Col, Row } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 export default class TitleComponent extends Component {
   constructor () {
@@ -7,11 +9,6 @@ export default class TitleComponent extends Component {
     this.canRender = this.canRender.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
-    this.state = {
-      isLoggedIn: false,
-      id: null,
-      access_token: null
-    };
   }
 
   componentDidMount () {
@@ -19,26 +16,31 @@ export default class TitleComponent extends Component {
   }
 
   render () {
+    const { accessToken, emailAddress, clientId } = this.props;
     return (
-      <div>
-        <div>
+      <Row>
+        <Col xs='auto' className='welcomeSign'>
           {
-            this.state.isLoggedIn ? <button onClick={this.logout}>Logout</button>
+            clientId !== null ? <h2>Hello {emailAddress}!</h2> : <h2>Not logged in</h2>
+          }
+          {
+            clientId !== null ? <h4>Your clientID: {clientId}!</h4> : <h4>Your clientID: Not logged in</h4>
+          }
+          {
+            clientId !== null ? <h4>Your Access Token: {accessToken}!</h4> : <h4>Your Access Token: Not logged in</h4>
+          }
+        </Col>
+        <Col xs='auto' className='signInOffButton'>
+          {
+            clientId !== null ? <button onClick={this.logout}>Logout</button>
             : <button onClick={this.login}>Login</button>
           }
-        </div>
-        <div>
-          {
-            this.state.id ? <p>ID: {this.state.id}</p> : <p>ID: Unknown</p>
-          }
-          {
-            this.state.access_token ? <p>Token: {this.state.access_token}</p> : <p>Token: Unknown</p>
-          }
-        </div>
-      </div>);
+        </Col>
+      </Row>);
   }
 
   canRender () {
+    const { dispatch, actions } = this.props;
     const { backendHost } = config;
     fetch(backendHost + '/getid', {
       credentials: 'include'
@@ -49,13 +51,13 @@ export default class TitleComponent extends Component {
     .then(json => {
       let obj = json;
       if (obj.error) {
-        this.setState({ isLoggedIn: false });
-        this.setState({ id: null });
-        this.setState({ access_token: null });
+        dispatch(actions.setAccessToken(null));
+        dispatch(actions.setClientId(null));
+        dispatch(actions.setEmailAddress(null));
       } else {
-        this.setState({ isLoggedIn: true });
-        this.setState({ id: obj.id });
-        this.setState({ access_token: obj.services_access_token });
+        dispatch(actions.setAccessToken(obj.services_access_token));
+        dispatch(actions.setClientId(obj.id));
+        dispatch(actions.setEmailAddress(obj.email_address));
       }
     });
   }
@@ -78,3 +80,11 @@ export default class TitleComponent extends Component {
     });
   }
 }
+
+TitleComponent.propTypes = {
+  accessToken: PropTypes.string,
+  emailAddress: PropTypes.string,
+  clientId: PropTypes.string,
+  dispatch: PropTypes.func.isRequired,
+  actions: PropTypes.object.isRequired
+};

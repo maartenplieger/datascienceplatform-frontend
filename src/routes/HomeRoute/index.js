@@ -1,10 +1,22 @@
 // Sync route definition
-import CounterComponent from '../../components/CounterComponent';
+import { connect } from 'react-redux';
 import TitleComponent from '../../components/TitleComponent';
+import actions from '../../actions/userActions';
+
+const mapStateToTitleProps = (state) => {
+  return { ...state.userState };
+};
+
+const mapDispatchToTitleProps = function (dispatch) {
+  return ({
+    dispatch: dispatch,
+    actions: actions
+  });
+};
+
 export default () => ({
   title: 'Data Science Platform',
   components: {
-    header: TitleComponent,
-    mainContent: CounterComponent
+    header: connect(mapStateToTitleProps, mapDispatchToTitleProps)(TitleComponent)
   }
 });

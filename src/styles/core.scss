@@ -23,13 +23,9 @@ body {
   width: 100vw;
   overflow: hidden;
 }
-.canvasLoadingOverlay.canvasDisabled,.canvasLoadingOverlay.timeOverlay.canvasDisabled {
-  background-color: rgba(50, 50, 50, 0.4);
-}
 .canvasLoadingOverlay.timeOverlay{
   margin-top: -800px;
   display: block;
-  background-color: rgba(50, 50, 50, 0);
   width: 480px;
   height: 800px;
   z-index: 10000;
@@ -37,16 +33,18 @@ body {
 .canvasLoadingOverlay {
   margin-top: -670px;
   display: block;
-  background-color: rgba(50, 50, 50, 0);
   width: 480px;
   height: 670px;
   z-index: 10000;
 }
-.upperHeader {
-  text-align: center;
-}
 #root {
   height: inherit;
   width: inherit;
-  background-color: #f2fbff;
+}
+.signInOffButton {
+  float: right;
+  margin-right: 4em;
+}
+.welcomeSign {
+  text-align: center;
 }
