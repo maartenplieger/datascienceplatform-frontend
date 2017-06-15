@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { config } from 'static/config.js';
 
-export default class LoginComponent extends Component {
+export default class TitleComponent extends Component {
   constructor () {
     super();
     this.canRender = this.canRender.bind(this);
@@ -9,7 +9,8 @@ export default class LoginComponent extends Component {
     this.logout = this.logout.bind(this);
     this.state = {
       isLoggedIn: false,
-      id: null
+      id: null,
+      access_token: null
     };
   }
 
@@ -28,7 +29,10 @@ export default class LoginComponent extends Component {
         </div>
         <div>
           {
-            this.state.id ? <p>ID: {this.state.id}</p> : <p>Not signed in</p>
+            this.state.id ? <p>ID: {this.state.id}</p> : <p>ID: Unknown</p>
+          }
+          {
+            this.state.access_token ? <p>Token: {this.state.access_token}</p> : <p>Token: Unknown</p>
           }
         </div>
       </div>);
@@ -47,9 +51,11 @@ export default class LoginComponent extends Component {
       if (obj.error) {
         this.setState({ isLoggedIn: false });
         this.setState({ id: null });
+        this.setState({ access_token: null });
       } else {
         this.setState({ isLoggedIn: true });
         this.setState({ id: obj.id });
+        this.setState({ access_token: obj.services_access_token });
       }
     });
   }
