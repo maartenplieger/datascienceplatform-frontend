@@ -13,7 +13,8 @@ const initialState = {
   userState: {
     accessToken: null,
     clientId: null,
-    emailAddress: null
+    emailAddress: null,
+    domain: null
   }
 };
 
