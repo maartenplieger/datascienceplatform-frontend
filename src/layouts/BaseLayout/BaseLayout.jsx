@@ -1,22 +1,33 @@
 import React, { Component } from 'react';
+import { Container, Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import '../../styles/core.scss';
 
 class BaseLayout extends Component {
   render () {
-    const { mainContent } = this.props;
+    const { header, mainContent } = this.props;
     return (
-      <div className='container text-center'>
-        <h1>Data Science Platform</h1>
-        <div className='page-layout__viewport'>
-          {mainContent}
+      <Container>
+        <div className='container text-center'>
+          <Row className='upperHeader'>
+            <h1>Data Science Platform</h1>
+          </Row>
+          <Row>
+            {header || 'Oops'}
+          </Row>
+          <Row>
+            <div className='page-layout__viewport'>
+              {mainContent}
+            </div>
+          </Row>
         </div>
-      </div>
+      </Container>
     );
   }
 }
 
 BaseLayout.propTypes = {
+  header: PropTypes.element,
   mainContent: PropTypes.element
 };
 

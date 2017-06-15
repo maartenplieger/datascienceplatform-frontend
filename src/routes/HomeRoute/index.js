@@ -1,8 +1,10 @@
 // Sync route definition
-import LoginComponent from '../../components/LoginComponent';
+import CounterComponent from '../../components/CounterComponent';
+import TitleComponent from '../../components/TitleComponent';
 export default () => ({
-  title: 'KNMI React Redux Starter Kit',
+  title: 'Data Science Platform',
   components: {
-    mainContent: LoginComponent
+    header: TitleComponent,
+    mainContent: CounterComponent
   }
 });
