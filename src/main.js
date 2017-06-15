@@ -15,6 +15,9 @@ const initialState = {
     clientId: null,
     emailAddress: null,
     domain: null
+  },
+  wranglerState: {
+    statusLocation: null
   }
 };
 

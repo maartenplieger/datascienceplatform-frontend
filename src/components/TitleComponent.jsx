@@ -18,28 +18,31 @@ export default class TitleComponent extends Component {
   render () {
     const { accessToken, emailAddress, clientId, domain } = this.props;
     return (
-      <Row>
-        <Col xs='auto' className='welcomeSign'>
-          {
-            clientId !== null ? <h2>Hello {emailAddress}!</h2> : <h2>Not logged in</h2>
-          }
-          {
-            clientId !== null ? <h4>Your clientID: {clientId}</h4> : <h4>Your clientID: Not logged in</h4>
-          }
-          {
-            clientId !== null ? <h4>Your Access Token: {accessToken}</h4> : <h4>Your Access Token: Not logged in</h4>
-          }
-          {
-            clientId !== null ? <h4>Your Domain: {domain}</h4> : <h4>Your Domain: Not logged in</h4>
-          }
-        </Col>
-        <Col xs='auto' className='signInOffButton'>
-          {
-            clientId !== null ? <button onClick={this.logout}>Logout</button>
-            : <button onClick={this.login}>Login</button>
-          }
-        </Col>
-      </Row>);
+      <div>
+        <Row>
+          <Col xs='auto' className='welcomeSign'>
+            {
+              clientId !== null ? <h2>Hello {emailAddress}!</h2> : <h2>Not logged in</h2>
+            }
+            {
+              clientId !== null ? <h4>Your clientID: {clientId}</h4> : <h4>Your clientID: Not logged in</h4>
+            }
+            {
+              clientId !== null ? <h4>Your Access Token: {accessToken}</h4> : <h4>Your Access Token: Not logged in</h4>
+            }
+            {
+              clientId !== null ? <h4>Your Domain: {domain}</h4> : <h4>Your Domain: Not logged in</h4>
+            }
+          </Col>
+          <Col xs='auto' className='signInOffButton'>
+            {
+              clientId !== null ? <button onClick={this.logout}>Logout</button>
+              : <button onClick={this.login}>Login</button>
+            }
+          </Col>
+        </Row>
+        <hr />
+      </div>);
   }
 
   canRender () {
@@ -69,7 +72,7 @@ export default class TitleComponent extends Component {
 
   login () {
     const { backendHost, frontendHost } = config;
-    window.location.assign(backendHost + '/oauth?provider=google&returnurl=' + frontendHost);
+    window.location.assign(backendHost + '/oauth?provider=google&returnurl=' + frontendHost + '/#/wrangler');
   }
 
   logout () {

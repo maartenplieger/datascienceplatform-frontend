@@ -1,7 +1,7 @@
 import { INCREMENT_COUNT } from '../constants/countLabels';
 
 const incrementCount = (state) => {
-  return Object.assign({}, state, { count: state.count + 10 });
+  return Object.assign({}, state, { count: 0 });
 };
 
 const ACTION_HANDLERS = {
@@ -11,7 +11,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = { count: 0 };
+const initialState = { count: 'none' };
 export default function countReducer (state = initialState, action) {
   if (!action) {
     return state;

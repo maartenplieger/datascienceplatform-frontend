@@ -3,8 +3,8 @@ import WPSWranglerDemo from '../../../components/WPSWranglerDemo';
 import TitleComponent from '../../../components/TitleComponent';
 import actions from '../../../actions/wrangleActions';
 
-const mapStateToCounterProps = (state) => {
-  return { ...state.countState };
+const mapStateToWranglerProps = (state) => {
+  return { ...state.wranglerState, ...state.userState };
 };
 
 const mapDispatchToCounterProps = function (dispatch) {
@@ -30,6 +30,6 @@ export default () => ({
   title: 'Counter',
   components : {
     header: connect(mapStateToTitleProps, mapDispatchToTitleProps)(TitleComponent),
-    mainContent: connect(mapStateToCounterProps, mapDispatchToCounterProps)(WPSWranglerDemo)
+    mainContent: connect(mapStateToWranglerProps, mapDispatchToCounterProps)(WPSWranglerDemo)
   }
 });
