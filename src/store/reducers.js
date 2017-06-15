@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import locationReducer from '../reducers/location';
-import countReducer from '../reducers/countReducer';
+import wrangleReducer from '../reducers/wrangleReducer';
 import userReducer from '../reducers/userReducer';
 export const makeRootReducer = () => {
   return combineReducers({
     location: locationReducer,
-    countState: countReducer,
+    countState: wrangleReducer,
     userState: userReducer
   });
 };
