@@ -7,7 +7,6 @@ export default class WPSWranglerDemo extends Component {
   constructor () {
     super();
     this.state = {
-      statusLocation: 'no process running',
       isRunning: false,
       percentageComplete: 0,
       message: '',
@@ -20,7 +19,6 @@ export default class WPSWranglerDemo extends Component {
   wrangleClicked () {
     const { accessToken } = this.props;
     this.setState({
-      statusLocation: 'starting',
       isRunning: true,
       isComplete: false
     });
@@ -50,7 +48,6 @@ export default class WPSWranglerDemo extends Component {
       } else {
         this.setState({
           percentageComplete: '-',
-          message: 'failed',
           isComplete: true,
           isRunning: false
         });
@@ -66,7 +63,7 @@ export default class WPSWranglerDemo extends Component {
     return (
       <div>
         <p>{accessToken}</p>
-        <button id='wrangleButton' onClick={this.wrangleClicked}>Wrangle!</button>{this.state.statusLocation}
+        <button id='wrangleButton' onClick={this.wrangleClicked}>Wrangle!</button>
         <p className='percentage'>percentageComplete: {this.state.percentageComplete}%</p>
         <p>message: {this.state.message}</p>
         <p>isRunning {this.state.isRunning ? 'true' : 'false' }</p>

@@ -50,17 +50,37 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
     console.log(statusLocation);
     let processIsRunning = true;
     let pol = () => {
+      console.log('POL');
       if (processIsRunning === false) {
         return;
       }
       let pollCallBack = (json) => {
+        console.log('pollCallBack', json);
         let percentageComplete = 0;
         let message = '';
+
+        /* Check processfailed */
+        try {
+          if (json.ExecuteResponse.Status.ProcessFailed) {
+            processIsRunning = false;
+            message = 'Failed, unable to get message';
+            try {
+              message = json.ExecuteResponse.Status.ProcessFailed.ExceptionReport.Exception.ExceptionText.value;
+            } catch (e) {
+            }
+            statusCallBack(message, percentageComplete);
+            executeCompleteCallBack(json, false);
+            return;
+          }
+        } catch (e) {
+        }
+
         try {
           percentageComplete = json.ExecuteResponse.Status.ProcessStarted.attr.percentCompleted;
           message = json.ExecuteResponse.Status.ProcessStarted.value;
           console.log('POLLING', json);
-        } catch (e) {}
+        } catch (e) {
+        }
 
         let processCompleted = false;
 
@@ -74,7 +94,8 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
             executeCompleteCallBack(json, true);
             return;
           }
-        } catch (e) {}
+        } catch (e) {
+        }
         if (processCompleted === false) {
           statusCallBack(message, percentageComplete);
         }
@@ -103,19 +124,3 @@ const doXML2JSONCallWithToken = function (urlToXMLService, accessToken, callback
     failure(data);
   });
 };
-
-// const pollProcess = function () {
-//   console.log('POLLER');
-// };
-
-// let PROCESS_IS_POLLING = false;
-// const startProcessPoller = function () {
-//   if (!PROCESS_IS_POLLING) {
-//     PROCESS_IS_POLLING = true;
-//     window.setInterval(function () {
-//       pollProcess();
-//     }, 1000);
-//   }
-// };
-
-// startProcessPoller();
