@@ -1,8 +1,14 @@
 // Sync route definition
-import LoginComponent from '../../components/LoginComponent';
+import UploadComponent from '../../components/UploadComponent';
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state) => {
+  return { ...state.deep };
+};
+
 export default () => ({
   title: 'KNMI React Redux Starter Kit',
   components: {
-    mainContent: LoginComponent
+    mainContent: connect(mapStateToProps)(UploadComponent)
   }
 });
