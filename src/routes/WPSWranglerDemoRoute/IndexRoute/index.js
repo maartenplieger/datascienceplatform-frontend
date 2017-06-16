@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import WPSWranglerDemo from '../../../components/WPSWranglerDemo';
 import TitleComponent from '../../../components/TitleComponent';
-import actions from '../../../actions/wrangleActions';
+import actions from '../../../actions/userActions';
 
 const mapStateToWranglerProps = (state) => {
   return { ...state.wranglerState, ...state.userState };

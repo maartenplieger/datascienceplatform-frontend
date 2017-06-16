@@ -5,7 +5,7 @@ import userReducer from '../reducers/userReducer';
 export const makeRootReducer = () => {
   return combineReducers({
     location: locationReducer,
-    countState: wrangleReducer,
+    wranglerState: wrangleReducer,
     userState: userReducer
   });
 };
