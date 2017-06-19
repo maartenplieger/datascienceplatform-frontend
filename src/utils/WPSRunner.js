@@ -77,15 +77,12 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
   let wpsExecuteCallback = (executeResponse) => {
     if (handleExceptions(executeResponse) === true) return;
     let statusLocation = executeResponse.ExecuteResponse.attr.statusLocation;
-    console.log(statusLocation);
     let processIsRunning = true;
     let pol = () => {
-      console.log('POL');
       if (processIsRunning === false) {
         return;
       }
       let pollCallBack = (json) => {
-        console.log('pollCallBack', json);
         let percentageComplete = 0;
         let message = '';
 
@@ -95,7 +92,6 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
         try {
           percentageComplete = json.ExecuteResponse.Status.ProcessStarted.attr.percentCompleted;
           message = json.ExecuteResponse.Status.ProcessStarted.value;
-          console.log('POLLING', json);
         } catch (e) {
         }
 
@@ -105,7 +101,6 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
           message = json.ExecuteResponse.Status.ProcessSucceeded.value;
           if (message) {
             percentageComplete = 100;
-            console.log('COMPLETED', json);
             processIsRunning = false;
             statusCallBack(message, percentageComplete);
             executeCompleteCallBack(json, true);
@@ -128,7 +123,6 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
 const doXML2JSONCallWithToken = function (urlToXMLService, accessToken, callback, failure) {
   let encodedWPSURL = encodeURIComponent(urlToXMLService + '&key=' + accessToken);
   let requestURL = config.backendHost + '/xml2json?request=' + encodedWPSURL;
-  console.log('starting fetch ' + requestURL);
   fetch(requestURL)
   .then(function (response) {
     let a = response.json();
@@ -145,7 +139,6 @@ const doXML2JSONCallWithToken = function (urlToXMLService, accessToken, callback
     let strippedJSON = stripNS(json);
     callback(strippedJSON);
   }).catch(function (data) {
-    console.log(data);
     if (failure) {
       failure(data);
     } else {

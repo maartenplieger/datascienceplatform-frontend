@@ -17,7 +17,8 @@ const initialState = {
     statusLocation: null
   },
   basketState: {
-    basket: null
+    basket: null,
+    hasFetched: false
   }
 };
 

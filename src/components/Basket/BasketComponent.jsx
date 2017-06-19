@@ -3,45 +3,31 @@ import PropTypes from 'prop-types';
 import BasketTreeComponent from './BasketTreeComponent';
 
 export default class BasketComponent extends Component {
-  constructor () {
-    super();
-    this.getBasketItems = this.getBasketItems.bind(this);
-    this.state = {
-      basket: null,
-      hasFetched: false
-    };
-  }
-
-  getBasketItems () {
-    const { accessToken } = this.props;
-    if (!accessToken || this.state.hasFetched) return;
-
-    let result = null;
-
+  componentWillUpdate () {
+    const { accessToken, dispatch, actions, basket } = this.props;
+    if (!accessToken) return;
+    if (basket) return;
     fetch('https://bhw451.knmi.nl:8090/basket/list?key=' + accessToken)
     .then((result) => {
       if (result.ok) {
         return result.json();
       } else {
-        throw new Error(result.statusText);
+        return null;
       }
     })
     .then((json) => {
-      result = json;
-      this.setState({ basket: result, hasFetched: true });
+      dispatch(actions.updateBasketItems(json));
     });
   }
 
-  componentDidUpdate () {
-    this.getBasketItems();
-  }
-
   render () {
+    const { basket } = this.props;
+    if (!basket) return (<div />);
     return (
       <div>
         {
-        this.state.basket
-        ? <BasketTreeComponent data={this.state.basket} />
+        basket
+        ? <BasketTreeComponent data={basket.jsonResponse} />
         : <div />
         }
       </div>
@@ -50,7 +36,9 @@ export default class BasketComponent extends Component {
 }
 
 BasketComponent.propTypes = {
-  accessToken: PropTypes.string
-  // dispatch: PropTypes.func.isRequired,
-  // actions: PropTypes.object.isRequired
+  accessToken: PropTypes.string,
+  basket: PropTypes.object,
+  hasFetched: PropTypes.bool,
+  dispatch: PropTypes.func.isRequired,
+  actions: PropTypes.object.isRequired
 };

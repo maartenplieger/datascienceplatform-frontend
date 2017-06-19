@@ -115,6 +115,7 @@ TitleComponent.propTypes = {
   emailAddress: PropTypes.string,
   clientId: PropTypes.string,
   domain: PropTypes.string,
+  location: PropTypes.object,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired
 };

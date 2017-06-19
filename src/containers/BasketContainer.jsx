@@ -5,11 +5,11 @@ import { Button } from 'reactstrap';
 
 class BasketContainer extends Component {
   render () {
-    const { accessToken, dispatch, actions } = this.props;
+    const { accessToken, dispatch, actions, basket, hasFetched } = this.props;
     return (
       <div>
         <BasketComponent accessToken={accessToken}
-          dispatch={dispatch} actions={actions} />
+          dispatch={dispatch} actions={actions} basket={basket} hasFetched={hasFetched} />
         <hr />
         <Button>Upload</Button>
         <Button>Preview</Button>
@@ -24,7 +24,9 @@ class BasketContainer extends Component {
 BasketContainer.propTypes = {
   accessToken: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  basket: PropTypes.object,
+  hasFetched: PropTypes.bool
 };
 
 export default BasketContainer;
