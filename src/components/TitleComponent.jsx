@@ -29,18 +29,7 @@ export default class TitleComponent extends Component {
               </NavbarBrand>
             </Col>
             <Col className='welcomeSign'>
-              {
-                clientId !== null ? <h2>Hello {emailAddress}!</h2> : <h2>Not logged in</h2>
-              }
-              {
-                clientId !== null ? <h4>Your clientID: {clientId}</h4> : <h4>Your clientID: Not logged in</h4>
-              }
-              {
-                clientId !== null ? <h4>Your Access Token: {accessToken}</h4> : <h4>Your Access Token: Not logged in</h4>
-              }
-              {
-                clientId !== null ? <h4>Your Domain: {domain}</h4> : <h4>Your Domain: Not logged in</h4>
-              }
+              <h1>KNMI Data Science Platform</h1>
             </Col>
             <Col xs='auto' className='signInOffButton'>
               {
@@ -116,5 +105,6 @@ TitleComponent.propTypes = {
   clientId: PropTypes.string,
   domain: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
