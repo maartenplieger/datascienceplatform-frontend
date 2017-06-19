@@ -45,7 +45,37 @@ export const doWPSCall = function (wps, accessToken, callback, failure) {
 
 export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, executeCompleteCallBack, failure) {
   statusCallBack('Starting WPS', 0);
+
+  let handleExceptions = (json) => {
+    let percentageComplete = 0;
+    let message = '';
+    try {
+      if (json.error || json.ExecuteResponse.Status.ProcessFailed) {
+        message = 'Failed, unable to get message';
+        if (json.error) {
+          message = json.error;
+          statusCallBack(message, percentageComplete);
+          executeCompleteCallBack(json, false);
+          if (failure) {
+            failure(message);
+          }
+          return true;
+        }
+        try {
+          message = json.ExecuteResponse.Status.ProcessFailed.ExceptionReport.Exception.ExceptionText.value;
+        } catch (e) {
+        }
+        statusCallBack(message, percentageComplete);
+        executeCompleteCallBack(json, false);
+        return true;
+      }
+    } catch (e) {
+    }
+    return false;
+  };
+
   let wpsExecuteCallback = (executeResponse) => {
+    if (handleExceptions(executeResponse) === true) return;
     let statusLocation = executeResponse.ExecuteResponse.attr.statusLocation;
     console.log(statusLocation);
     let processIsRunning = true;
@@ -60,20 +90,7 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
         let message = '';
 
         /* Check processfailed */
-        try {
-          if (json.ExecuteResponse.Status.ProcessFailed) {
-            processIsRunning = false;
-            message = 'Failed, unable to get message';
-            try {
-              message = json.ExecuteResponse.Status.ProcessFailed.ExceptionReport.Exception.ExceptionText.value;
-            } catch (e) {
-            }
-            statusCallBack(message, percentageComplete);
-            executeCompleteCallBack(json, false);
-            return;
-          }
-        } catch (e) {
-        }
+        if (handleExceptions(executeResponse)) return;
 
         try {
           percentageComplete = json.ExecuteResponse.Status.ProcessStarted.attr.percentCompleted;
@@ -117,10 +134,22 @@ const doXML2JSONCallWithToken = function (urlToXMLService, accessToken, callback
     let a = response.json();
     return a;
   }).then(json => {
+    if (json.error) {
+      if (failure) {
+        failure(json);
+      } else {
+        callback(json);
+      }
+      return;
+    }
     let strippedJSON = stripNS(json);
     callback(strippedJSON);
   }).catch(function (data) {
     console.log(data);
-    failure(data);
+    if (failure) {
+      failure(data);
+    } else {
+      callback(data);
+    }
   });
 };

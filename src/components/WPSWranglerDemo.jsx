@@ -23,8 +23,9 @@ export default class WPSWranglerDemo extends Component {
       isComplete: false
     });
 
+    let dataInputs = 'inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101';
     let wps = 'https://bhw512.knmi.nl:8090/wps?service=wps&request=Execute&identifier=wrangleProcess&' +
-    'version=1.0.0&DataInputs=inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101&storeExecuteResponse=true&status=true&';
+    'version=1.0.0&DataInputs=' + dataInputs + '&storeExecuteResponse=true&status=true&';
 
     let statusUpdateCallback = (message, percentageComplete) => {
       this.setState({
@@ -48,7 +49,7 @@ export default class WPSWranglerDemo extends Component {
       } else {
         this.setState({
           percentageComplete: '-',
-          isComplete: true,
+          isComplete: false,
           isRunning: false
         });
       }
