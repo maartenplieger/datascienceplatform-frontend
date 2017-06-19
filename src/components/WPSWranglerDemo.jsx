@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { doWPSExecuteCall } from '../utils/WPSRunner.js';
+import { Button } from 'reactstrap';
 
 export default class WPSWranglerDemo extends Component {
   constructor () {
@@ -64,7 +65,7 @@ export default class WPSWranglerDemo extends Component {
     return (
       <div>
         <p>{accessToken}</p>
-        <button id='wrangleButton' onClick={this.wrangleClicked}>Wrangle!</button>
+        <Button id='wrangleButton' onClick={this.wrangleClicked}>Wrangle!</Button>
         <p className='percentage'>percentageComplete: {this.state.percentageComplete}%</p>
         <p>message: {this.state.message}</p>
         <p>isRunning {this.state.isRunning ? 'true' : 'false' }</p>

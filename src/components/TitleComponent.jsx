@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { config } from 'static/config.js';
-import { Col, Row } from 'reactstrap';
+import { Col, Row, Navbar, NavbarBrand, NavItem, Nav, NavLink, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 export default class TitleComponent extends Component {
@@ -19,29 +19,45 @@ export default class TitleComponent extends Component {
     const { accessToken, emailAddress, clientId, domain } = this.props;
     return (
       <div>
-        <Row>
-          <Col xs='auto' className='welcomeSign'>
-            {
-              clientId !== null ? <h2>Hello {emailAddress}!</h2> : <h2>Not logged in</h2>
-            }
-            {
-              clientId !== null ? <h4>Your clientID: {clientId}</h4> : <h4>Your clientID: Not logged in</h4>
-            }
-            {
-              clientId !== null ? <h4>Your Access Token: {accessToken}</h4> : <h4>Your Access Token: Not logged in</h4>
-            }
-            {
-              clientId !== null ? <h4>Your Domain: {domain}</h4> : <h4>Your Domain: Not logged in</h4>
-            }
-          </Col>
-          <Col xs='auto' className='signInOffButton'>
-            {
-              clientId !== null ? <button onClick={this.logout}>Logout</button>
-              : <button onClick={this.login}>Login</button>
-            }
-          </Col>
-        </Row>
-        <hr />
+        <Navbar inverse>
+          <Row>
+            <Col xs='auto'>
+              <NavbarBrand tag='div'>
+                Brand
+              </NavbarBrand>
+            </Col>
+            <Col className='welcomeSign'>
+              {
+                clientId !== null ? <h2>Hello {emailAddress}!</h2> : <h2>Not logged in</h2>
+              }
+              {
+                clientId !== null ? <h4>Your clientID: {clientId}</h4> : <h4>Your clientID: Not logged in</h4>
+              }
+              {
+                clientId !== null ? <h4>Your Access Token: {accessToken}</h4> : <h4>Your Access Token: Not logged in</h4>
+              }
+              {
+                clientId !== null ? <h4>Your Domain: {domain}</h4> : <h4>Your Domain: Not logged in</h4>
+              }
+            </Col>
+            <Col xs='auto' className='signInOffButton'>
+              {
+                clientId !== null ? <Button color='primary' onClick={this.logout}>Logout</Button>
+                : <Button onClick={this.login}>Login</Button>
+              }
+            </Col>
+          </Row>
+        </Navbar>
+        <Navbar color='faded' className='navbar-static-top'>
+          <Nav>
+            <NavItem>
+              <NavLink active href='#'>Home</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href='#/wrangler'>Wrangler</NavLink>
+            </NavItem>
+          </Nav>
+        </Navbar>
       </div>);
   }
 

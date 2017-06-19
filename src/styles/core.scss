@@ -1,3 +1,12 @@
+@import '~bootstrap/scss/bootstrap';
+
+$ux-interactive-color: #017daf;
+$ux-interactive-color-checked: #3299cb;
+$ux-interactive-color-active: #017daf;
+$ux-interactive-border-highlight-color: #018cc8;
+$ux-interactive-border-shadow-color: #01729b;
+$ux-interactive-hover-color: #015f8c;
+
 $radius-size: 0.19rem;
 $shadow: 0.06rem 0.125rem 0.125rem rgba(0,0,0,0.3);
 $inverse-inactive-color: rgba(255, 255, 255, 0.7);
@@ -49,4 +58,134 @@ body {
 }
 .percentage{
   font-size:30px;
+}
+
+
+.ux-interactive {
+  background-color: $ux-interactive-color;
+  border-color: $ux-interactive-border-highlight-color;
+  border-right-color: $ux-interactive-border-shadow-color;
+  border-bottom-color: $ux-interactive-border-shadow-color;
+  border-width: 0.125rem;
+  cursor: pointer;
+  @extend .rounded;
+  box-shadow: $shadow;
+}
+
+.ux-interactive:hover {
+  background-color: $ux-interactive-hover-color;
+  border-color: $ux-interactive-hover-color;
+  border-right-color: #01405e;
+  border-bottom-color: #01405e;
+}
+
+.ux-interactive:active {
+  background-color: $ux-interactive-color-active;
+  border-color: $ux-interactive-border-highlight-color;
+  border-left-color: $ux-interactive-border-shadow-color;
+  border-top-color: $ux-interactive-border-shadow-color;
+  box-shadow: unset;
+}
+
+.ux-interactive:checked {
+  color: $inverse-active-color;
+  text-shadow: 0 0 0.2rem #333;
+  background-color: $ux-interactive-color-checked;
+  border-color: $ux-interactive-border-highlight-color;
+  border-left-color: $ux-interactive-border-shadow-color;
+  border-top-color: $ux-interactive-border-shadow-color;
+  box-shadow: unset;
+}
+
+.ux-interactive:disabled {
+  @extend .ux-interactive;
+  color: $inverse-inactive-color;
+  border-color: $ux-interactive-border-highlight-color;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+.btn-primary {
+  @extend .ux-interactive;
+}
+
+
+.btn-primary:hover {
+  @extend .ux-interactive:hover;
+}
+
+.btn-primary:focus {
+  box-shadow: $shadow;
+}
+
+.btn-primary:active {
+  @extend .ux-interactive:active;
+}
+
+.btn-primary.active {
+  @extend .ux-interactive:checked;
+}
+
+.btn-primary.disabled, .btn-primary.disabled:hover {
+  @extend .ux-interactive:disabled;
+}
+
+.btn-outline-info {
+  color: $ux-interactive-color-checked;
+  border-color: $ux-interactive-color-checked;
+}
+
+.btn-outline-info:hover {
+  color: $inverse-active-color;
+  border-color: $ux-interactive-color-checked;
+  background-color: $ux-interactive-color-checked;
+}
+
+.btn-outline-info:focus {
+  box-shadow: unset;
+}
+
+.container-fluid {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0;
+}
+
+.navbar.navbar-inverse {
+    background-color: #d9edf7;
+    color: #31708f;
+    border: none;
+    border-bottom: 1px solid #7daec6;
+    box-shadow: 0.06rem 0.125rem 0.125rem rgba(0, 0, 0, 0.3);
+    border-radius: 0;
+    padding: 0.1rem 0.5rem;
+    margin-bottom: 0.2rem;
+    width: 100%;
+}
+
+.navbar-static-top {
+    border-style: solid;
+      border-width: 0 0 1px;
+      border-color: #e7e7e7;
+      padding-top: 0;
+      padding-bottom: 0;
+}
+
+
+.navbar-static-top a.active, .navbar-static-top a.active:focus, .navbar-static-top a.active:hover {
+    color: #555;
+    background-color: #e7e7e7;
+}
+
+.navbar-static-top li>a {
+    color: #777;
+    padding: 15px;
+}
+
+
+.row {
+  margin: 0;
 }
