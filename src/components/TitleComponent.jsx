@@ -56,6 +56,9 @@ export default class TitleComponent extends Component {
             <NavItem>
               <NavLink href='#/wrangler'>Wrangler</NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href='#/basket'>Basket</NavLink>
+            </NavItem>
           </Nav>
         </Navbar>
       </div>);

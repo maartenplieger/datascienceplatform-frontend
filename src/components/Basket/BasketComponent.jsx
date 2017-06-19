@@ -39,7 +39,6 @@ export default class BasketComponent extends Component {
   render () {
     return (
       <div>
-        <h3>Basket</h3>
         {
         this.state.basket
         ? <BasketTreeComponent data={this.state.basket} />

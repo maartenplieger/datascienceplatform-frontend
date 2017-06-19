@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import BasketComponent from '../components/Basket/BasketComponent';
 import PropTypes from 'prop-types';
+import { Button } from 'reactstrap';
 
 class BasketContainer extends Component {
   render () {
@@ -10,11 +11,11 @@ class BasketContainer extends Component {
         <BasketComponent accessToken={accessToken}
           dispatch={dispatch} actions={actions} />
         <hr />
-        <button>Upload</button>
-        <button>Preview</button>
-        <button>Wrangle</button>
-        <button>Download</button>
-        <button>Delete</button>
+        <Button>Upload</Button>
+        <Button>Preview</Button>
+        <Button>Wrangle</Button>
+        <Button>Download</Button>
+        <Button>Delete</Button>
       </div>
     );
   }
