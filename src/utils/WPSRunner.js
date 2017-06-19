@@ -47,35 +47,52 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
   statusCallBack('Starting WPS', 0);
 
   let handleExceptions = (json) => {
+    console.log(json);
     let percentageComplete = 0;
-    let message = '';
-    try {
-      if (json.error || json.ExecuteResponse.Status.ProcessFailed) {
-        message = 'Failed, unable to get message';
-        if (json.error) {
-          message = json.error;
-          statusCallBack(message, percentageComplete);
-          executeCompleteCallBack(json, false);
-          if (failure) {
-            failure(message);
-          }
-          return true;
-        }
-        try {
-          message = json.ExecuteResponse.Status.ProcessFailed.ExceptionReport.Exception.ExceptionText.value;
-        } catch (e) {
-        }
+    let message = null;
+
+    if (json.error) {
+      message = 'Failed, unable to get message';
+      if (json.error) {
+        message = json.error;
         statusCallBack(message, percentageComplete);
         executeCompleteCallBack(json, false);
+        if (failure) {
+          failure(message);
+        }
+        console.log('json.error set', json);
         return true;
       }
+    }
+
+    try {
+      message = json.ExecuteResponse.Status.ProcessFailed;
     } catch (e) {
     }
+
+    try {
+      message = json.ExecuteResponse.Status.ProcessFailed.ExceptionReport.Exception.ExceptionText.value;
+    } catch (e) {
+    }
+    try {
+      message = json.ExceptionReport.Exception.ExceptionText.value;
+    } catch (e) {
+    }
+    if (message) {
+      statusCallBack(message, percentageComplete);
+      executeCompleteCallBack(json, false);
+      console.log('message set', message);
+      return true;
+    }
+
     return false;
   };
 
   let wpsExecuteCallback = (executeResponse) => {
-    if (handleExceptions(executeResponse) === true) return;
+    if (handleExceptions(executeResponse) === true) {
+      console.log('Exception in WPS Process');
+      return;
+    }
     let statusLocation = executeResponse.ExecuteResponse.attr.statusLocation;
     let processIsRunning = true;
     let pol = () => {
@@ -87,7 +104,10 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
         let message = '';
 
         /* Check processfailed */
-        if (handleExceptions(executeResponse)) return;
+        if (handleExceptions(json)) {
+          processIsRunning = false;
+          return;
+        }
 
         try {
           percentageComplete = json.ExecuteResponse.Status.ProcessStarted.attr.percentCompleted;
@@ -122,7 +142,7 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
 
 const doXML2JSONCallWithToken = function (urlToXMLService, accessToken, callback, failure) {
   let encodedWPSURL = encodeURIComponent(urlToXMLService + '&key=' + accessToken);
-  let requestURL = config.backendHost + '/xml2json?request=' + encodedWPSURL;
+  let requestURL = config.backendHost + '/xml2json?request=' + encodedWPSURL + '&rand=' + Math.random();
   fetch(requestURL)
   .then(function (response) {
     let a = response.json();
@@ -142,7 +162,7 @@ const doXML2JSONCallWithToken = function (urlToXMLService, accessToken, callback
     if (failure) {
       failure(data);
     } else {
-      callback(data);
+      callback(data, false);
     }
   });
 };
