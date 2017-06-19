@@ -1,16 +1,17 @@
 import { connect } from 'react-redux';
-import WPSWranglerDemo from '../../../components/WPSWranglerDemo';
 import TitleComponent from '../../../components/TitleComponent';
-import actions from '../../../actions/userActions';
+import BasketContainer from '../../../containers/BasketContainer';
+import basketActions from '../../../actions/basketActions';
+import userActions from '../../../actions/userActions';
 
-const mapStateToWranglerProps = (state) => {
+const mapStateToBasketProps = (state) => {
   return { ...state.wranglerState, ...state.userState };
 };
 
-const mapDispatchToCounterProps = function (dispatch) {
+const mapDispatchToBasketProps = function (dispatch) {
   return ({
     dispatch: dispatch,
-    actions: actions
+    actions: basketActions
   });
 };
 
@@ -21,15 +22,15 @@ const mapStateToTitleProps = (state) => {
 const mapDispatchToTitleProps = function (dispatch) {
   return ({
     dispatch: dispatch,
-    actions: actions
+    actions: userActions
   });
 };
 
 // Sync route definition
 export default () => ({
-  title: 'Counter',
+  title: 'Basket',
   components : {
     header: connect(mapStateToTitleProps, mapDispatchToTitleProps)(TitleComponent),
-    mainContent: connect(mapStateToWranglerProps, mapDispatchToCounterProps)(WPSWranglerDemo)
+    mainContent: connect(mapStateToBasketProps, mapDispatchToBasketProps)(BasketContainer)
   }
 });

@@ -111,7 +111,7 @@ export default class WPSWranglerDemo extends Component {
     // const { accessToken } = this.props;
     this.setState({ statusLocation: 'starting' });
 
-    let wps = 'https://bhw512.knmi.nl:8090/wps?service=wps&request=Execute&identifier=wrangleProcess&' +
+    let wps = this.props.domain + '/wps?service=wps&request=Execute&identifier=wrangleProcess&' +
     'version=1.0.0&DataInputs=inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101&storeExecuteResponse=true&status=true&key=' + accessToken;
     this.doWPSCall(wps, accessToken, (json) => {
       let statusLocation = json.ExecuteResponse.attr.statusLocation;

@@ -7,9 +7,6 @@ import AppContainer from './containers/AppContainer';
 // Store Instantiation
 // ========================================================
 const initialState = {
-  countState: {
-    count: 0
-  },
   userState: {
     accessToken: null,
     clientId: null,
@@ -18,6 +15,9 @@ const initialState = {
   },
   wranglerState: {
     statusLocation: null
+  },
+  basketState: {
+    basket: null
   }
 };
 
