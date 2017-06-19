@@ -1,6 +1,7 @@
 // Sync route definition
 import { connect } from 'react-redux';
 import TitleComponent from '../../components/TitleComponent';
+import MainComponent from '../../components/MainComponent';
 import actions from '../../actions/userActions';
 
 const mapStateToTitleProps = (state) => {
@@ -17,6 +18,7 @@ const mapDispatchToTitleProps = function (dispatch) {
 export default () => ({
   title: 'Data Science Platform',
   components: {
-    header: connect(mapStateToTitleProps, mapDispatchToTitleProps)(TitleComponent)
+    header: connect(mapStateToTitleProps, mapDispatchToTitleProps)(TitleComponent),
+    mainContent: connect(mapStateToTitleProps, mapDispatchToTitleProps)(MainComponent)
   }
 });

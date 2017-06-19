@@ -16,7 +16,9 @@ export default class TitleComponent extends Component {
   }
 
   render () {
-    const { accessToken, emailAddress, clientId, domain } = this.props;
+    const { accessToken, emailAddress, clientId, domain, location } = this.props;
+    var { pathname } = location;
+
     return (
       <div>
         <Navbar inverse>
@@ -51,10 +53,10 @@ export default class TitleComponent extends Component {
         <Navbar color='faded' className='navbar-static-top'>
           <Nav>
             <NavItem>
-              <NavLink active href='#'>Home</NavLink>
+              <NavLink href='#/' active={pathname === '/'} >Home</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href='#/wrangler'>Wrangler</NavLink>
+              <NavLink href='#/wrangler' active={pathname === '/wrangler'}>Wrangler</NavLink>
             </NavItem>
           </Nav>
         </Navbar>
