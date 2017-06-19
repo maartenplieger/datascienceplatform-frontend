@@ -47,6 +47,7 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
   statusCallBack('Starting WPS', 0);
 
   let handleExceptions = (json) => {
+    console.log(json);
     let percentageComplete = 0;
     let message = '';
     try {
@@ -90,7 +91,10 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
         let message = '';
 
         /* Check processfailed */
-        if (handleExceptions(executeResponse)) return;
+        if (handleExceptions(json)) {
+          processIsRunning = false;
+          return;
+        }
 
         try {
           percentageComplete = json.ExecuteResponse.Status.ProcessStarted.attr.percentCompleted;
@@ -127,8 +131,9 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
 
 const doXML2JSONCallWithToken = function (urlToXMLService, accessToken, callback, failure) {
   let encodedWPSURL = encodeURIComponent(urlToXMLService + '&key=' + accessToken);
-  let requestURL = config.backendHost + '/xml2json?request=' + encodedWPSURL;
-  console.log('starting fetch ' + requestURL);
+  let requestURL = config.backendHost + '/xml2json?request=' + encodedWPSURL + '&rand=' + Math.random();
+  console.log('starting fetcher ' + requestURL);
+  console.log('wps URL ' + urlToXMLService);
   fetch(requestURL)
   .then(function (response) {
     let a = response.json();
@@ -149,7 +154,7 @@ const doXML2JSONCallWithToken = function (urlToXMLService, accessToken, callback
     if (failure) {
       failure(data);
     } else {
-      callback(data);
+      callback(data, false);
     }
   });
 };

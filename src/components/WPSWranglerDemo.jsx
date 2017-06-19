@@ -24,8 +24,13 @@ export default class WPSWranglerDemo extends Component {
       isComplete: false
     });
 
-    let dataInputs = 'inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101';
-    let wps = this.props.domain + '/wps?service=wps&request=Execute&identifier=wrangleProcess&' +
+    // let dataInputs = 'inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101';
+    // let wps = this.props.domain + '/wps?service=wps&request=Execute&identifier=wrangleProcess&' +
+    // 'version=1.0.0&DataInputs=' + dataInputs + '&storeExecuteResponse=true&status=true&';
+
+    let dataInputs = 'inputa=10;inputb=0;operator=divide;';
+    console.log(this.props.domain);
+    let wps = 'https://' + this.props.domain + '/wps?service=wps&request=Execute&identifier=binaryoperatorfornumbers_10sec&' +
     'version=1.0.0&DataInputs=' + dataInputs + '&storeExecuteResponse=true&status=true&';
 
     let statusUpdateCallback = (message, percentageComplete) => {
