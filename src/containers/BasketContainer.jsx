@@ -11,7 +11,7 @@ class BasketContainer extends Component {
         <BasketComponent accessToken={accessToken}
           dispatch={dispatch} actions={actions} />
         <hr />
-        <Button>Upload</Button>
+        <Button onClick={() => this.props.router.push('/upload')}>Upload</Button>
         <Button>Preview</Button>
         <Button>Wrangle</Button>
         <Button>Download</Button>
