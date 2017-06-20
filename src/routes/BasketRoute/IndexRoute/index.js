@@ -5,7 +5,7 @@ import basketActions from '../../../actions/basketActions';
 import userActions from '../../../actions/userActions';
 
 const mapStateToBasketProps = (state) => {
-  return { ...state.wranglerState, ...state.userState };
+  return { ...state.basketState, ...state.userState };
 };
 
 const mapDispatchToBasketProps = function (dispatch) {
