@@ -3,6 +3,7 @@ import BasketComponent from '../components/Basket/BasketComponent';
 import PropTypes from 'prop-types';
 
 class BasketContainer extends Component {
+
   render () {
     const { accessToken, dispatch, actions, basket, hasFetched, domain } = this.props;
     return (

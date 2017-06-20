@@ -5,8 +5,9 @@ import treeBeardStyling from '../../styles/stylingBasket/stylingBasket';
 import { Button } from 'reactstrap';
 import ScrollArea from 'react-scrollbar';
 import PreviewComponent from '../PreviewComponent';
+import { withRouter } from 'react-router';
 
-export default class BasketTreeComponent extends Component {
+class BasketTreeComponent extends Component {
   constructor (props) {
     super(props);
     this.state = {};
@@ -74,7 +75,7 @@ export default class BasketTreeComponent extends Component {
           />
         </ScrollArea>
         <hr /> {/* Dividing line, for dividing the tree and the buttons. */}
-        <Button className='basketButton'>Upload</Button>
+        <Button className='basketButton' onClick={() => this.props.router.push('/upload')}>Upload</Button>
         <Button className='basketButton' onClick={() => this.previewFile()}
           disabled={this.state.cursor ? this.state.cursor.type === 'NODE' : true}>Preview</Button>
         <Button className='basketButton'>Wrangle</Button>
@@ -94,3 +95,5 @@ BasketTreeComponent.propTypes = {
   actions: PropTypes.object.isRequired,
   accessToken: PropTypes.string.isRequired
 };
+
+export default withRouter(BasketTreeComponent)

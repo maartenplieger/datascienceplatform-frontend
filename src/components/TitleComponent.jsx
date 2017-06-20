@@ -76,6 +76,8 @@ export default class TitleComponent extends Component {
         dispatch(actions.setEmailAddress(null));
         dispatch(actions.setDomain(null));
       } else {
+
+        console.log(actions);
         dispatch(actions.setAccessToken(obj.services_access_token));
         dispatch(actions.setClientId(obj.id));
         dispatch(actions.setEmailAddress(obj.email_address));
