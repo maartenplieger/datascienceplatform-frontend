@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BasketTreeComponent from './BasketTreeComponent';
+import { config } from '../../static/config.js';
 
 export default class BasketComponent extends Component {
-  componentWillUpdate () {
+  fetchListItems () {
     const { accessToken, dispatch, actions, basket } = this.props;
     if (!accessToken) return;
     if (basket) return;
-    fetch('https://bhw451.knmi.nl:8090/basket/list?key=' + accessToken)
+    fetch(config.adagucServicesHost + '/basket/list?key=' + accessToken)
     .then((result) => {
       if (result.ok) {
         return result.json();
@@ -20,14 +21,23 @@ export default class BasketComponent extends Component {
     });
   }
 
+  componentWillUpdate () {
+    this.fetchListItems();
+  }
+
+  componentWillReceiveProps () {
+    this.fetchListItems();
+  }
+
   render () {
-    const { basket } = this.props;
+    const { basket, dispatch, actions, accessToken } = this.props;
     if (!basket) return (<div />);
     return (
       <div>
         {
         basket
-        ? <BasketTreeComponent data={basket.jsonResponse} />
+        ? <BasketTreeComponent data={basket.jsonResponse} dispatch={dispatch}
+          actions={actions} accessToken={accessToken} />
         : <div />
         }
       </div>
@@ -38,7 +48,6 @@ export default class BasketComponent extends Component {
 BasketComponent.propTypes = {
   accessToken: PropTypes.string,
   basket: PropTypes.object,
-  hasFetched: PropTypes.bool,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired
 };

@@ -15,8 +15,12 @@ export default class TitleComponent extends Component {
     this.canRender();
   }
 
+  componentWillUpdate () {
+    this.canRender();
+  }
+
   render () {
-    const { accessToken, emailAddress, clientId, domain, location } = this.props;
+    const { clientId, location } = this.props;
     var { pathname } = location;
 
     return (

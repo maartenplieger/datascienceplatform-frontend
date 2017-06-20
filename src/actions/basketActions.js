@@ -1,27 +1,38 @@
 // This is where action creators are put
-import { SET_BASKET_ITEMS, UPDATE_BASKET_ITEMS } from '../constants/basketLabels';
+import { SET_BASKET_ITEMS, UPDATE_BASKET_ITEMS, DELETE_BASKET_ITEM } from '../constants/basketLabels';
 
-const setBasketItems = (accessToken) => {
+const setBasketItems = (payload) => {
   return {
     type: SET_BASKET_ITEMS,
     payload: {
-      accessToken: accessToken
+      accessToken: payload
     }
   };
 };
 
-const updateBasketItems = (json) => {
+const updateBasketItems = (payload) => {
   return {
     type: UPDATE_BASKET_ITEMS,
     payload: {
-      jsonResponse: json
+      jsonResponse: payload
+    }
+  };
+};
+
+const deleteBasketItem = (payload) => {
+  return {
+    type: DELETE_BASKET_ITEM,
+    payload: {
+      accessToken: payload.accessToken,
+      path: payload.path
     }
   };
 };
 
 const actions = {
   setBasketItems,
-  updateBasketItems
+  updateBasketItems,
+  deleteBasketItem
 };
 
 export default actions;
