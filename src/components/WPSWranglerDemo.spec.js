@@ -1,9 +1,9 @@
 import React from 'react';
-import CounterComponent from './CounterComponent';
+import WPSWranglerDemo from './WPSWranglerDemo';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 
-describe('(Component) CounterComponent', () => {
+describe('(Component) WPSWranglerDemo', () => {
   let _component;
   const _dispatch = sinon.spy();
   const incrementFunc = sinon.spy();
@@ -11,11 +11,11 @@ describe('(Component) CounterComponent', () => {
     incrementCounter: incrementFunc
   };
   beforeEach(() => {
-    _component = mount(<CounterComponent count={0} dispatch={_dispatch} actions={_actions} />);
+    _component = mount(<WPSWranglerDemo count={0} dispatch={_dispatch} actions={_actions} />);
   });
 
   it('Can mount', () => {
-    expect(_component.type()).to.equal(CounterComponent);
+    expect(_component.type()).to.equal(WPSWranglerDemo);
   });
 
   it('Can increment the counter', () => {

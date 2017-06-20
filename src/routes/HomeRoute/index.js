@@ -1,14 +1,22 @@
 // Sync route definition
-import UploadComponent from '../../components/UploadComponent';
 import { connect } from 'react-redux';
+import TitleComponent from '../../components/TitleComponent';
+import actions from '../../actions/userActions';
 
-const mapStateToProps = (state) => {
-  return { ...state.deep };
+const mapStateToTitleProps = (state) => {
+  return { ...state.userState };
+};
+
+const mapDispatchToTitleProps = function (dispatch) {
+  return ({
+    dispatch: dispatch,
+    actions: actions
+  });
 };
 
 export default () => ({
-  title: 'KNMI React Redux Starter Kit',
+  title: 'Data Science Platform',
   components: {
-    mainContent: connect(mapStateToProps)(UploadComponent)
+    header: connect(mapStateToTitleProps, mapDispatchToTitleProps)(TitleComponent)
   }
 });

@@ -1,16 +1,16 @@
-import countReducer from './countReducer';
+import wrangleReducer from './wrangleReducer';
 import sinon from 'sinon';
 import actions from '../actions/countActions';
-describe('(Store) countReducer', () => {
+describe('(Store) wrangleReducer', () => {
   let _globalState;
   let _dispatchSpy;
   let _getStateSpy;
   beforeEach(() => {
-    _globalState = countReducer();
+    _globalState = wrangleReducer();
     _dispatchSpy = sinon.spy((action) => {
       _globalState = {
         ..._globalState,
-        ...countReducer(_globalState, action)
+        ...wrangleReducer(_globalState, action)
       };
     });
     _getStateSpy = sinon.spy(() => {

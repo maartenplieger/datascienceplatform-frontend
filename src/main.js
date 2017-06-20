@@ -9,6 +9,15 @@ import AppContainer from './containers/AppContainer';
 const initialState = {
   countState: {
     count: 0
+  },
+  userState: {
+    accessToken: null,
+    clientId: null,
+    emailAddress: null,
+    domain: null
+  },
+  wranglerState: {
+    statusLocation: null
   }
 };
 
