@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Treebeard } from 'react-treebeard';
 import PropTypes from 'prop-types';
-import stylingBasket from '../../styles/stylingBasket/stylingBasket';
+import treeBeardStyling from '../../styles/stylingBasket/stylingBasket';
 import { Button } from 'reactstrap';
 import ScrollArea from 'react-scrollbar';
 
@@ -10,20 +10,30 @@ export default class BasketTreeComponent extends Component {
     super(props);
     this.state = {};
     this.onToggle = this.onToggle.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
+    this.deleteBasketItem = this.deleteBasketItem.bind(this);
   }
 
+  /**
+   * What to do when the treebeard is toggled.
+   **/
   onToggle (node, toggled) {
-    if (this.state.cursor) { this.state.cursor.active = false; }
+    if (this.state.cursor) {
+      this.state.cursor.active = false;
+    }
+
     node.active = true;
-    if (node.children) { node.toggled = toggled; }
+
+    if (node.children) {
+      node.toggled = toggled;
+    }
+
     this.setState({ cursor: node });
   }
 
   /**
    * Deleting an item by dispatching an action.
    **/
-  deleteItem () {
+  deleteBasketItem () {
     const { dispatch, actions, accessToken } = this.props;
     if (!accessToken) return;
 
@@ -36,36 +46,34 @@ export default class BasketTreeComponent extends Component {
       path: pathItemWithoutGoogleId }));
   }
 
-  render () {
-    // const decorators = {
-    //   Container: (props) => {
-    //     return (
-    //       <div onClick={props.onClick}>
-    //         {props.node.name ? props.node.name : ''}
-    //         {'       '}
-    //         {props.node.size ? props.node.size + ' bytes' : ''}
-    //         {'       '}
-    //         {props.node.date ? props.node.date : ''}
-    //       </div>
-    //     );
-    //   }
-    // };
+  /**
+   * Download a basket item.
+   **/
+  downloadBasketItem () {
+    // There's always an if..
+    if (!this.state.cursor) return;
 
+    /* this.state.cursor is always the current selected item in the basket. */
+    window.location = this.state.cursor.httpurl;
+  }
+
+  render () {
     return (
       <div>
-        <ScrollArea speed={0.8} horizontal={false} contentClassName='content' className='scrollAreaBasket' >
+        <ScrollArea speed={1} horizontal={false} contentClassName='content' className='scrollAreaBasket' >
+          {/* More about Treebeard: https://github.com/alexcurtis/react-treebeard */}
           <Treebeard
             data={this.props.data}
             onToggle={this.onToggle}
-            style={stylingBasket}
+            style={treeBeardStyling}
           />
         </ScrollArea>
-        <hr />
+        <hr /> {/* Dividing line, for dividing the tree and the buttons. */}
         <Button className='basketButton'>Upload</Button>
         <Button className='basketButton'>Preview</Button>
         <Button className='basketButton'>Wrangle</Button>
-        <Button className='basketButton'>Download</Button>
-        <Button className='basketButton' onClick={() => this.deleteItem()}>Delete</Button>
+        <Button className='basketButton' onClick={() => this.downloadBasketItem()} disabled={this.state.cursor ? this.state.cursor.type === 'NODE' : true}>Download</Button>
+        <Button className='basketButton' onClick={() => this.deleteBasketItem()}>Delete</Button>
       </div>
     );
   }
@@ -75,5 +83,5 @@ BasketTreeComponent.propTypes = {
   data: PropTypes.object,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
-  accessToken: PropTypes.object.isRequired
+  accessToken: PropTypes.string.isRequired
 };

@@ -4,9 +4,13 @@ import BasketTreeComponent from './BasketTreeComponent';
 import { config } from '../../static/config.js';
 
 export default class BasketComponent extends Component {
+  /**
+   * Fetching the basket items.
+   **/
   fetchListItems () {
     const { accessToken, dispatch, actions, basket } = this.props;
     if (!accessToken) return;
+    /* If there is already a basket, don't fetch. */
     if (basket) return;
     fetch(config.adagucServicesHost + '/basket/list?key=' + accessToken)
     .then((result) => {
@@ -26,6 +30,10 @@ export default class BasketComponent extends Component {
   }
 
   componentWillReceiveProps () {
+    this.fetchListItems();
+  }
+
+  componentDidMount() {
     this.fetchListItems();
   }
 

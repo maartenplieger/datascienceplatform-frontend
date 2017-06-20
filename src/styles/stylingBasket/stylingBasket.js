@@ -1,4 +1,5 @@
-export const stylingBasket = {
+/* Complete styling constant for the Treebeard component. */
+export const treeBeardStyling = {
   tree: {
     base: {
       listStyle: 'none',
@@ -76,4 +77,4 @@ export const stylingBasket = {
   }
 };
 
-export default stylingBasket;
+export default treeBeardStyling;
