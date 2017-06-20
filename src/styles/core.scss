@@ -205,3 +205,16 @@ body {
     overflow: hidden;
     padding:10px;
 }
+
+.required:after {
+  content: " *";
+}
+
+.divider-2 {
+  width: 100%;
+  min-height: 1px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  display: inline-block;
+  position: relative;
+}

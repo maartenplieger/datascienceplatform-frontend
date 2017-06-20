@@ -1,18 +1,19 @@
-import { SET_BASKET_ITEMS } from '../constants/basketLabels';
+import { SET_UPLOADED_FILE } from '../constants/uploadLabels';
 
-const setBasketItems = (state, payload) => {
-  return Object.assign({}, state, { basket: payload });
+const setUploadedFile = (state, payload) => {
+  console.log(payload);
+  return Object.assign({}, state, { fileName: payload.fileName });
 };
 
 const ACTION_HANDLERS = {
-  [SET_BASKET_ITEMS] : (state, action) => setBasketItems(state, action.payload)
+  [SET_UPLOADED_FILE] : (state, action) => setUploadedFile(state, action.payload)
 };
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = { basket: null };
-export default function userReducer (state = initialState, action) {
+const initialState = { fileName: null };
+export default function uploadReducer (state = initialState, action) {
   if (!action) {
     return state;
   }

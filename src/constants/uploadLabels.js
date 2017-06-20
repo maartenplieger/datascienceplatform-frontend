@@ -1,1 +1,1 @@
-export const SET_BASKET_ITEMS = 'SET_BASKET_ITEMS';
+export const SET_UPLOADED_FILE = 'SET_UPLOADED_FILE';
