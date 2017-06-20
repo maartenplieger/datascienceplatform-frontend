@@ -140,7 +140,7 @@ export default class UploadComponent extends React.Component {
           </Control.text>
         </div>
 
-        <button type="submit">
+        <button type="submit" className="btn btn-secondary">
           Submit description
         </button>
       </Form>

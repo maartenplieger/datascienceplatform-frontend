@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import UploadComponent from '../../../components/UploadComponent';
 import TitleComponent from '../../../components/TitleComponent';
-import actions from '../../../actions/wrangleActions';
+import actions from '../../../actions/userActions';
 
 const mapStateToUploadProps = (state) => {
   return { ...state.fileDescriptionState, ...state.userState };

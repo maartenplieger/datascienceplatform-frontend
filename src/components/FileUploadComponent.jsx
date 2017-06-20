@@ -25,21 +25,42 @@ export default class UploadComponent extends React.Component {
 
   }
 
-  handleFileUpload({file}) {
+  handleFileUpload(event) {
 
-    console.log(file);
+    var formData  = new FormData();
+    formData.append("files", this.fileInput.files[0], this.fileInput.files[0].name);
 
-    this.props.actions.uploadRequest({
-      file,
-      name: 'Awesome Cat Pic'
-    })
+    const { backendHost, frontendHost, adagucServicesHost } = config;
+
+    fetch(adagucServicesHost + "/basket/upload?key=" + this.props.accessToken,
+      {
+        credentials:"include",
+        method: "POST",
+        body: formData
+      })
+      .then(function(result) {console.log(result.body);})
   }
+
+  handleFileChange(event) {
+
+    console.log(event.target);
+    console.log(event.target.files[0]);
+  }
+
 
   render() {
 
     return (
-
-      <input type="file" onChange={this.handleFileUpload} />
+      <div>
+        <form onSubmit={(event)=>this.handleFileUpload(event)}>
+          <input
+            type="file" onChange={(event) => this.handleFileChange(event)}
+            ref={(input) => { this.fileInput = input; }}/>
+          <button className="submitButton"
+                  type="submit">Upload File
+          </button>
+        </form>
+      </div>
     );
   }
 
