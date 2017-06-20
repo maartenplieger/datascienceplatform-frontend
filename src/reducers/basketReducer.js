@@ -37,9 +37,10 @@ const deleteBasketItem = (state, payload) => {
     }
   })
   .then((json) => {
+    console.log('Info deleting path \'' + path + '\'');
     console.log(json);
   });
-  return Object.assign({}, state);
+  return Object.assign({}, state, { hasFetched: false });
 };
 
 const ACTION_HANDLERS = {

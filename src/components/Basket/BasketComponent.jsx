@@ -29,11 +29,7 @@ export default class BasketComponent extends Component {
     this.fetchListItems();
   }
 
-  componentWillReceiveProps () {
-    this.fetchListItems();
-  }
-
-  componentDidMount() {
+  componentDidMount () {
     this.fetchListItems();
   }
 

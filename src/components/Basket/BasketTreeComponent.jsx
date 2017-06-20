@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import treeBeardStyling from '../../styles/stylingBasket/stylingBasket';
 import { Button } from 'reactstrap';
 import ScrollArea from 'react-scrollbar';
+import PreviewComponent from '../PreviewComponent';
 
 export default class BasketTreeComponent extends Component {
   constructor (props) {
@@ -26,7 +27,6 @@ export default class BasketTreeComponent extends Component {
     if (node.children) {
       node.toggled = toggled;
     }
-
     this.setState({ cursor: node });
   }
 
@@ -57,6 +57,11 @@ export default class BasketTreeComponent extends Component {
     window.location = this.state.cursor.httpurl;
   }
 
+  previewFile () {
+    const filePath = this.state.cursor.httpurl;
+    return filePath;
+  }
+
   render () {
     return (
       <div>
@@ -70,10 +75,14 @@ export default class BasketTreeComponent extends Component {
         </ScrollArea>
         <hr /> {/* Dividing line, for dividing the tree and the buttons. */}
         <Button className='basketButton'>Upload</Button>
-        <Button className='basketButton'>Preview</Button>
+        <Button className='basketButton' onClick={() => this.previewFile()}
+          disabled={this.state.cursor ? this.state.cursor.type === 'NODE' : true}>Preview</Button>
         <Button className='basketButton'>Wrangle</Button>
-        <Button className='basketButton' onClick={() => this.downloadBasketItem()} disabled={this.state.cursor ? this.state.cursor.type === 'NODE' : true}>Download</Button>
+        <Button className='basketButton' onClick={() => this.downloadBasketItem()}
+          disabled={this.state.cursor ? this.state.cursor.type === 'NODE' : true}>Download</Button>
         <Button className='basketButton' onClick={() => this.deleteBasketItem()}>Delete</Button>
+        <hr />
+        <PreviewComponent file={this.state.cursor ? this.state.cursor.httpurl : ''} />
       </div>
     );
   }
