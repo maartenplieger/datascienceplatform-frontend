@@ -5,12 +5,14 @@ import userReducer from '../reducers/userReducer';
 import { combineForms } from 'react-redux-form';
 import { initialFileDescription } from '../constants/initialFormStates';
 
+import basketReducer from '../reducers/basketReducer';
 export const makeRootReducer = () => {
 
   return combineReducers({
     location: locationReducer,
-    countState: wrangleReducer,
+    wranglerState: wrangleReducer,
     userState: userReducer,
+    basketState: basketReducer,
     fileDescriptionState: combineForms({
       fileDescription: ""
     })

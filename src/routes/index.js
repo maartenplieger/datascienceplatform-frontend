@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout';
 import HomeRoute from './HomeRoute';
 import WPSWranglerDemoRoute from './WPSWranglerDemoRoute';
+import BasketRoute from './BasketRoute';
 import UploadFileRoute from './UploadFileRoute';
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -12,7 +13,8 @@ export const createRoutes = (store) => ({
   indexRoute: HomeRoute(store),
   childRoutes: [
     WPSWranglerDemoRoute(),
-    UploadFileRoute(store)
+    UploadFileRoute(store),
+    BasketRoute()
   ]
 });
 

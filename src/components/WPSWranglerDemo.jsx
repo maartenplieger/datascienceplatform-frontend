@@ -1,138 +1,103 @@
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { config } from '../static/config.js';
+import { doWPSExecuteCall } from '../utils/WPSRunner.js';
+import { Button } from 'reactstrap';
 
-let accessToken = '444dbedd-a979-4cd9-8dd4-7b0353e04d36';
+let wpsProcessOptions = [];
 
-var c4iProcessingGetKeys = function (obj) {
-  if (!Object.keys) {
-    let keys = [];
-    let k;
-    for (k in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, k)) {
-        keys.push(k);
-      }
-    }
-    return keys;
-  } else {
-    return Object.keys(obj);
-  }
-};
+let dataInputs = 'inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101';
+wpsProcessOptions['wrangleProcess'] = 'service=wps&request=Execute&identifier=wrangleProcess&' +
+     'version=1.0.0&DataInputs=' + dataInputs + '&storeExecuteResponse=true&status=true&';
 
-var _stripNS = function (newObj, obj) {
-  var keys = c4iProcessingGetKeys(obj);
-
-  for (var j = 0; j < keys.length; j++) {
-    var key = keys[j];
-    var i = key.indexOf(':');
-    var newkey = key.substring(i + 1);
-    var value = obj[key];
-    if (typeof value === 'object') {
-      newObj[newkey] = {};
-      _stripNS(newObj[newkey], value);
-    } else {
-      newObj[newkey] = value;
-    }
-  }
-};
-
-var stripNS = function (currentObj) {
-  var newObj = {};
-  _stripNS(newObj, currentObj);
-  return newObj;
-};
+wpsProcessOptions['binaryoperatorfornumbers_10sec'] = 'service=wps&request=Execute&identifier=binaryoperatorfornumbers_10sec&version=1.0.0&' +
+  'DataInputs=inputa=10;inputb=2;operator=divide;&storeExecuteResponse=true&status=true&';
 
 export default class WPSWranglerDemo extends Component {
   constructor () {
     super();
     this.state = {
-      statusLocation: 'no process running',
       isRunning: false,
-      percentageComplete: 0,
-      processSucceeded: false,
+      percentageComplete: '-',
       message: '',
-      result:''
+      result:'',
+      isComplete:false
     };
     this.wrangleClicked = this.wrangleClicked.bind(this);
-    this.doWPSCall = this.doWPSCall.bind(this);
-    this.pollProcesss = this.pollProcesss.bind(this);
   }
 
-  pollProcesss () {
-    if (this.state.isRunning) {
-      console.log('pol' + this.state.statusLocation);
-      let wps = this.state.statusLocation + '&key=' + accessToken;
-      this.doWPSCall(wps, accessToken, (json) => {
-        let message = '';
-        let result = '';
-        let percentageComplete = 0;
-        try {
-          percentageComplete = json.ExecuteResponse.Status.ProcessStarted.attr.percentCompleted;
-        } catch (e) {}
+  wrangleClicked (id) {
+    const { accessToken } = this.props;
+    this.setState({
+      isRunning: true,
+      isComplete: false
+    });
 
-        let processSucceeded = false;
+    // let dataInputs = 'inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101';
+    // let wps = this.props.domain + '/wps?service=wps&request=Execute&identifier=wrangleProcess&' +
+    // 'version=1.0.0&DataInputs=' + dataInputs + '&storeExecuteResponse=true&status=true&';
 
-        try {
-          message = json.ExecuteResponse.Status.ProcessSucceeded.value;
-          processSucceeded = true;
-          percentageComplete = 100;
-          result = json.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.value;
-        } catch (e) {}
-        this.setState({
-          percentageComplete: percentageComplete,
-          isRunning: !processSucceeded,
-          processSucceeded: processSucceeded,
-          message: message,
-          result:result
-        });
+    console.log(this.props.domain);
+    let wps = 'https://' + this.props.domain + '/wps?' + wpsProcessOptions[id];
+
+    let statusUpdateCallback = (message, percentageComplete) => {
+      this.setState({
+        percentageComplete: percentageComplete,
+        message:message
       });
-    }
-  }
+    };
 
-  doWPSCall (wps, key, callback) {
-    let encodedWPSURL = encodeURIComponent(wps);
-    let requestURL = config.backendHost + '/xml2json?request=' + encodedWPSURL;
-    console.log('starting fetch ' + requestURL);
-    fetch(requestURL)
-    .then(function (response) {
-      let a = response.json();
-      console.log(a);
-      return a;
-    }).then(json => {
-      let strippedJSON = stripNS(json);
-      console.log(strippedJSON);
-      callback(strippedJSON);
-    }).catch(function (data) {
-      console.log(data);
-    });
-  }
+    let executeCompletCallback = (json, processSucceeded) => {
+      if (processSucceeded) {
+        let result = json.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.value;
+        let message = json.ExecuteResponse.Status.ProcessSucceeded.value;
 
-  wrangleClicked () {
-    // const { accessToken } = this.props;
-    this.setState({ statusLocation: 'starting' });
+        this.setState({
+          percentageComplete: 100,
+          message: message,
+          result: result,
+          isComplete: true,
+          isRunning: false
+        });
+      } else {
+        this.setState({
+          percentageComplete: '-',
+          isComplete: false,
+          isRunning: false
+        });
+      }
+    };
 
-    let wps = 'https://bhw512.knmi.nl:8090/wps?service=wps&request=Execute&identifier=wrangleProcess&' +
-    'version=1.0.0&DataInputs=inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101&storeExecuteResponse=true&status=true&key=' + accessToken;
-    this.doWPSCall(wps, accessToken, (json) => {
-      let statusLocation = json.ExecuteResponse.attr.statusLocation;
-      this.setState({ statusLocation: statusLocation, isRunning: true });
-    });
+    doWPSExecuteCall(wps, accessToken, statusUpdateCallback, executeCompletCallback);
   };
 
-  componentDidMount () {
-    window.setInterval(function () {
-      this.pollProcesss();
-    }.bind(this), 1000);
+  componentWillMount () {
+    console.log('componentWillMount');
   }
+
+  componentDidMount () {
+    console.log('componentDidMount');
+  }
+
+  componentWillUnmount () {
+    console.log('componentWillUnmount()');
+  }
+
   render () {
     const { accessToken } = this.props;
+    let link = this.state.result + '?key=' + accessToken + '&format=application/json';
     return (
-      <div>
+      <div className='MainViewport'>
+        <h1>Wrangler</h1>
         <p>{accessToken}</p>
-        <button id='wrangleButton' onClick={this.wrangleClicked}>Wrangle!</button>{this.state.statusLocation}
-        <p>percentageComplete: {this.state.percentageComplete}</p>
+        <Button id='wrangleButton' onClick={() => { this.wrangleClicked('wrangleProcess'); }}>Wrangle!</Button>
+        <Button id='wrangleButton' onClick={() => { this.wrangleClicked('binaryoperatorfornumbers_10sec'); }}>Calculator</Button>
+        { this.state.percentageComplete !== '-' ? <p className='percentage'>percentageComplete: {this.state.percentageComplete}%</p> : null}
         <p>message: {this.state.message}</p>
+        <p>isRunning {this.state.isRunning ? 'true' : 'false' }</p>
+        <p>isComplete: {this.state.isComplete ? 'true' : 'false' }</p>
         <p>Result: {this.state.result}</p>
+        { this.state.isComplete ? <p>Result as JSON: <a target='_blank' href={link}>{link}</a></p> : null }
       </div>);
   }
 }
