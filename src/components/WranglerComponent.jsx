@@ -15,7 +15,10 @@ class WranglerComponent extends Component {
     this.startWrangling = this.startWrangling.bind(this);
 
     this.state = {
-      modal: false
+      modal: false,
+      inputCSVPath:null,
+      catalog:null,
+      selectedCatalog: null
     };
   }
 
@@ -40,13 +43,32 @@ class WranglerComponent extends Component {
   }
 
   metaDataClicked (title, id, _this) {
-    this.setState({
-      modal: !this.state.modal,
-      title:title,
-      id:id
-    });
-
+    console.log('metaDataClicked');
+    let catalogs = this.state.catalog;
+    for (let j = 0; j < catalogs.catalog.length; j++) {
+      let catalog = catalogs.catalog[j];
+      if (id === catalog.name) {
+        this.setState({
+          modal: !this.state.modal,
+          title:title,
+          id:id,
+          selectedCatalog: Object.assign({}, catalog)
+        });
+      }
+    }
     console.log(title);
+  };
+
+  renderCatalogs () {
+    let catalogs = this.state.catalog;
+    let html = [];
+    for (let j = 0; j < catalogs.catalog.length; j++) {
+      let catalog = catalogs.catalog[j];
+      console.log(catalog);
+      html.push(this.renderParam(catalog.title, catalog.name));
+    }
+
+    return html;
   };
 
   renderParam (title, id) {
@@ -66,9 +88,42 @@ class WranglerComponent extends Component {
     alert('OK');
   };
 
+  componentDidMount () {
+    const { domain } = this.props;
+    this.setState({
+      inputCSVPath: this.props.inputCSVPath
+    });
+
+    if (!domain) {
+      console.log('domain not set');
+      return;
+    }
+    let url = 'https://' + domain + '/catalog/list';
+    console.log('catalog url', url);
+    fetch(url,
+      {
+        credentials:'include'
+      }).then((result) => {
+        return result.json();
+      }).then((json) => {
+        this.setState({
+          catalog: json
+        });
+      });
+  }
+
+  handleChange (name, value) {
+    console.log(name, value);
+    this.setState({
+      [name]: value
+    });
+  };
+
   render () {
-    const { accessToken, clientId, domain, inputCSVPath, jobDescPath, metaCSVPath } = this.props;
-    if (!clientId) return (<div>Not signed in</div>);
+    const { accessToken, clientId, domain, jobDescPath, metaCSVPath } = this.props;
+    if (!clientId || !this.state.inputCSVPath || !this.state.catalog) return (<div>Not signed in</div>);
+    let file = 'https://' + domain + '/opendap/' + accessToken + '/' + clientId.replace('/', '.') + '/' + this.state.inputCSVPath;
+    console.log(file);
     return (
       <div>
         <Row>
@@ -82,10 +137,7 @@ class WranglerComponent extends Component {
             <Label>inputCSVPath</Label>
           </Col>
           <Col>
-            <Input value={inputCSVPath} />
-          </Col>
-          <Col xs='1'>
-            <Button color='info' onClick={() => { }}><Icon name='shopping-basket' /></Button>
+            <Label>{this.state.inputCSVPath}</Label>
           </Col>
         </Row>
         <Row style={{ background:'#EEE', margin:'10px' }}>
@@ -93,10 +145,7 @@ class WranglerComponent extends Component {
             <Label>jobDescPath</Label>
           </Col>
           <Col>
-            <Input value={jobDescPath} />
-          </Col>
-          <Col xs='1'>
-            <Button color='info' onClick={() => { }}><Icon name='shopping-basket' /></Button>
+             <Label>{jobDescPath}</Label>
           </Col>
         </Row>
         <Row style={{ background:'#EEE', margin:'10px' }}>
@@ -104,19 +153,17 @@ class WranglerComponent extends Component {
             <Label>metaCSVPath</Label>
           </Col>
           <Col>
-            <Input value={metaCSVPath} />
-          </Col>
-          <Col xs='1'>
-            <Button color='info' onClick={() => { }}><Icon name='shopping-basket' /></Button>
+            <Label>{metaCSVPath}</Label>
           </Col>
         </Row>
         <h3>Select meteorological parameters:</h3>
-        { this.renderParam('Radar data', 'id1') }
-        { this.renderParam('Radar data nog een andere', 'id2') }
-        { this.renderParam('Radar data en nog een', 'id3') }
+        {
+          this.renderCatalogs()
+        }
+
         <p>First 10 rows of data</p>
         <PreviewComponent
-          file={'https://' + domain + '/opendap/' + accessToken + '/' + clientId.replace('/', '.') + '/' + inputCSVPath}
+          file={file}
           numberOfLinesDisplayed={10}
           tableClassName='previewTable'
           componentClassName='previewComponent'
@@ -126,10 +173,8 @@ class WranglerComponent extends Component {
           <ModalHeader toggle={this.toggle}>Metadata for [{this.state.title}]</ModalHeader>
           <ModalBody>
             <p>Choosed ID = {this.state.id}</p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            <Row><Col>Name:</Col><Col> { this.state.selectedCatalog ? this.state.selectedCatalog.name : null }</Col></Row>
+            <Row><Col>Datatype:</Col><Col> { this.state.selectedCatalog ? this.state.selectedCatalog.datatype : null }</Col></Row>
           </ModalBody>
           <ModalFooter>
             <Button color='secondary' onClick={this.toggle}>Close</Button>
@@ -146,9 +191,9 @@ WranglerComponent.propTypes = {
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   nrOfStartedProcesses: PropTypes.number,
-  inputCSVPath: PropTypes.string.required,
-  jobDescPath: PropTypes.string.required,
-  metaCSVPath: PropTypes.string.required
+  inputCSVPath: PropTypes.string.isRequired,
+  jobDescPath: PropTypes.string.isRequired,
+  metaCSVPath: PropTypes.string.isRequired
 };
 
 export default withRouter(WranglerComponent);
