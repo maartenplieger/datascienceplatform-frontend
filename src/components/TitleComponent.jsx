@@ -16,6 +16,10 @@ export default class TitleComponent extends Component {
     this.canRender();
   }
 
+  componentWillUpdate () {
+    this.canRender();
+  }
+
   render () {
     const { clientId, location } = this.props;
     var { pathname } = location;
@@ -74,6 +78,8 @@ export default class TitleComponent extends Component {
         dispatch(actions.setEmailAddress(null));
         dispatch(actions.setDomain(null));
       } else {
+
+        console.log(actions);
         dispatch(actions.setAccessToken(obj.services_access_token));
         dispatch(actions.setClientId(obj.id));
         dispatch(actions.setEmailAddress(obj.email_address));
@@ -106,6 +112,7 @@ TitleComponent.propTypes = {
   emailAddress: PropTypes.string,
   clientId: PropTypes.string,
   domain: PropTypes.string,
+  location: PropTypes.object,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
