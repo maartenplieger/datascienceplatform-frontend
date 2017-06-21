@@ -23,8 +23,8 @@ const mapDispatchToUploadProps = function (dispatch) {
   return ({
     dispatch: dispatch,
     actions: uploadActions
-  })
-}
+  });
+};
 
 // Sync route definition
 export default () => ({

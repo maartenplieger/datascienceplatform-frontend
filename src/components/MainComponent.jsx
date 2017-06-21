@@ -11,28 +11,24 @@ export default class WPSWranglerDemo extends Component {
   }
 
   render () {
-    const { accessToken, emailAddress, clientId, domain, location } = this.props;
+    const { accessToken, emailAddress, clientId, domain } = this.props;
     return (
       <div className='MainViewport'>
         <Row>
           <Col xs='auto'>
-            <h1>Welcome!</h1>
+            <div className='text'>
+              <h1>Welcome to the KNMI Data Science Platform!</h1>
+              <p>Currently the platform is meant to help you in the process of preparing your own data for analysis.
+              The platform allows you to enrich your dataset with meteorological variables available in KNMI datasets.</p>
+              <p>If your dataset is in CSV (comma-separated values) format and your cases contain a <strong>time</strong> variable and a <strong>spatial</strong>
+               one such as a coordinate pair (e.g., longitude and latitude) then you are set to use the data preparation functionalities.
+               The platform allows you to add a set of meteorological parameters to your cases for the time and location specified in each of them.</p>
+              <p>Have fun!</p>
+            </div>
           </Col>
         </Row>
         <Row>
           <Col >
-            {
-              clientId !== null ? <p>Your email: {emailAddress}</p> : <p>Not logged in</p>
-            }
-            {
-              clientId !== null ? <p>Your id: {clientId}</p> : <p>Your clientID: Not logged in</p>
-            }
-            {
-              <p>Your Access Token: {accessToken}</p>
-            }
-            {
-              clientId !== null ? <p>Your compute node: {domain}</p> : <p>Your Domain: Not logged in</p>
-            }
           </Col>
         </Row>
       </div>);

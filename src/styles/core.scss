@@ -234,6 +234,19 @@ body {
     padding:10px;
 }
 
+.MainViewport h1{
+  font-size:30px;
+  padding-bottom:0.5em;
+}
+
+.text p{
+  max-width:500px;
+}
+
+.card{
+  padding:10px;
+}
+
 .required:after {
   content: " *";
 }
