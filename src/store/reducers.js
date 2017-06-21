@@ -14,6 +14,7 @@ export const makeRootReducer = () => {
     wranglerState: wrangleReducer,
     userState: userReducer,
     basketState: basketReducer,
+    uploadState: uploadReducer,
     fileDescriptionState: combineForms({
       fileDescription: ""
     })
