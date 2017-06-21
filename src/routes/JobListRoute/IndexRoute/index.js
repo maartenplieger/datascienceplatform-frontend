@@ -2,15 +2,16 @@ import { connect } from 'react-redux';
 import TitleComponent from '../../../components/TitleComponent';
 import JobListComponent from '../../../components/JobListComponent';
 import userActions from '../../../actions/userActions';
+import jobListActions from '../../../actions/jobListActions';
 
-const mapStateToBasketProps = (state) => {
-  return { ...state.basketState, ...state.userState };
+const mapStateToJobListProps = (state) => {
+  return { ...state.jobListState, ...state.userState };
 };
 
-const mapDispatchToBasketProps = function (dispatch) {
+const mapDispatchToJobListProps = function (dispatch) {
   return ({
     dispatch: dispatch,
-    actions: userActions
+    actions: jobListActions
   });
 };
 
@@ -30,6 +31,6 @@ export default () => ({
   title: 'JobList',
   components : {
     header: connect(mapStateToTitleProps, mapDispatchToTitleProps)(TitleComponent),
-    mainContent: connect(mapStateToBasketProps, mapDispatchToBasketProps)(JobListComponent)
+    mainContent: connect(mapStateToJobListProps, mapDispatchToJobListProps)(JobListComponent)
   }
 });

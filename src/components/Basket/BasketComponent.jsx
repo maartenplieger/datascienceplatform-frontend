@@ -27,11 +27,11 @@ export default class BasketComponent extends Component {
     });
   }
 
-  componentWillUpdate () {
+  componentWillMount () {
     this.fetchListItems();
   }
 
-  componentDidMount () {
+  componentWillUpdate () {
     this.fetchListItems();
   }
 
