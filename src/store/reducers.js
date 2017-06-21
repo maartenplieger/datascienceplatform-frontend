@@ -4,11 +4,10 @@ import wrangleReducer from '../reducers/wrangleReducer';
 import userReducer from '../reducers/userReducer';
 import uploadReducer from '../reducers/uploadReducer';
 import { combineForms } from 'react-redux-form';
-import { initialFileDescription } from '../constants/initialFormStates';
+import { initialFileDescription, initialFileStructureDescription } from '../constants/initialFormStates';
 
 import basketReducer from '../reducers/basketReducer';
 export const makeRootReducer = () => {
-
   return combineReducers({
     location: locationReducer,
     wranglerState: wrangleReducer,
@@ -16,7 +15,8 @@ export const makeRootReducer = () => {
     basketState: basketReducer,
     uploadState: uploadReducer,
     fileDescriptionState: combineForms({
-      fileDescription: ""
+      fileColumnDescription: initialFileDescription,
+      fileStructureDescription: initialFileStructureDescription
     })
   });
 };

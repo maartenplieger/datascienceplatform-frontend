@@ -28,7 +28,6 @@ export default class UploadComponent extends React.Component {
       .then(function(result) {
         console.log(result);
         dispatch(actions.setUploadedFile(fileName));
-
       })
   }
 
@@ -41,7 +40,7 @@ export default class UploadComponent extends React.Component {
           <input
             type="file"
             ref={(input) => { this.fileInput = input; }}/>
-          <button className="submitButton"
+          <button className="area"
                   type="submit">Upload File
           </button>
         </form>

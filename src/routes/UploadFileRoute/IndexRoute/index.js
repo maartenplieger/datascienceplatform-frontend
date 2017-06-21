@@ -3,9 +3,10 @@ import UploadComponent from '../../../components/UploadComponent';
 import TitleComponent from '../../../components/TitleComponent';
 import actions from '../../../actions/userActions';
 import uploadActions from '../../../actions/uploadActions';
+import { actions as formActions } from 'react-redux-form';
 
 const mapStateToUploadProps = (state) => {
-  return { ...state.fileDescriptionState, ...state.userState, ...state.uploadState };
+  return { ...state.fileDescriptionState, ...state.fileStructureDescription, ...state.userState, ...state.uploadState };
 };
 
 const mapStateToTitleProps = (state) => {
@@ -22,9 +23,10 @@ const mapDispatchToTitleProps = function (dispatch) {
 const mapDispatchToUploadProps = function (dispatch) {
   return ({
     dispatch: dispatch,
-    actions: uploadActions
-  })
-}
+    actions: uploadActions,
+    formActions: formActions
+  });
+};
 
 // Sync route definition
 export default () => ({
