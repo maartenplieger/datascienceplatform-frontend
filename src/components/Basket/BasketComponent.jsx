@@ -4,7 +4,6 @@ import BasketTreeComponent from './BasketTreeComponent';
 import { config } from '../../static/config.js';
 
 export default class BasketComponent extends Component {
-
   /**
    * Fetching the basket items.
    **/
