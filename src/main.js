@@ -13,9 +13,6 @@ const initialState = {
     emailAddress: null,
     domain: null
   },
-  wranglerState: {
-    statusLocation: null
-  },
   basketState: {
     basket: null,
     hasFetched: false

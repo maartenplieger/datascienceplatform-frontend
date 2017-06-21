@@ -6,6 +6,7 @@ import BasketRoute from './BasketRoute';
 import UploadFileRoute from './UploadFileRoute';
 import JobListRoute from './JobListRoute';
 import AccountRoute from './AccountRoute';
+import WranglerRoute from './WranglerRoute';
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
@@ -15,6 +16,7 @@ export const createRoutes = (store) => ({
   indexRoute: HomeRoute(store),
   childRoutes: [
     WPSWranglerDemoRoute(),
+    WranglerRoute(),
     UploadFileRoute(store),
     BasketRoute(),
     JobListRoute(),
