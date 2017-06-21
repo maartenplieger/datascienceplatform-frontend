@@ -39,8 +39,8 @@ export default class TitleComponent extends Component {
             </Col>
             <Col xs='auto' className='signInOffButton'>
               {
-                clientId !== null ? <Button color='primary' onClick={this.logout}>Logout</Button>
-                : <Button onClick={this.login}>Login</Button>
+                clientId !== null ? <Button color='primary' onClick={this.logout}>Sign out</Button>
+                : <Button onClick={this.login}>Sign in</Button>
               }
             </Col>
           </Row>
@@ -73,6 +73,7 @@ export default class TitleComponent extends Component {
     .then(json => {
       let obj = json;
       if (obj.error) {
+        console.log('Not signed in');
         dispatch(actions.setAccessToken(null));
         dispatch(actions.setClientId(null));
         dispatch(actions.setEmailAddress(null));
