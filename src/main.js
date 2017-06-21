@@ -13,7 +13,7 @@ const initialState = {
     emailAddress: null,
     domain: null
   },
-  wranglerState: {
+  WPSState: {
     statusLocation: null
   },
   basketState: {
