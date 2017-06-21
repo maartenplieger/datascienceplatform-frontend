@@ -77,6 +77,24 @@ class BasketTreeComponent extends Component {
     return !(this.state.cursor.type === 'LEAF' && this.state.cursor.name.endsWith('.csv'));
   }
 
+  /**
+   * Small functions that checks if selected file is a CSV file.
+   * Only then, activate the wrangle button.
+   */
+  isWrangleButtonDisabled () {
+    if (!this.state.cursor) return false;
+    return !(this.state.cursor.type === 'LEAF' && this.state.cursor.name.endsWith('.csv'));
+  }
+
+  /**
+   * Small functions that checks if selected file is a CSV file.
+   * Only then, activate the download button.
+   */
+  isDownloadButtonDisabled () {
+    if (!this.state.cursor) return false;
+    return this.state.cursor.type === 'NODE';
+  }
+
   render () {
     return (
       <div>
@@ -92,9 +110,9 @@ class BasketTreeComponent extends Component {
         <Button className='basketButton' onClick={() => this.props.router.push('/upload')}>Upload</Button>
         <Button className='basketButton' onClick={() => this.previewFile()}
           disabled={this.isPreviewButtonDisabled()}>Preview</Button>
-        <Button className='basketButton'>Wrangle</Button>
+        <Button className='basketButton' disabled={this.isWrangleButtonDisabled()}>Wrangle</Button>
         <Button className='basketButton' onClick={() => this.downloadBasketItem()}
-          disabled={this.state.cursor ? this.state.cursor.type === 'NODE' : true}>Download</Button>
+          disabled={this.isDownloadButtonDisabled()}>Download</Button>
         <Button className='basketButton' onClick={() => this.deleteBasketItem()}>Delete</Button>
         <hr />
         {
@@ -103,7 +121,7 @@ class BasketTreeComponent extends Component {
             file={this.state.cursor ? this.state.cursor.httpurl : ''}
             tableClassName='previewTable'
             componentClassName='previewComponent'
-            numberOfLinesDisplayed={10} />
+            numberOfLinesDisplayed={30} />
           : null
         }
       </div>

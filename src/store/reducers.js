@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import locationReducer from '../reducers/location';
 import wrangleReducer from '../reducers/wrangleReducer';
 import userReducer from '../reducers/userReducer';
+import uploadReducer from '../reducers/uploadReducer';
 import { combineForms } from 'react-redux-form';
 
 import basketReducer from '../reducers/basketReducer';
