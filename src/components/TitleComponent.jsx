@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { config } from 'static/config.js';
 import { Col, Row, Navbar, NavbarBrand, NavItem, Nav, NavLink, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
+import DSPLogo from '../components/assets/dsp_logo.svg';
 
 export default class TitleComponent extends Component {
   constructor () {
@@ -16,7 +17,7 @@ export default class TitleComponent extends Component {
   }
 
   render () {
-    const { accessToken, emailAddress, clientId, domain, location } = this.props;
+    const { clientId, location } = this.props;
     var { pathname } = location;
 
     return (
@@ -25,7 +26,8 @@ export default class TitleComponent extends Component {
           <Row>
             <Col xs='auto'>
               <NavbarBrand tag='div'>
-                Brand
+                <img alt='Home of GeoWeb' className='logo' src={DSPLogo} />
+                <span className='nav-brand-text'>DSP</span>
               </NavbarBrand>
             </Col>
             <Col className='welcomeSign'>
@@ -106,5 +108,6 @@ TitleComponent.propTypes = {
   domain: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  routes: PropTypes.array
 };
