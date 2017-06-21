@@ -3,6 +3,7 @@ import { config } from 'static/config.js';
 import { Col, Row, Navbar, NavbarBrand, NavItem, Nav, NavLink, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 import DSPLogo from '../components/assets/dsp_logo.svg';
+import Icon from 'react-fa';
 
 export default class TitleComponent extends Component {
   constructor () {
@@ -39,8 +40,8 @@ export default class TitleComponent extends Component {
             </Col>
             <Col xs='auto' className='signInOffButton'>
               {
-                clientId !== null ? <Button color='primary' onClick={this.logout}>Sign out</Button>
-                : <Button onClick={this.login}>Sign in</Button>
+                clientId !== null ? <Button color='primary' onClick={this.logout}><Icon name='sign-out' />&nbsp;Sign out</Button>
+                : <Button onClick={this.login}><Icon name='sign-in' />&nbsp;Sign in</Button>
               }
             </Col>
           </Row>
