@@ -17,7 +17,7 @@ export default class WPSWranglerDemo extends Component {
         <Row>
           <Col xs='auto'>
             <div className='text'>
-              <h1>Account information</h1>
+              <h1>Your account</h1>
             </div>
           </Col>
         </Row>
