@@ -115,13 +115,18 @@ class FileColumnDescriptionComponent extends React.Component {
           <label className="col-3 col-form-label required">
             Date format:
           </label>
-          <Control.text
+          <Control.select
               className="form-control col-3"
               model="fileColumnDescription.dateFormat"
-              required
-              placeholder="%d%b%y (03JAN06)">
-          </Control.text>
-          <small className="text-muted form-text col-6">(check <a href="https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior"> this</a> table for options)</small>
+              required>
+            <option value=""></option>
+            <option value="%d%b%y">03JAN06</option>
+            <option value="%Y-%m-%dT%H:%M:%S">2007-03-04T21:08:12</option>
+            <option value="%d-%m-%Y">03-01-2016</option>
+            <option value="%d-%m-%Y %H:%M:%S">03-01-2016 21:03:00</option>
+            <option value="%Y/%m/%d">2016/01/03</option>
+          </Control.select>
+          <small className="text-muted form-text col-6">(it is also possible to provide time information in this column)</small>
          </div>
 
         <div className="form-group row">
