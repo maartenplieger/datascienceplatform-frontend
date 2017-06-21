@@ -28,7 +28,7 @@ export default class WPSWranglerDemo extends Component {
               clientId !== null ? <p>Your id: {clientId}</p> : <p>Your clientID: Not logged in</p>
             }
             {
-              clientId !== null ? <p>Your Access Token: {accessToken}</p> : <p>Your Access Token: Not logged in</p>
+              <p>Your Access Token: {accessToken}</p>
             }
             {
               clientId !== null ? <p>Your compute node: {domain}</p> : <p>Your Domain: Not logged in</p>
