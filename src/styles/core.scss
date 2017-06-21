@@ -65,6 +65,25 @@ body {
   width: 37.5em;
 }
 
+.previewComponent {
+  height: 10em;
+  width: 55em;
+}
+
+.previewTable {
+  th {
+    border: .5px solid black;
+    background-color: #d9edf7;
+  };
+  td {
+    border: .5px solid black;
+  };
+  font-size: 0.5em;
+  width: 100%;
+  border: .5px solid black;
+  border-collapse: collapse;
+}
+
 .basketButton {
   margin: 1em;
 }
@@ -215,6 +234,7 @@ body {
     padding:10px;
 }
 
+<<<<<<< HEAD
 .text h1{
   font-size:30px;
   padding-bottom:0.5em;
@@ -226,4 +246,17 @@ body {
 
 .card{
   padding:10px;
+=======
+.required:after {
+  content: " *";
+}
+
+.divider-2 {
+  width: 100%;
+  min-height: 1px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  display: inline-block;
+  position: relative;
+>>>>>>> c4be5ea929d0839a800b8c330fc61e605d2064ef
 }

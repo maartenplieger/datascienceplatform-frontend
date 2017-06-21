@@ -10,9 +10,13 @@ import { withRouter } from 'react-router';
 class BasketTreeComponent extends Component {
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      cursor: null,
+      previewActive: false
+    };
     this.onToggle = this.onToggle.bind(this);
     this.deleteBasketItem = this.deleteBasketItem.bind(this);
+    this.previewFile = this.previewFile.bind(this);
   }
 
   /**
@@ -28,7 +32,9 @@ class BasketTreeComponent extends Component {
     if (node.children) {
       node.toggled = toggled;
     }
-    this.setState({ cursor: node });
+
+    /* When toggled, preview is always not active. */
+    this.setState({ cursor: node, previewActive: false });
   }
 
   /**
@@ -59,8 +65,34 @@ class BasketTreeComponent extends Component {
   }
 
   previewFile () {
-    const filePath = this.state.cursor.httpurl;
-    return filePath;
+    this.setState({ previewActive: !this.state.previewActive });
+  }
+
+  /**
+   * Small functions that checks if selected file is a CSV file.
+   * Only then, activate the preview button.
+   */
+  isPreviewButtonDisabled () {
+    if (!this.state.cursor) return false;
+    return !(this.state.cursor.type === 'LEAF' && this.state.cursor.name.endsWith('.csv'));
+  }
+
+  /**
+   * Small functions that checks if selected file is a CSV file.
+   * Only then, activate the wrangle button.
+   */
+  isWrangleButtonDisabled () {
+    if (!this.state.cursor) return false;
+    return !(this.state.cursor.type === 'LEAF' && this.state.cursor.name.endsWith('.csv'));
+  }
+
+  /**
+   * Small functions that checks if selected file is a CSV file.
+   * Only then, activate the download button.
+   */
+  isDownloadButtonDisabled () {
+    if (!this.state.cursor) return false;
+    return this.state.cursor.type === 'NODE';
   }
 
   render () {
@@ -77,13 +109,21 @@ class BasketTreeComponent extends Component {
         <hr /> {/* Dividing line, for dividing the tree and the buttons. */}
         <Button className='basketButton' onClick={() => this.props.router.push('/upload')}>Upload</Button>
         <Button className='basketButton' onClick={() => this.previewFile()}
-          disabled={this.state.cursor ? this.state.cursor.type === 'NODE' : true}>Preview</Button>
-        <Button className='basketButton'>Wrangle</Button>
+          disabled={this.isPreviewButtonDisabled()}>Preview</Button>
+        <Button className='basketButton' disabled={this.isWrangleButtonDisabled()}>Wrangle</Button>
         <Button className='basketButton' onClick={() => this.downloadBasketItem()}
-          disabled={this.state.cursor ? this.state.cursor.type === 'NODE' : true}>Download</Button>
+          disabled={this.isDownloadButtonDisabled()}>Download</Button>
         <Button className='basketButton' onClick={() => this.deleteBasketItem()}>Delete</Button>
         <hr />
-        <PreviewComponent file={this.state.cursor ? this.state.cursor.httpurl : ''} />
+        {
+          this.state.previewActive
+          ? <PreviewComponent
+            file={this.state.cursor ? this.state.cursor.httpurl : ''}
+            tableClassName='previewTable'
+            componentClassName='previewComponent'
+            numberOfLinesDisplayed={30} />
+          : null
+        }
       </div>
     );
   }
@@ -96,4 +136,4 @@ BasketTreeComponent.propTypes = {
   accessToken: PropTypes.string.isRequired
 };
 
-export default withRouter(BasketTreeComponent)
+export default withRouter(BasketTreeComponent);

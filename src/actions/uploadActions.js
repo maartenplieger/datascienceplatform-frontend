@@ -1,14 +1,17 @@
 // This is where action creators are put
-import { INCREMENT_COUNT } from '../constants/countLabels';
+import { SET_UPLOADED_FILE } from '../constants/uploadLabels';
 
-const startWrangler = () => {
+const setUploadedFile = (fileName) => {
   return {
-    type: INCREMENT_COUNT
+    type: SET_UPLOADED_FILE,
+    payload: {
+      fileName: fileName
+    }
   };
 };
 
 const actions = {
-  startWrangler
+  setUploadedFile
 };
 
 export default actions;

@@ -20,8 +20,4 @@ export const createRoutes = (store) => ({
   ]
 });
 
-console.log( WPSWranglerDemoRoute());
-console.log( AccountRoute());
-console.log( BasketRoute());
-
 export default createRoutes;

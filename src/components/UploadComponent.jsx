@@ -15,8 +15,11 @@ export default class UploadComponent extends React.Component {
       <div>
         <FileUploadComponent accessToken={this.props.accessToken}
                              dispatch={this.props.dispatch} actions={this.props.actions} />
+        <div className="divider-2" />
         <FileDescriptionComponent accessToken={this.props.accessToken}
-                                  dispatch={this.props.dispatch} actions={this.props.actions} />
+                                  dispatch={this.props.dispatch}
+                                  actions={this.props.actions}
+                                  fileName={this.props.fileName}/>
       </div>
     );
   }
