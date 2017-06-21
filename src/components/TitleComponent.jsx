@@ -58,6 +58,9 @@ export default class TitleComponent extends Component {
               <NavLink href='#/basket' active={pathname === '/basket'}>Basket</NavLink>
             </NavItem>
             <NavItem>
+              <NavLink href='#/joblist' active={pathname === '/joblist'}>Joblist</NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink href='#/account' active={pathname === '/account'}>Account</NavLink>
             </NavItem>
           </Nav>
