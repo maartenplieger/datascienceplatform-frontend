@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import BasketComponent from '../components/Basket/BasketComponent';
 import PropTypes from 'prop-types';
 
-class BasketContainer extends Component {
-
+export default class BasketContainer extends Component {
   render () {
     const { accessToken, dispatch, actions, basket, hasFetched, domain } = this.props;
     return (
@@ -24,5 +23,3 @@ BasketContainer.propTypes = {
   basket: PropTypes.object,
   hasFetched: PropTypes.bool
 };
-
-export default BasketContainer;
