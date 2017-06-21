@@ -47,7 +47,6 @@ export const doWPSExecuteCall = function (wps, accessToken, statusCallBack, exec
   statusCallBack('Starting WPS', 0);
 
   let handleExceptions = (json) => {
-    console.log(json);
     let percentageComplete = 0;
     let message = null;
 

@@ -4,13 +4,14 @@ import BasketTreeComponent from './BasketTreeComponent';
 import { config } from '../../static/config.js';
 
 export default class BasketComponent extends Component {
-
   /**
    * Fetching the basket items.
    **/
   fetchListItems () {
     const { accessToken, dispatch, actions, basket } = this.props;
-    if (!accessToken) return;
+    if (!accessToken) {
+      return;
+    }
     /* If there is already a basket, don't fetch. */
     if (basket) return;
     fetch(config.adagucServicesHost + '/basket/list?key=' + accessToken)
@@ -26,23 +27,19 @@ export default class BasketComponent extends Component {
     });
   }
 
+  componentWillMount () {
+    this.fetchListItems();
+  }
+
   componentWillUpdate () {
-    this.fetchListItems();
-  }
-
-  componentWillReceiveProps () {
-    this.fetchListItems();
-  }
-
-  componentDidMount() {
     this.fetchListItems();
   }
 
   render () {
     const { basket, dispatch, actions, accessToken } = this.props;
-    if (!basket) return (<div />);
+    if (!basket || accessToken === null) return (<div className='MainViewport'>Unable to get basket, are you signed in?</div>);
     return (
-      <div>
+      <div className='MainViewport'>
         {
         basket
         ? <BasketTreeComponent data={basket.jsonResponse} dispatch={dispatch}

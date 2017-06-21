@@ -69,6 +69,39 @@ body {
   overflow: auto
 }
 
+.previewComponent {
+  height: 10em;
+  width: 55em;
+}
+
+.previewTable {
+  th {
+    border: .5px solid black;
+    background-color: #d9edf7;
+  };
+  td {
+    border: .5px solid black;
+  };
+  font-size: 0.5em;
+  width: 100%;
+  border: .5px solid black;
+  border-collapse: collapse;
+}
+
+.joblistTable {
+  th {
+    border: .5px solid black;
+    background-color: #d9edf7;
+  };
+  td {
+    border: .5px solid black;
+  };
+  font-size: 1em;
+  width: 100%;
+  border: .5px solid black;
+  border-collapse: collapse;
+}
+
 .basketButton {
   margin: 1em;
 }
@@ -198,6 +231,15 @@ body {
     padding: 15px;
 }
 
+.navbar img.logo {
+  margin: 0 0.3rem 0.1rem;
+  width: 4rem;
+}
+
+.nav-brand-text{
+  color: #31708f;
+}
+
 
 .row {
   margin: 0;
@@ -208,6 +250,19 @@ body {
     flex-direction: column;
     overflow: hidden;
     padding:10px;
+}
+
+.MainViewport h1{
+  font-size:30px;
+  padding-bottom:0.5em;
+}
+
+.text p{
+  max-width:500px;
+}
+
+.card{
+  padding:10px;
 }
 
 .required:after {

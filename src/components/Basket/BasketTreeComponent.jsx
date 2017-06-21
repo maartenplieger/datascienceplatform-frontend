@@ -4,14 +4,19 @@ import PropTypes from 'prop-types';
 import treeBeardStyling from '../../styles/stylingBasket/stylingBasket';
 import { Button } from 'reactstrap';
 import ScrollArea from 'react-scrollbar';
-import { withRouter } from 'react-router'
+import PreviewComponent from '../PreviewComponent';
+import { withRouter } from 'react-router';
 
 class BasketTreeComponent extends Component {
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      cursor: null,
+      previewActive: false
+    };
     this.onToggle = this.onToggle.bind(this);
     this.deleteBasketItem = this.deleteBasketItem.bind(this);
+    this.previewFile = this.previewFile.bind(this);
   }
 
   /**
@@ -28,7 +33,8 @@ class BasketTreeComponent extends Component {
       node.toggled = toggled;
     }
 
-    this.setState({ cursor: node });
+    /* When toggled, preview is always not active. */
+    this.setState({ cursor: node, previewActive: false });
   }
 
   /**
@@ -58,6 +64,37 @@ class BasketTreeComponent extends Component {
     window.location = this.state.cursor.httpurl;
   }
 
+  previewFile () {
+    this.setState({ previewActive: !this.state.previewActive });
+  }
+
+  /**
+   * Small functions that checks if selected file is a CSV file.
+   * Only then, activate the preview button.
+   */
+  isPreviewButtonDisabled () {
+    if (!this.state.cursor) return false;
+    return !(this.state.cursor.type === 'LEAF' && this.state.cursor.name.endsWith('.csv'));
+  }
+
+  /**
+   * Small functions that checks if selected file is a CSV file.
+   * Only then, activate the wrangle button.
+   */
+  isWrangleButtonDisabled () {
+    if (!this.state.cursor) return false;
+    return !(this.state.cursor.type === 'LEAF' && this.state.cursor.name.endsWith('.csv'));
+  }
+
+  /**
+   * Small functions that checks if selected file is a CSV file.
+   * Only then, activate the download button.
+   */
+  isDownloadButtonDisabled () {
+    if (!this.state.cursor) return false;
+    return this.state.cursor.type === 'NODE';
+  }
+
   render () {
     return (
       <div>
@@ -70,12 +107,23 @@ class BasketTreeComponent extends Component {
           />
         </ScrollArea>
         <hr /> {/* Dividing line, for dividing the tree and the buttons. */}
-
         <Button className='basketButton' onClick={() => this.props.router.push('/upload')}>Upload</Button>
-        <Button className='basketButton'>Preview</Button>
-        <Button className='basketButton'>Wrangle</Button>
-        <Button className='basketButton' onClick={() => this.downloadBasketItem()} disabled={this.state.cursor ? this.state.cursor.type === 'NODE' : true}>Download</Button>
+        <Button className='basketButton' onClick={() => this.previewFile()}
+          disabled={this.isPreviewButtonDisabled()}>Preview</Button>
+        <Button className='basketButton' disabled={this.isWrangleButtonDisabled()}>Wrangle</Button>
+        <Button className='basketButton' onClick={() => this.downloadBasketItem()}
+          disabled={this.isDownloadButtonDisabled()}>Download</Button>
         <Button className='basketButton' onClick={() => this.deleteBasketItem()}>Delete</Button>
+        <hr />
+        {
+          this.state.previewActive
+          ? <PreviewComponent
+            file={this.state.cursor ? this.state.cursor.httpurl : ''}
+            tableClassName='previewTable'
+            componentClassName='previewComponent'
+            numberOfLinesDisplayed={30} />
+          : null
+        }
       </div>
     );
   }
@@ -89,4 +137,4 @@ BasketTreeComponent.propTypes = {
   router: PropTypes.object
 };
 
-export default withRouter(BasketTreeComponent)
+export default withRouter(BasketTreeComponent);

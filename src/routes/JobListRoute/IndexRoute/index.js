@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
-import WPSWranglerDemo from '../../../components/WPSWranglerDemo';
 import TitleComponent from '../../../components/TitleComponent';
+import JobListComponent from '../../../components/JobListComponent';
 import userActions from '../../../actions/userActions';
-import wpsActions from '../../../actions/WPSActions';
+import jobListActions from '../../../actions/jobListActions';
 
-const mapStateToWranglerProps = (state) => {
-  return { ...state.WPSState, ...state.userState };
+const mapStateToJobListProps = (state) => {
+  return { ...state.jobListState, ...state.userState };
 };
 
-const mapDispatchToWPSProps = function (dispatch) {
+const mapDispatchToJobListProps = function (dispatch) {
   return ({
     dispatch: dispatch,
-    actions: wpsActions
+    actions: jobListActions
   });
 };
 
@@ -28,9 +28,9 @@ const mapDispatchToTitleProps = function (dispatch) {
 
 // Sync route definition
 export default () => ({
-  title: 'Counter',
+  title: 'JobList',
   components : {
     header: connect(mapStateToTitleProps, mapDispatchToTitleProps)(TitleComponent),
-    mainContent: connect(mapStateToWranglerProps, mapDispatchToWPSProps)(WPSWranglerDemo)
+    mainContent: connect(mapStateToJobListProps, mapDispatchToJobListProps)(JobListComponent)
   }
 });

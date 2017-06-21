@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { config } from 'static/config.js';
 import { Col, Row, Navbar, NavbarBrand, NavItem, Nav, NavLink, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
+import DSPLogo from '../components/assets/dsp_logo.svg';
+import Icon from 'react-fa';
 
 export default class TitleComponent extends Component {
   constructor () {
@@ -29,7 +31,8 @@ export default class TitleComponent extends Component {
           <Row>
             <Col xs='auto'>
               <NavbarBrand tag='div'>
-                Brand
+                <img alt='Home of GeoWeb' className='logo' src={DSPLogo} />
+                <span className='nav-brand-text'>DSP</span>
               </NavbarBrand>
             </Col>
             <Col className='welcomeSign'>
@@ -37,8 +40,8 @@ export default class TitleComponent extends Component {
             </Col>
             <Col xs='auto' className='signInOffButton'>
               {
-                clientId !== null ? <Button color='primary' onClick={this.logout}>Logout</Button>
-                : <Button onClick={this.login}>Login</Button>
+                clientId !== null ? <Button color='primary' onClick={this.logout}><Icon name='sign-out' />&nbsp;Sign out</Button>
+                : <Button onClick={this.login}><Icon name='sign-in' />&nbsp;Sign in</Button>
               }
             </Col>
           </Row>
@@ -53,6 +56,12 @@ export default class TitleComponent extends Component {
             </NavItem>
             <NavItem>
               <NavLink href='#/basket' active={pathname === '/basket'}>Basket</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href='#/joblist' active={pathname === '/joblist'}>Joblist</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href='#/account' active={pathname === '/account'}>Account</NavLink>
             </NavItem>
           </Nav>
         </Navbar>
@@ -71,6 +80,7 @@ export default class TitleComponent extends Component {
     .then(json => {
       let obj = json;
       if (obj.error) {
+        console.log('Not signed in');
         dispatch(actions.setAccessToken(null));
         dispatch(actions.setClientId(null));
         dispatch(actions.setEmailAddress(null));
@@ -111,5 +121,6 @@ TitleComponent.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  routes: PropTypes.array
 };
