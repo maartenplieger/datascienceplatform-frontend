@@ -1,16 +1,17 @@
 import { connect } from 'react-redux';
 import WPSWranglerDemo from '../../../components/WPSWranglerDemo';
 import TitleComponent from '../../../components/TitleComponent';
-import actions from '../../../actions/userActions';
+import userActions from '../../../actions/userActions';
+import wpsActions from '../../../actions/WPSActions';
 
 const mapStateToWranglerProps = (state) => {
-  return { ...state.wranglerState, ...state.userState };
+  return { ...state.WPSState, ...state.userState };
 };
 
-const mapDispatchToCounterProps = function (dispatch) {
+const mapDispatchToWPSProps = function (dispatch) {
   return ({
     dispatch: dispatch,
-    actions: actions
+    actions: wpsActions
   });
 };
 
@@ -21,7 +22,7 @@ const mapStateToTitleProps = (state) => {
 const mapDispatchToTitleProps = function (dispatch) {
   return ({
     dispatch: dispatch,
-    actions: actions
+    actions: userActions
   });
 };
 
@@ -30,6 +31,6 @@ export default () => ({
   title: 'Counter',
   components : {
     header: connect(mapStateToTitleProps, mapDispatchToTitleProps)(TitleComponent),
-    mainContent: connect(mapStateToWranglerProps, mapDispatchToCounterProps)(WPSWranglerDemo)
+    mainContent: connect(mapStateToWranglerProps, mapDispatchToWPSProps)(WPSWranglerDemo)
   }
 });
