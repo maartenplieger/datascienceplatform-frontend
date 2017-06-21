@@ -16,13 +16,10 @@ const startWPSExecute = (accessToken, identifier, dataInputs, nrOfStartedProcess
     try {
       let wps = 'https://bhw451.knmi.nl:8090/wps?' + 'service=wps&request=Execute&identifier=' + identifier + '&version=1.0.0&' +
       'DataInputs=' + dataInputs + '&storeExecuteResponse=true&status=true&';
-      console.log(wps);
       let statusUpdateCallback = (message, percentageComplete) => {
-        console.log('startWPSExecute: statusUpdateCallback');
         dispatch({ type: WPS_STATUS_UPDATE, payload: { message: message, percentageComplete: percentageComplete, id: nrOfStartedProcesses } });
       };
       let executeCompletCallback = (json, processSucceeded) => {
-        console.log('startWPSExecute: executeCompletCallback');
         dispatch({ type: WPS_COMPLETED, payload: { json: json, processSucceeded: processSucceeded, id: nrOfStartedProcesses } });
       };
       doWPSExecuteCall(wps, accessToken, statusUpdateCallback, executeCompletCallback);

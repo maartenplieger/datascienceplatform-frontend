@@ -16,6 +16,9 @@ const initialState = {
   basketState: {
     basket: null,
     hasFetched: false
+  },
+  jobListState: {
+    jobs: null
   }
 };
 
