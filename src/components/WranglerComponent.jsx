@@ -9,7 +9,7 @@ import { withRouter } from 'react-router';
 class RenderProcesses extends Component {
   renderProcess (process) {
     const { accessToken } = this.props;
-    let value = '-';
+    let value = '';
     try {
       value = process.result.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.value;
       value = value.replace('/opendap/', '/opendap/' + accessToken + '/');
@@ -22,7 +22,7 @@ class RenderProcesses extends Component {
           <Col>{process.message}</Col>
           <Col>{value}</Col>
         </Row>
-        { value ? <h2>Succesfully wrangled:</h2> : null }
+        { value && value.length > 0 ? <h2>Succesfully wrangled:</h2> : null }
         <PreviewComponent
           file={value}
           numberOfLinesDisplayed={10}

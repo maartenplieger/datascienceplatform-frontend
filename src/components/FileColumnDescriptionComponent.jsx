@@ -3,12 +3,45 @@ import PropTypes from 'prop-types';
 import { config } from 'static/config.js';
 import { Control, Form } from 'react-redux-form';
 import { withRouter } from 'react-router';
-import { Button } from 'reactstrap';
+import { Button, Input, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Row, Col, Progress, Card } from 'reactstrap';
+
+class RenderProcesses extends Component {
+  renderProcess (process) {
+    let value = '-';
+    try {
+      value = process.result.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.value;
+    } catch (e) {
+    }
+    return (
+      <Card>
+        <Row>
+          <Col> <div className='text-center'>{process.percentageComplete} </div><Progress value={process.percentageComplete} /></Col>
+          <Col>{process.message}</Col>
+          <Col>{value}</Col>
+        </Row>
+      </Card>
+    );
+  }
+
+  iterProcesses (runningProcesses) {
+    let result = [];
+    for (var process in runningProcesses) {
+      result.push(Object.assign({}, this.renderProcess(runningProcesses[process]), { key: process }));
+    };
+    return result;
+  }
+  render () {
+    const { runningProcesses } = this.props;
+    return (<span>{this.iterProcesses(runningProcesses)}</span>);
+  }
+};
 
 class FileColumnDescriptionComponent extends Component {
   handleSubmit () {
     var completeFileDescription = JSON.stringify(Object.assign({}, this.props.fileColumnDescription, this.props.fileStructureDescription), this.props.replacer);
-    var fileName = this.props.fileName.replace(/\.[^/.]+$/, '_descr.json');
+    var originalFileName = this.props.fileName;
+    var fileName = originalFileName.replace(/\.[^/.]+$/, '_descr.json');
+    const { accessToken, dispatch, actions, uploadActions, nrOfStartedProcesses, router, domain } = this.props;
 
     var formData = new FormData();
     formData.append('files', new Blob([completeFileDescription], { type:'' }), fileName);
@@ -24,11 +57,26 @@ class FileColumnDescriptionComponent extends Component {
 
         // TODO: Foutafhandeling
 
-        // TODO: Scanner aanroepen???
+        // Start the scan process
+        var scanProcess = originalFileName + '_scanProcess_' + new Date().toString();
+        dispatch(uploadActions.setUploadScanProcess(scanProcess));
+
+        dispatch(actions.startWPSExecute(domain, accessToken, 'scanCSVProcess',
+          '[inputCSVPath=' + originalFileName + ';descCSVPath=' + fileName + ';]',
+          scanProcess));
       });
   }
 
+  goToWrangler () {
+
+    const { dispatch, actions } = this.props;
+
+    dispatch(actions.setCSVFileToWrangle({ fileName: this.props.fileName }));
+    this.props.router.push('/wrangler');
+  }
+
   render () {
+
     return (
       <div>
         <div className='alert alert-info col-6'>
@@ -164,9 +212,22 @@ class FileColumnDescriptionComponent extends Component {
             <div className='divider-2' />
 
             <Button type='submit' color='primary'>
-              Submit description
+              Scan file
             </Button>
           </Form>
+
+          <div className='divider-2' />
+
+          <RenderProcesses runningProcesses={ this.props.runningProcesses } />
+
+          <div className='divider-2' />
+
+          { this.props.runningProcesses[this.props.uploadScanProcess] &&
+              this.props.runningProcesses[this.props.uploadScanProcess].isComplete &&
+              !this.props.runningProcesses[this.props.uploadScanProcess].hasFailed &&
+              <Button color='primary' onClick={() => this.goToWrangler()}>Wrangle!</Button>
+          }
+
         </div>
       </div>
     );
@@ -178,7 +239,11 @@ FileColumnDescriptionComponent.propTypes = {
   fileName: PropTypes.string,
   accessToken: PropTypes.string,
   fileStructureDescription: PropTypes.object,
-  replacer: PropTypes.func
+  replacer: PropTypes.func,
+  router: PropTypes.object,
+  actions: PropTypes.object,
+  dispatch: PropTypes.func,
+  runningProcesses: PropTypes.object
 };
 
 export default withRouter(FileColumnDescriptionComponent);
