@@ -1,36 +1,74 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Row, Card, Col, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Row, Card, Col, Label, Input, Modal, ModalHeader, ModalBody, Progress, ModalFooter } from 'reactstrap';
 import Icon from 'react-fa';
 import PreviewComponent from './PreviewComponent';
 import { withRouter } from 'react-router';
 
+class RenderProcesses extends Component {
+  renderProcess (process) {
+    let value = '-';
+    try {
+      value = process.result.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.value;
+    } catch (e) {
+    }
+    return (
+      <Card>
+        <Row>
+          <Col> <div className='text-center'>{process.percentageComplete} </div><Progress value={process.percentageComplete} /></Col>
+          <Col>{process.message}</Col>
+          <Col>{value}</Col>
+        </Row>
+      </Card>
+    );
+  }
+
+  iterProcesses (runningProcesses) {
+    let result = [];
+    for (var process in runningProcesses) {
+      result.push(Object.assign({}, this.renderProcess(runningProcesses[process]), { key: process }));
+    };
+    return result;
+  }
+  render () {
+    const { runningProcesses } = this.props;
+    return (<span>{this.iterProcesses(runningProcesses)}</span>);
+  }
+};
+
+RenderProcesses.propTypes = {
+  runningProcesses: PropTypes.object.isRequired
+};
+
+const defaultWranglingSettings = {
+  inputCSVPath : 'ExportOngevalsData.csv',
+  metaCSVPath : 'ExportOngevalsData_descr.json',
+  dataURL : 'http://opendap.knmi.nl/knmi/thredds/dodsC/DATALAB/hackathon/radarFullWholeData.nc',
+  dataVariables : 'image1_image_data',
+  limit : '10'
+};
+
 class WranglerComponent extends Component {
   constructor () {
     super();
-    this.wrangleClicked = this.wrangleClicked.bind(this);
     this.metaDataClicked = this.metaDataClicked.bind(this);
     this.toggle = this.toggle.bind(this);
     this.startWrangling = this.startWrangling.bind(this);
     this.loadCatalog = this.loadCatalog.bind(this);
-
+    this.handleCheckBox = this.handleCheckBox.bind(this);
     this.state = {
       modal: false,
       inputCSVPath:null,
       catalog:null,
-      selectedCatalog: null
+      selectedMetadataCatalog: null,
+      selectedWranglingCatalog: null,
+      wpsWranglerSettings: Object.assign({}, defaultWranglingSettings),
+      checkBoxSettings: {}
     };
 
     this.domainLoaded = false;
   }
-
-  wrangleClicked (id) {
-    const { accessToken, dispatch, actions, nrOfStartedProcesses, domain } = this.props;
-    dispatch(actions.startWPSExecute(domain, accessToken, 'wrangleProcess',
-      'inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101',
-      nrOfStartedProcesses));
-  };
 
   calculateClicked (id) {
     const { accessToken, dispatch, actions, nrOfStartedProcesses, domain } = this.props;
@@ -54,7 +92,7 @@ class WranglerComponent extends Component {
           modal: !this.state.modal,
           title:title,
           id:id,
-          selectedCatalog: Object.assign({}, catalog)
+          selectedMetadataCatalog: Object.assign({}, catalog)
         });
       }
     }
@@ -71,11 +109,37 @@ class WranglerComponent extends Component {
     return html;
   };
 
+  handleCheckBox (id) {
+    let newC = Object.assign({}, this.state.checkBoxSettings);
+    console.log(newC);
+    let catalogs = this.state.catalog;
+    let catalog = null;
+    for (let j = 0; j < catalogs.catalog.length; j++) {
+      newC[catalogs.catalog[j].name] = false;
+      if (id === catalogs.catalog[j].name) {
+        catalog = catalogs.catalog[j];
+      }
+    };
+    newC[id] = true;
+    this.setState({
+      checkBoxSettings: newC,
+      wpsWranglerSettings:  Object.assign(
+      {},
+      this.state.wpsWranglerSettings,
+        {
+          dataURL: catalog.datalocation,
+          dataVariables: catalog.parameterList[0].varName
+        }
+      )
+    });
+  };
+
   renderParam (title, id) {
+    console.log(this.state.checkBoxSettings[id]);
     return (<Row style={{ background:'#EEE', margin:'10px' }}>
       <Col style={{ width:'600px', padding: '7px 0 0 15px' }} >
-        <Label check>
-          <Input type='checkbox' /> {title}
+        <Label check >
+          <input checked={this.state.checkBoxSettings[id]} onClick={(e, c) => { this.handleCheckBox(id); }} type='checkbox' /> {title}
         </Label>
       </Col>
       <Col xs='1'>
@@ -85,7 +149,20 @@ class WranglerComponent extends Component {
   };
 
   startWrangling () {
-    alert('OK');
+    const { dispatch, nrOfStartedProcesses, actions, domain, accessToken } = this.props;
+
+    let wranglingSettings = Object.assign({}, this.state.defaultWranglingSettings);
+
+    let dataInputs = '';
+    for (var key in wranglingSettings) {
+      var value = wranglingSettings[key];
+      dataInputs += key + '=' + encodeURIComponent(value) + ';';
+    }
+
+    dispatch(actions.startWPSExecute(domain, accessToken, 'wrangleProcess',
+      dataInputs,
+      nrOfStartedProcesses
+    ));
   };
 
   componentWillReceiveProps (nextProps) {
@@ -116,7 +193,14 @@ class WranglerComponent extends Component {
 
   componentDidMount () {
     this.setState({
-      inputCSVPath: this.props.inputCSVPath
+      wpsWranglerSettings:  Object.assign(
+        {},
+        this.state.wpsWranglerSettings,
+        {
+          inputCSVPath: this.props.inputCSVPath,
+          metaCSVPath: this.props.metaCSVPath
+        }
+        )
     });
   }
 
@@ -128,9 +212,9 @@ class WranglerComponent extends Component {
 
   render () {
     this.loadCatalog(this.props.domain);
-    const { accessToken, clientId, domain, jobDescPath, metaCSVPath } = this.props;
+    const { accessToken, clientId, domain, metaCSVPath, runningProcesses } = this.props;
     if (!clientId || !this.state.catalog) return (<div>Not signed in</div>);
-    let file = 'https://' + domain + '/opendap/' + accessToken + '/' + clientId.replace('/', '.') + '/' + this.state.inputCSVPath;
+    let file = 'https://' + domain + '/opendap/' + accessToken + '/' + clientId.replace('/', '.') + '/' + this.state.wpsWranglerSettings.inputCSVPath;
     return (
       <div>
         { // <Row>
@@ -145,15 +229,7 @@ class WranglerComponent extends Component {
             <Label>inputCSVPath</Label>
           </Col>
           <Col>
-            <Label>{this.state.inputCSVPath}</Label>
-          </Col>
-        </Row>
-        <Row style={{ background:'#EEE', margin:'10px' }}>
-          <Col xs='2'>
-            <Label>jobDescPath</Label>
-          </Col>
-          <Col>
-            <Label>{jobDescPath}</Label>
+            <Label>{this.state.wpsWranglerSettings.inputCSVPath}</Label>
           </Col>
         </Row>
         <Row style={{ background:'#EEE', margin:'10px' }}>
@@ -169,6 +245,7 @@ class WranglerComponent extends Component {
           this.renderCatalogs()
         }
 
+        {<pre>{this.state.wpsWranglerSettings ? JSON.stringify(this.state.wpsWranglerSettings, null, 2) : null }</pre>}
         <h3>CSV Preview (10 rows)</h3>
         <PreviewComponent
           file={file}
@@ -176,18 +253,20 @@ class WranglerComponent extends Component {
           tableClassName='previewTable'
           componentClassName='previewComponent'
         />
+        <hr />
+        <RenderProcesses runningProcesses={runningProcesses} />
         <Button color='primary' style={{ float:'right' }} onClick={this.startWrangling}>Start wrangling</Button>
         <Modal className='catalogMetadataModal' isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Metadata for [{this.state.title}]</ModalHeader>
           <ModalBody>
             <p>Choosed ID = {this.state.id}</p>
-            <Row><Col>Title:</Col><Col> { this.state.selectedCatalog ? this.state.selectedCatalog.title : null }</Col></Row>
-            <Row><Col>Datatype:</Col><Col> { this.state.selectedCatalog ? this.state.selectedCatalog.datatype : null }</Col></Row>
+            <Row><Col>Title:</Col><Col> { this.state.selectedMetadataCatalog ? this.state.selectedMetadataCatalog.title : null }</Col></Row>
+            <Row><Col>Datatype:</Col><Col> { this.state.selectedMetadataCatalog ? this.state.selectedMetadataCatalog.datatype : null }</Col></Row>
             <span>
               <hr />
               <b>Catalog JSON:</b>
               <Card className='catalogMetadata'>
-                {<pre>{this.state.selectedCatalog ? JSON.stringify(this.state.selectedCatalog, null, 2) : null }</pre>}
+                {<pre>{this.state.selectedMetadataCatalog ? JSON.stringify(this.state.selectedMetadataCatalog, null, 2) : null }</pre>}
               </Card>
             </span>
           </ModalBody>
@@ -195,6 +274,7 @@ class WranglerComponent extends Component {
             <Button color='secondary' onClick={this.toggle}>Close</Button>
           </ModalFooter>
         </Modal>
+
       </div>);
   }
 }
@@ -205,10 +285,10 @@ WranglerComponent.propTypes = {
   domain: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
+  metaCSVPath: PropTypes.string.isRequired,
   nrOfStartedProcesses: PropTypes.number,
-  inputCSVPath: PropTypes.string.isRequired,
-  jobDescPath: PropTypes.string.isRequired,
-  metaCSVPath: PropTypes.string.isRequired
+  runningProcesses: PropTypes.object.isRequired,
+  inputCSVPath: PropTypes.string
 };
 
 export default withRouter(WranglerComponent);
