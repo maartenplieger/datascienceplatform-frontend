@@ -93,13 +93,15 @@ export default class TitleComponent extends Component {
         dispatch(actions.setClientId(obj.id));
         dispatch(actions.setEmailAddress(obj.email_address));
         dispatch(actions.setDomain(obj.domain));
+        console.log('DOMAIN SET', obj.domain);
       }
     });
   }
 
   login () {
-    const { backendHost, frontendHost } = config;
-    window.location.assign(backendHost + '/oauth?provider=google&returnurl=' + frontendHost + '/#/wrangler');
+    const { backendHost } = config;
+    let currentLocation = window.location;
+    window.location.assign(backendHost + '/oauth?provider=google&returnurl=' + encodeURIComponent(currentLocation));
   }
 
   logout () {

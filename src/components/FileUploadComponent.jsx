@@ -9,7 +9,6 @@ import { actions as uploadActions } from '../actions/uploadActions'
 export default class UploadComponent extends React.Component {
 
   handleFileUpload(event) {
-
     event.preventDefault();
 
     const { backendHost, frontendHost, adagucServicesHost } = config;

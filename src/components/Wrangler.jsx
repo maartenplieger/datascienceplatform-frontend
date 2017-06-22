@@ -27,8 +27,5 @@ Wrangler.propTypes = {
   clientId: PropTypes.string,
   domain: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
-  actions: PropTypes.object.isRequired,
-  nrOfStartedProcesses: PropTypes.number,
-  nrOfFailedProcesses: PropTypes.number,
-  nrOfCompletedProcesses: PropTypes.number
+  actions: PropTypes.object.isRequired
 };

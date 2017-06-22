@@ -15,6 +15,8 @@ class FileColumnDescriptionComponent extends React.Component {
   handleSubmit() {
 
     var completeFileDescription = JSON.stringify(Object.assign({}, this.props.fileColumnDescription, this.props.fileStructureDescription),this.props.replacer);
+    const { backendHost, adagucServicesHost } = config;
+
     var fileName = this.props.fileName.replace(/\.[^/.]+$/, "_descr.json");
     var router = this.props.router;
 
