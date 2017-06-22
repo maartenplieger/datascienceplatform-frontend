@@ -13,6 +13,9 @@ const initialState = {
     emailAddress: null,
     domain: null
   },
+  WPSState: {
+    statusLocation: null
+  },
   basketState: {
     basket: null,
     hasFetched: false

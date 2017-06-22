@@ -133,7 +133,8 @@ BasketTreeComponent.propTypes = {
   data: PropTypes.object,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
-  accessToken: PropTypes.string.isRequired
+  accessToken: PropTypes.string.isRequired,
+  router: PropTypes.object
 };
 
 export default withRouter(BasketTreeComponent);

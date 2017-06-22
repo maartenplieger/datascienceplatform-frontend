@@ -5,6 +5,11 @@ import JsonTable from 'react-json-table';
 import Linkify from 'react-linkify';
 
 export default class JobListComponent extends Component {
+  /* Sleep function. */
+  sleep (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   fetchJobListItems () {
     const { accessToken, dispatch, actions } = this.props;
     if (!accessToken) {
@@ -28,6 +33,12 @@ export default class JobListComponent extends Component {
     this.fetchJobListItems();
   }
 
+  async componentWillUpdate () {
+    /* Little hacky, needs to be improved by passing state correctly. */
+    await this.sleep(700);
+    this.fetchJobListItems();
+  }
+
   render () {
     if (!this.props.jobs) return null;
     const jobs = this.props.jobs;
@@ -47,7 +58,7 @@ export default class JobListComponent extends Component {
     ];
 
     return (
-      <div>
+      <div className='MainViewport'>
         <Linkify properties={{ target: '_blank' }}>
           <JsonTable
             rows={jobs}

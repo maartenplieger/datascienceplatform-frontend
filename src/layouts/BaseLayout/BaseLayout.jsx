@@ -9,7 +9,7 @@ class BaseLayout extends Component {
     return (
       <Container fluid>
         {header || 'Oops'}
-        <Row className='show-grid'>
+        <Row className='show-grid scrollAreaPageWidth'>
           <div className='page-layout__viewport'>
             {mainContent}
           </div>
