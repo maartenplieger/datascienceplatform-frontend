@@ -26,15 +26,15 @@ class WranglerComponent extends Component {
   }
 
   wrangleClicked (id) {
-    const { accessToken, dispatch, actions, nrOfStartedProcesses } = this.props;
-    dispatch(actions.startWPSExecute(accessToken, 'wrangleProcess',
+    const { accessToken, dispatch, actions, nrOfStartedProcesses, domain } = this.props;
+    dispatch(actions.startWPSExecute(domain, accessToken, 'wrangleProcess',
       'inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101',
       nrOfStartedProcesses));
   };
 
   calculateClicked (id) {
-    const { accessToken, dispatch, actions, nrOfStartedProcesses } = this.props;
-    dispatch(actions.startWPSExecute(accessToken, 'binaryoperatorfornumbers_10sec', 'inputa=10;inputb=2;operator=divide', nrOfStartedProcesses));
+    const { accessToken, dispatch, actions, nrOfStartedProcesses, domain } = this.props;
+    dispatch(actions.startWPSExecute(domain, accessToken, 'binaryoperatorfornumbers_10sec', 'inputa=10;inputb=2;operator=divide', nrOfStartedProcesses));
   };
 
   toggle () {
