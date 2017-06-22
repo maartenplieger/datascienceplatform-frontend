@@ -7,7 +7,7 @@ import { Button } from 'reactstrap';
 
 class FileColumnDescriptionComponent extends Component {
   handleSubmit () {
-    var completeFileDescription = JSON.stringify(Object.assign({}, this.props.fileColumnDescription, this.props.fileStructureDescription),this.props.replacer);
+    var completeFileDescription = JSON.stringify(Object.assign({}, this.props.fileColumnDescription, this.props.fileStructureDescription), this.props.replacer);
     var fileName = this.props.fileName.replace(/\.[^/.]+$/, '_descr.json');
 
     var formData = new FormData();
@@ -31,12 +31,12 @@ class FileColumnDescriptionComponent extends Component {
   render () {
     return (
       <div>
-        <div className='alert alert-info'>
+        <div className='alert alert-info col-6'>
           Please specify the CSV columns with location and time information and their formats.
         </div>
         <div>
           <Form model='fileColumnDescription'
-                onSubmit={() => this.handleSubmit()}>
+            onSubmit={() => this.handleSubmit()}>
 
             <h5 className='media-heading'>Location information:</h5>
 
@@ -177,10 +177,8 @@ FileColumnDescriptionComponent.propTypes = {
   fileColumnDescription: PropTypes.object,
   fileName: PropTypes.string,
   accessToken: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-  actions: PropTypes.object.isRequired,
   fileStructureDescription: PropTypes.object,
   replacer: PropTypes.func
 };
 
-export default withRouter(FileColumnDescriptionComponent)
+export default withRouter(FileColumnDescriptionComponent);

@@ -14,8 +14,8 @@ const startWPSExecute = (accessToken, identifier, dataInputs, nrOfStartedProcess
       }
     });
     try {
-      let wps = 'https://bhw451.knmi.nl:8090/wps?' + 'service=wps&request=Execute&identifier=binaryoperatorfornumbers_10sec&version=1.0.0&' +
-      'DataInputs=inputa=1000;inputb=2;operator=divide;&storeExecuteResponse=true&status=true&';
+      let wps = 'https://bhw451.knmi.nl:8090/wps?' + 'service=wps&request=Execute&identifier=' + identifier + '&version=1.0.0&' +
+      'DataInputs=' + dataInputs + '&storeExecuteResponse=true&status=true&';
       let statusUpdateCallback = (message, percentageComplete) => {
         dispatch({ type: WPS_STATUS_UPDATE, payload: { message: message, percentageComplete: percentageComplete, id: nrOfStartedProcesses } });
       };

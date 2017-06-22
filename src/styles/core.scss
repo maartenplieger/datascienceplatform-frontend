@@ -24,6 +24,19 @@ html {
   box-sizing: border-box;
 }
 
+
+.container .row {
+  margin-bottom: 1rem;
+}
+
+.container .row > [class^="col-"] {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  background-color: #E5EDF5;
+  border: 1px solid #C9C1D5;
+  color: #5F5F5F;
+}
+
 html,
 body {
   margin: 0;
@@ -70,8 +83,8 @@ body {
 }
 
 .previewComponent {
-  height: 10em;
-  width: 55em;
+  height: 20em;
+  width: 100%;
 }
 
 .previewTable {
@@ -82,7 +95,7 @@ body {
   td {
     border: .5px solid black;
   };
-  font-size: 0.5em;
+  font-size: 0.8em;
   width: 100%;
   border: .5px solid black;
   border-collapse: collapse;
@@ -96,10 +109,15 @@ body {
   td {
     border: .5px solid black;
   };
-  font-size: 1em;
+  font-size: 0.8em;
   width: 100%;
   border: .5px solid black;
   border-collapse: collapse;
+}
+
+.jobListScrollComponent {
+  height: 20em;
+  border-bottom: .5px solid black;
 }
 
 .basketButton {
@@ -232,7 +250,7 @@ body {
 }
 
 .navbar img.logo {
-  margin: 0 0.3rem 0.1rem;
+  margin: 0 0.3rem 0.4rem;
   width: 4rem;
 }
 
@@ -250,10 +268,17 @@ body {
     flex-direction: column;
     overflow: hidden;
     padding:10px;
+    width:100vw;
+    display:block;
 }
 
 .MainViewport h1{
   font-size:30px;
+  padding-bottom:0.5em;
+}
+
+.MainViewport h3{
+  font-size:20px;
   padding-bottom:0.5em;
 }
 
@@ -276,6 +301,15 @@ body {
   margin-bottom: 2px;
   display: inline-block;
   position: relative;
+}
+
+.catalogMetadataModal{
+}
+
+.catalogMetadata{
+  font-size:12px;
+  margin-top:20px;
+  background-color:#EEE;
 }
 
 .btn-file {

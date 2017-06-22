@@ -12,7 +12,6 @@ export default class UploadComponent extends Component {
   }
 
   handleFileUpload(event) {
-
     event.preventDefault();
 
     const { backendHost, frontendHost, adagucServicesHost } = config;
@@ -38,7 +37,7 @@ export default class UploadComponent extends Component {
   render () {
     return (
       <div>
-        <div className='alert alert-info'>
+        <div className='alert alert-info col-6'>
           Please upload your file.
         </div>
         <form onSubmit={ (event) => this.handleFileUpload(event) }>

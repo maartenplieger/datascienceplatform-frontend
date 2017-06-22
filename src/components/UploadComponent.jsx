@@ -8,7 +8,6 @@ import FileUploadComponent from './FileUploadComponent';
 
 export default class UploadComponent extends Component {
   componentWillUnmount () {
-    console.log(this.props.actions);
     this.props.dispatch(this.props.actions.clearUploadState());
   }
 
@@ -36,9 +35,6 @@ export default class UploadComponent extends Component {
   };
 
   render () {
-
-    // TODO: Replace is niet correct doorgestuurd!!!!!
-
     return (
       <div className='MainViewport'>
         <FileUploadComponent accessToken={this.props.accessToken}
@@ -50,7 +46,7 @@ export default class UploadComponent extends Component {
           actions={this.props.actions}
           fileName={this.props.fileName}
           fileStructureDescription={this.props.fileStructureDescription}
-          replace={this.replace} />
+          replacer={this.replacer} />
         }
 
         <div className='divider-2' />
@@ -59,7 +55,7 @@ export default class UploadComponent extends Component {
           file={config.adagucServicesHost + '/opendap/' + this.props.accessToken + '/' + this.props.clientId.replace('/','.') +'/' + this.props.fileName}
           tableClassName='previewTable'
           componentClassName='previewComponent'
-          numberOfLinesDisplayed={30}/>
+          numberOfLinesDisplayed={5}/>
         }
 
         <div className='divider-2' />

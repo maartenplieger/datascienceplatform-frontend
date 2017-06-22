@@ -1,40 +1,119 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'reactstrap';
+import { Button, Input, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Row, Col, Progress, Card } from 'reactstrap';
 
-// let wpsProcessOptions = [];
+class RenderProcesses extends Component {
+  renderProcess (process) {
+    // console.log(process);
+    let value = '-';
+    try {
+      value = process.result.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.value;
+    } catch (e) {
+    }
+    return (
+      <Card>
+        <Row>
+          <Col> <div className='text-center'>{process.percentageComplete} </div><Progress value={process.percentageComplete} /></Col>
+          <Col>{process.message}</Col>
+          <Col>{value}</Col>
+        </Row>
+      </Card>
+    );
+  }
 
-// let dataInputs = 'inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101';
-// wpsProcessOptions['wrangleProcess'] = 'service=wps&request=Execute&identifier=wrangleProcess&' +
-//      'version=1.0.0&DataInputs=' + dataInputs + '&storeExecuteResponse=true&status=true&';
+  iterProcesses (runningProcesses) {
+    let result = [];
+    for (var process in runningProcesses) {
+      result.push(Object.assign({}, this.renderProcess(runningProcesses[process]), { key: process }));
+    };
+    return result;
+  }
+  render () {
+    const { runningProcesses } = this.props;
+    return (<span>{this.iterProcesses(runningProcesses)}</span>);
+  }
+};
 
-// wpsProcessOptions['binaryoperatorfornumbers_10sec'] = 'service=wps&request=Execute&identifier=binaryoperatorfornumbers_10sec&version=1.0.0&' +
-//   'DataInputs=inputa=10;inputb=2;operator=divide;&storeExecuteResponse=true&status=true&';
+RenderProcesses.propTypes = {
+  runningProcesses: PropTypes.object.isRequired
+};
 
 export default class WPSWranglerDemo extends Component {
   constructor () {
     super();
     this.wrangleClicked = this.wrangleClicked.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.dropDownSelectItem = this.dropDownSelectItem.bind(this);
+    this.state = {
+      dropdownOpen: false,
+      dropDownValue: 'add',
+      inputa: 10,
+      inputb: 20
+    };
   }
+
+  toggle (e) {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    });
+  }
+
+  dropDownSelectItem (value) {
+    this.setState({
+      dropDownValue: value
+    });
+  };
 
   wrangleClicked (id) {
     const { accessToken, dispatch, actions, nrOfStartedProcesses } = this.props;
-    dispatch(actions.startWPSExecute(accessToken, 'binaryoperatorfornumbers_10sec', 'inputa=10;inputb=2;operator=divide', nrOfStartedProcesses));
+    dispatch(actions.startWPSExecute(accessToken, 'wrangleProcess',
+      'inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101',
+      nrOfStartedProcesses));
+  };
+
+  calculateClicked () {
+    const { accessToken, dispatch, actions, nrOfStartedProcesses } = this.props;
+    dispatch(actions.startWPSExecute(accessToken, 'binaryoperatorfornumbers_10sec',
+      '[inputa=' + this.state.inputa + ';inputb=' + this.state.inputb + ';operator=' + this.state.dropDownValue + ';]', nrOfStartedProcesses));
+  };
+
+  handleChange (name, value) {
+    console.log(name, value);
+    this.setState({
+      [name]: value
+    });
   };
 
   render () {
-    const { accessToken, nrOfStartedProcesses, runningProcesses, nrOfRunningProcesses, nrOfFailedProcesses, nrOfCompletedProcesses } = this.props;
+    const { accessToken, nrOfStartedProcesses, runningProcesses, nrOfFailedProcesses, nrOfCompletedProcesses } = this.props;
     return (
       <div className='MainViewport'>
-        <h1>Wrangler Demo</h1>
+        <h1>WPS Demo</h1>
         <p>{accessToken}</p>
-        <Button id='wrangleButton' onClick={() => { this.wrangleClicked('wrangleProcess'); }}>Wrangle!</Button>
-        <Button id='wrangleButton' onClick={() => { this.wrangleClicked('binaryoperatorfornumbers_10sec'); }}>Calculator</Button>
+        <p><Button id='wrangleButton' onClick={() => { this.wrangleClicked('wrangleProcess'); }}>Wrangle!</Button></p>
+        <Row>
+          <Col xs='2'><Input onChange={(event) => { this.handleChange('inputa', event.target.value); }} value={this.state.inputa} /></Col>
+          <Col xs='2'>
+            <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+              <DropdownToggle caret >
+                { this.state.dropDownValue }
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem onClick={(e) => { this.dropDownSelectItem('add'); }}>add</DropdownItem>
+                <DropdownItem onClick={(e) => { this.dropDownSelectItem('divide'); }}>divide</DropdownItem>
+                <DropdownItem onClick={(e) => { this.dropDownSelectItem('substract'); }}>substract</DropdownItem>
+                <DropdownItem onClick={(e) => { this.dropDownSelectItem('multiply'); }}>multiply</DropdownItem>
+              </DropdownMenu>
+            </ButtonDropdown>
+          </Col>
+          <Col xs='2'><Input onChange={(event) => { this.handleChange('inputb', event.target.value); }} value={this.state.inputb} /></Col>
+          <Col xs='2'><Button color='primary' id='wrangleButton' onClick={() => { this.calculateClicked(); }}>Calculate</Button></Col>
+        </Row>
         <p>nrOfStartedProcesses: {nrOfStartedProcesses}</p>
         <p>nrOfFailedProcesses: {nrOfFailedProcesses}</p>
         <p>nrOfCompletedProcesses: {nrOfCompletedProcesses}</p>
-        <p>runningProcesses: {JSON.stringify(runningProcesses)}</p>
+        <RenderProcesses runningProcesses={runningProcesses} />
       </div>);
   }
 }
@@ -46,5 +125,5 @@ WPSWranglerDemo.propTypes = {
   nrOfStartedProcesses: PropTypes.number,
   nrOfFailedProcesses: PropTypes.number,
   nrOfCompletedProcesses: PropTypes.number,
-  runningProcesses: PropTypes.Object
+  runningProcesses: PropTypes.object.isRequired
 };

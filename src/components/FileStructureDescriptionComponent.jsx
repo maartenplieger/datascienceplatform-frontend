@@ -11,7 +11,7 @@ export default class FileStructureDescriptionComponent extends Component {
     var fileName = this.props.fileName.replace(/\.[^/.]+$/, '_descr.json');
 
     var formData = new FormData();
-    formData.append('files', new Blob([JSON.stringify( this.props.fileStructureDescription,this.props.replacer)], { type:'' }), fileName);
+    formData.append('files', new Blob([JSON.stringify(this.props.fileStructureDescription, this.props.replacer)], { type:'' }), fileName);
 
     fetch(config.adagucServicesHost + '/basket/upload?key=' + this.props.accessToken,
       {
@@ -19,7 +19,7 @@ export default class FileStructureDescriptionComponent extends Component {
         method: 'POST',
         body: formData
       })
-      .then(function(result) {
+      .then(function (result) {
         // TODO: Foutafhandeling
         console.log(result);
         dispatch(actions.setUploadedFileStructureDescription());
@@ -29,7 +29,7 @@ export default class FileStructureDescriptionComponent extends Component {
   render () {
     return (
       <div>
-        <div className='alert alert-info'>
+        <div className='alert alert-info col-6'>
           Please specify the structure of the CSV file.
         </div>
         <div>

@@ -1,7 +1,7 @@
 import IndexRoute from './IndexRoute';
 
 export default (store) => ({
-  path: 'demo',
-  title: 'demo',
+  path: 'wrangler',
+  title: 'wrangler',
   indexRoute: IndexRoute(store)
 });

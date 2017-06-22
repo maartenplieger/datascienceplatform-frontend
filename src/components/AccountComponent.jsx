@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Col, Row, Card } from 'reactstrap';
 import PropTypes from 'prop-types';
-
+import { config } from 'static/config.js';
 export default class WPSWranglerDemo extends Component {
   constructor () {
     super();
@@ -12,6 +12,7 @@ export default class WPSWranglerDemo extends Component {
 
   render () {
     const { accessToken, emailAddress, clientId, domain } = this.props;
+    const { backendHost } = config;
     return (
       <div className='MainViewport'>
         <Row>
@@ -34,7 +35,10 @@ export default class WPSWranglerDemo extends Component {
                 <p>Accesstoken: {accessToken}</p>
               }
               {
-                clientId !== null ? <p>Compute node: {domain}</p> : <p>Your Domain: Not logged in</p>
+                clientId !== null ? <p>Compute node: https://{domain}</p> : <p>Your Domain: Not logged in</p>
+              }
+              {
+                <p>DSP Controller: {backendHost}</p>
               }
             </Card>
           </Col>
