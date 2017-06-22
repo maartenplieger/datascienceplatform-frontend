@@ -3,14 +3,48 @@ import PropTypes from 'prop-types';
 import { config } from 'static/config.js';
 import { Control, Form } from 'react-redux-form';
 import { withRouter } from 'react-router';
-import { Button } from 'reactstrap';
+import { Button, Input, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Row, Col, Progress, Card } from 'reactstrap';
+
+class RenderProcesses extends Component {
+  renderProcess (process) {
+    // console.log(process);
+    let value = '-';
+    try {
+      value = process.result.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.value;
+    } catch (e) {
+    }
+    return (
+      <Card>
+        <Row>
+          <Col> <div className='text-center'>{process.percentageComplete} </div><Progress value={process.percentageComplete} /></Col>
+          <Col>{process.message}</Col>
+          <Col>{value}</Col>
+        </Row>
+      </Card>
+    );
+  }
+
+  iterProcesses (runningProcesses) {
+    let result = [];
+    for (var process in runningProcesses) {
+      result.push(Object.assign({}, this.renderProcess(runningProcesses[process]), { key: process }));
+    };
+    return result;
+  }
+  render () {
+    const { runningProcesses } = this.props;
+    return (<span>{this.iterProcesses(runningProcesses)}</span>);
+  }
+};
 
 class FileColumnDescriptionComponent extends Component {
   handleSubmit () {
     var completeFileDescription = JSON.stringify(Object.assign({}, this.props.fileColumnDescription, this.props.fileStructureDescription), this.props.replacer);
     var originalFileName = this.props.fileName;
     var fileName = originalFileName.replace(/\.[^/.]+$/, '_descr.json');
-    const { accessToken, dispatch, actions, nrOfStartedProcesses, router } = this.props;
+    const { accessToken, dispatch, actions, nrOfStartedProcesses, router, domain } = this.props;
+
+    var scanProcess = nrOfStartedProcesses + 'scanProcess';
 
     var formData = new FormData();
     formData.append('files', new Blob([completeFileDescription], { type:'' }), fileName);
@@ -25,11 +59,11 @@ class FileColumnDescriptionComponent extends Component {
         console.log(result.body);
 
         // TODO: Foutafhandeling
-        dispatch(actions.startWPSExecute(accessToken, 'scanCSVProcess',
-          'inputCSVPath=' + originalFileName + ';metaCSVPath=' + fileName + ';',
-          nrOfStartedProcesses));
+        dispatch(actions.startWPSExecute(domain, accessToken, 'scanCSVProcess',
+          '[inputCSVPath=' + originalFileName + ';descCSVPath=' + fileName + ';]',
+          scanProcess));
 
-        router.push('/basket');
+        // router.push('/joblist');
       });
   }
 
@@ -169,9 +203,11 @@ class FileColumnDescriptionComponent extends Component {
             <div className='divider-2' />
 
             <Button type='submit' color='primary'>
-              Submit description
+              Scan file
             </Button>
           </Form>
+
+          <RenderProcesses runningProcesses={ this.props.runningProcesses } />
         </div>
       </div>
     );
@@ -184,7 +220,10 @@ FileColumnDescriptionComponent.propTypes = {
   accessToken: PropTypes.string,
   fileStructureDescription: PropTypes.object,
   replacer: PropTypes.func,
-  router: PropTypes.object
+  router: PropTypes.object,
+  actions: PropTypes.object,
+  dispatch: PropTypes.func,
+  runningProcesses: PropTypes.object
 };
 
 export default withRouter(FileColumnDescriptionComponent);
