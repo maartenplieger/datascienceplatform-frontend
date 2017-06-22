@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Treebeard } from 'react-treebeard';
+import { Treebeard, decorators } from 'react-treebeard';
 import PropTypes from 'prop-types';
 import treeBeardStyling from '../../styles/stylingBasket/stylingBasket';
 import { Button } from 'reactstrap';
 import ScrollArea from 'react-scrollbar';
 import PreviewComponent from '../PreviewComponent';
 import { withRouter } from 'react-router';
+import Moment from 'react-moment';
 
 class BasketTreeComponent extends Component {
   constructor (props) {
@@ -108,6 +109,33 @@ class BasketTreeComponent extends Component {
   }
 
   render () {
+    decorators.Header = (props) => {
+      if (!props.node.type === 'NODE') return;
+      const style = props.style;
+      if (props.node.type === 'LEAF') {
+        return (
+          <div style={{ verticalAlign: 'top', color: '#000000' }}>
+            <div style={style.title}>
+              <div>
+                <span>{props.node.name}</span>
+                <Moment format='MMMM Do YYYY, HH:mm:ss' style={{ float: 'right' }}>{props.node.date}</Moment>
+              </div>
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <div style={style.base}>
+            <div style={style.title}>
+              <div>
+                {props.node.name}
+              </div>
+            </div>
+          </div>
+        );
+      }
+    };
+
     return (
       <div>
         <ScrollArea speed={1} horizontal={false} contentClassName='content' className='scrollAreaBasket' >
@@ -116,6 +144,7 @@ class BasketTreeComponent extends Component {
             data={this.props.data}
             onToggle={this.onToggle}
             style={treeBeardStyling}
+            decorators={decorators}
           />
         </ScrollArea>
         <hr /> {/* Dividing line, for dividing the tree and the buttons. */}
