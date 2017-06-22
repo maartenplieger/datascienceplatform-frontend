@@ -90,7 +90,7 @@ export default class JobListComponent extends Component {
       { key: 'creationtime',
         label: 'Status date',
         cell: function (item, columnKey) {
-          return <Moment format='MMMM Do YYYY, h:mm:ss' >{item.creationtime}</Moment>;
+          return <Moment format='MMMM Do YYYY, HH:mm:ss' >{item.creationtime}</Moment>;
         } },
       { key: 'percentage', label: '%' },
       { key: 'statuslocation',

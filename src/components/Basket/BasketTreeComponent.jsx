@@ -118,7 +118,7 @@ class BasketTreeComponent extends Component {
             <div style={style.title}>
               <div>
                 <span>{props.node.name}</span>
-                <Moment format='MMMM Do YYYY, h:mm:ss' style={{ float: 'right' }}>{props.node.date}</Moment>
+                <Moment format='MMMM Do YYYY, HH:mm:ss' style={{ float: 'right' }}>{props.node.date}</Moment>
               </div>
             </div>
           </div>
