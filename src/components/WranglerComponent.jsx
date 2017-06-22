@@ -46,7 +46,7 @@ const defaultWranglingSettings = {
   metaCSVPath : 'ExportOngevalsData_descr.json',
   dataURL : 'http://opendap.knmi.nl/knmi/thredds/dodsC/DATALAB/hackathon/radarFullWholeData.nc',
   dataVariables : 'image1_image_data',
-  limit : '10'
+  limit : '150'
 };
 
 class WranglerComponent extends Component {
@@ -121,6 +121,11 @@ class WranglerComponent extends Component {
       }
     };
     newC[id] = true;
+    let dataVariables = '';
+    for (let j = 0; j < catalog.parameterList.length; j++) {
+      if (j > 0) dataVariables += ',';
+      dataVariables += catalog.parameterList[j].varName;
+    }
     this.setState({
       checkBoxSettings: newC,
       wpsWranglerSettings:  Object.assign(
@@ -128,14 +133,13 @@ class WranglerComponent extends Component {
       this.state.wpsWranglerSettings,
         {
           dataURL: catalog.datalocation,
-          dataVariables: catalog.parameterList[0].varName
+          dataVariables: dataVariables
         }
       )
     });
   };
 
   renderParam (title, id) {
-    console.log(this.state.checkBoxSettings[id]);
     return (<Row style={{ background:'#EEE', margin:'10px' }}>
       <Col style={{ width:'600px', padding: '7px 0 0 15px' }} >
         <Label check >
@@ -151,14 +155,14 @@ class WranglerComponent extends Component {
   startWrangling () {
     const { dispatch, nrOfStartedProcesses, actions, domain, accessToken } = this.props;
 
-    let wranglingSettings = Object.assign({}, this.state.defaultWranglingSettings);
+    let wranglingSettings = Object.assign({}, this.state.wpsWranglerSettings);
 
     let dataInputs = '';
     for (var key in wranglingSettings) {
       var value = wranglingSettings[key];
       dataInputs += key + '=' + encodeURIComponent(value) + ';';
     }
-
+    console.log(dataInputs);
     dispatch(actions.startWPSExecute(domain, accessToken, 'wrangleProcess',
       dataInputs,
       nrOfStartedProcesses
