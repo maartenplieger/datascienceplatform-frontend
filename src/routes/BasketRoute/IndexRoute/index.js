@@ -3,15 +3,17 @@ import TitleComponent from '../../../components/TitleComponent';
 import BasketContainer from '../../../containers/BasketContainer';
 import basketActions from '../../../actions/basketActions';
 import userActions from '../../../actions/userActions';
+import wpsActions from '../../../actions/WPSActions';
 
 const mapStateToBasketProps = (state) => {
-  return { ...state.basketState, ...state.userState };
+  return { ...state.basketState, ...state.userState, ...state.WPSState };
 };
 
 const mapDispatchToBasketProps = function (dispatch) {
   return ({
     dispatch: dispatch,
-    actions: basketActions
+    actions: basketActions,
+    wpsActions: wpsActions
   });
 };
 

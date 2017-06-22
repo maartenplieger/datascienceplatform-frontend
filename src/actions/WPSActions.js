@@ -1,6 +1,6 @@
 // This is where action creators are put
 import { doWPSExecuteCall } from '../utils/WPSRunner.js';
-import { START_WPS_EXECUTE_START, START_WPS_EXECUTE_FAILED, START_WPS_EXECUTE_END, WPS_STATUS_UPDATE, WPS_COMPLETED } from '../constants/WPSLabels';
+import { START_WPS_EXECUTE_START, START_WPS_EXECUTE_FAILED, START_WPS_EXECUTE_END, WPS_STATUS_UPDATE, WPS_COMPLETED, SET_CSV_FILE_TO_WRANGLE } from '../constants/WPSLabels';
 
 const startWPSExecute = (domain, accessToken, identifier, dataInputs, nrOfStartedProcesses) => {
   return (dispatch) => {
@@ -30,8 +30,18 @@ const startWPSExecute = (domain, accessToken, identifier, dataInputs, nrOfStarte
   };
 };
 
+const setCSVFileToWrangle = (payload) => {
+  return {
+    type: SET_CSV_FILE_TO_WRANGLE,
+    payload: {
+      fileName: payload.fileName
+    }
+  };
+};
+
 const actions = {
-  startWPSExecute
+  startWPSExecute,
+  setCSVFileToWrangle
 };
 
 export default actions;

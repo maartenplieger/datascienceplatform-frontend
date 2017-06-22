@@ -1,4 +1,4 @@
-import { START_WPS_EXECUTE_START, START_WPS_EXECUTE_END, START_WPS_EXECUTE_FAILED, WPS_STATUS_UPDATE, WPS_COMPLETED } from '../constants/WPSLabels';
+import { START_WPS_EXECUTE_START, START_WPS_EXECUTE_END, START_WPS_EXECUTE_FAILED, WPS_STATUS_UPDATE, WPS_COMPLETED, SET_CSV_FILE_TO_WRANGLE } from '../constants/WPSLabels';
 
 const handleWPSExecute = (state, payload) => {
   console.log('reducer handleWPSExecute');
@@ -40,12 +40,20 @@ const handleWPSComplete = (state, payload) => {
   });
 };
 
+/**
+ * Deleting an item from the basket.
+ **/
+const setCSVFileToWrangle = (state, payload) => {
+  return Object.assign({}, state, { selectedCSVFileForWrangling: payload.fileName });
+};
+
 const ACTION_HANDLERS = {
   [START_WPS_EXECUTE_START] : (state, action) => handleWPSExecute(state, action.payload),
   [START_WPS_EXECUTE_FAILED] : (state, action) => handleWPSFailed(state, action.payload),
   [START_WPS_EXECUTE_END] : (state, action) => handleWPSEnd(state, action.payload),
   [WPS_STATUS_UPDATE] : (state, action) => handleWPSStatusUpdate(state, action.payload),
-  [WPS_COMPLETED] : (state, action) => handleWPSComplete(state, action.payload)
+  [WPS_COMPLETED] : (state, action) => handleWPSComplete(state, action.payload),
+  [SET_CSV_FILE_TO_WRANGLE] : (state, action) => setCSVFileToWrangle(state, action.payload)
 };
 
 // ------------------------------------
@@ -55,7 +63,8 @@ const initialState = {
   nrOfStartedProcesses: 0,
   nrOfFailedProcesses: 0,
   nrOfCompletedProcesses: 0,
-  runningProcesses: {}
+  runningProcesses: {},
+  selectedCSVFileForWrangling: null
 };
 
 export default function WPSReducer (state = initialState, action) {

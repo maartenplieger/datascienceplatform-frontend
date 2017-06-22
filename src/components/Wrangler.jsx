@@ -5,13 +5,13 @@ import WranglerComponent from './WranglerComponent';
 
 export default class Wrangler extends Component {
   render () {
-    const { dispatch, actions, accessToken, clientId, domain } = this.props;
+    const { dispatch, actions, accessToken, clientId, domain, selectedCSVFileForWrangling } = this.props;
     return (
       <div className='MainViewport'>
         <h1>Wrangle data</h1>
         <WranglerComponent
           // inputCSVPath='ExportOngevalsData100lines.csv'
-          inputCSVPath='globalstats.csv'
+          inputCSVPath={selectedCSVFileForWrangling}
           jobDescPath='jobDesc.json'
           metaCSVPath='metaDataCsv.json'
           dispatch={dispatch}
@@ -23,6 +23,7 @@ export default class Wrangler extends Component {
   }
 }
 Wrangler.propTypes = {
+  selectedCSVFileForWrangling: PropTypes.string,
   accessToken: PropTypes.string,
   clientId: PropTypes.string,
   domain: PropTypes.string,

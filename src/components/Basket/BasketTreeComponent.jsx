@@ -95,6 +95,18 @@ class BasketTreeComponent extends Component {
     return this.state.cursor.type === 'NODE';
   }
 
+  goToWrangler () {
+    if (!this.state.cursor) return;
+
+    const { dispatch, wpsActions } = this.props;
+
+    let fullId = this.state.cursor.id;
+    const idWithoutGoogleId = fullId.substring(fullId.indexOf('/') + 1);
+
+    dispatch(wpsActions.setCSVFileToWrangle({ fileName: idWithoutGoogleId }));
+    this.props.router.push('/wrangler');
+  }
+
   render () {
     return (
       <div>
@@ -110,7 +122,8 @@ class BasketTreeComponent extends Component {
         <Button className='basketButton' onClick={() => this.props.router.push('/upload')}>Upload</Button>
         <Button className='basketButton' onClick={() => this.previewFile()}
           disabled={this.isPreviewButtonDisabled()}>Preview</Button>
-        <Button className='basketButton' disabled={this.isWrangleButtonDisabled()}>Wrangle</Button>
+        <Button className='basketButton' onClick={() => this.goToWrangler()}
+          disabled={this.isWrangleButtonDisabled()}>Wrangle</Button>
         <Button className='basketButton' onClick={() => this.downloadBasketItem()}
           disabled={this.isDownloadButtonDisabled()}>Download</Button>
         <Button className='basketButton' onClick={() => this.deleteBasketItem()}>Delete</Button>
@@ -130,6 +143,7 @@ class BasketTreeComponent extends Component {
 }
 
 BasketTreeComponent.propTypes = {
+  wpsActions: PropTypes.object.isRequired,
   data: PropTypes.object,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
