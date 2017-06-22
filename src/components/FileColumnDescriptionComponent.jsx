@@ -8,7 +8,9 @@ import { Button } from 'reactstrap';
 class FileColumnDescriptionComponent extends Component {
   handleSubmit () {
     var completeFileDescription = JSON.stringify(Object.assign({}, this.props.fileColumnDescription, this.props.fileStructureDescription), this.props.replacer);
-    var fileName = this.props.fileName.replace(/\.[^/.]+$/, '_descr.json');
+    var originalFileName = this.props.fileName;
+    var fileName = originalFileName.replace(/\.[^/.]+$/, '_descr.json');
+    const { accessToken, dispatch, actions, nrOfStartedProcesses, router } = this.props;
 
     var formData = new FormData();
     formData.append('files', new Blob([completeFileDescription], { type:'' }), fileName);
@@ -23,8 +25,11 @@ class FileColumnDescriptionComponent extends Component {
         console.log(result.body);
 
         // TODO: Foutafhandeling
+        dispatch(actions.startWPSExecute(accessToken, 'scanCSVProcess',
+          'inputCSVPath=' + originalFileName + ';metaCSVPath=' + fileName + ';',
+          nrOfStartedProcesses));
 
-        // TODO: Scanner aanroepen???
+        router.push('/basket');
       });
   }
 
@@ -178,7 +183,8 @@ FileColumnDescriptionComponent.propTypes = {
   fileName: PropTypes.string,
   accessToken: PropTypes.string,
   fileStructureDescription: PropTypes.object,
-  replacer: PropTypes.func
+  replacer: PropTypes.func,
+  router: PropTypes.object
 };
 
 export default withRouter(FileColumnDescriptionComponent);
