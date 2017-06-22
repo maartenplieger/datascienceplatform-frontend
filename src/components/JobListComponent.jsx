@@ -4,6 +4,7 @@ import { config } from '../static/config.js';
 import JsonTable from 'react-json-table';
 import ScrollArea from 'react-scrollbar';
 import { Button } from 'reactstrap';
+import Moment from 'react-moment';
 
 export default class JobListComponent extends Component {
   constructor (props) {
@@ -85,7 +86,11 @@ export default class JobListComponent extends Component {
     /* Columns for the JsonTable. */
     const columns = [
       { key: 'id', label: 'Job ID' },
-      { key: 'creationtime', label: 'Status date' },
+      { key: 'creationtime',
+        label: 'Status date',
+        cell: function (item, columnKey) {
+          return <Moment format='MMMM Do YYYY, h:mm:ss' >{item.creationtime}</Moment>;
+        } },
       { key: 'percentage', label: '%' },
       { key: 'statuslocation',
         label: 'Location URL',
