@@ -66,15 +66,15 @@ export default class WPSWranglerDemo extends Component {
   };
 
   wrangleClicked (id) {
-    const { accessToken, dispatch, actions, nrOfStartedProcesses } = this.props;
-    dispatch(actions.startWPSExecute(accessToken, 'wrangleProcess',
+    const { accessToken, dispatch, actions, nrOfStartedProcesses, domain } = this.props;
+    dispatch(actions.startWPSExecute(domain, accessToken, 'wrangleProcess',
       'inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101',
       nrOfStartedProcesses));
   };
 
   calculateClicked () {
-    const { accessToken, dispatch, actions, nrOfStartedProcesses } = this.props;
-    dispatch(actions.startWPSExecute(accessToken, 'binaryoperatorfornumbers_10sec',
+    const { accessToken, dispatch, actions, nrOfStartedProcesses, domain } = this.props;
+    dispatch(actions.startWPSExecute(domain, accessToken, 'binaryoperatorfornumbers_10sec',
       '[inputa=' + this.state.inputa + ';inputb=' + this.state.inputb + ';operator=' + this.state.dropDownValue + ';]', nrOfStartedProcesses));
   };
 
@@ -120,6 +120,7 @@ export default class WPSWranglerDemo extends Component {
 
 WPSWranglerDemo.propTypes = {
   accessToken: PropTypes.string,
+  domain: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   nrOfStartedProcesses: PropTypes.number,
