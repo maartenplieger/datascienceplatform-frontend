@@ -13,14 +13,16 @@ class WranglerComponent extends Component {
     this.metaDataClicked = this.metaDataClicked.bind(this);
     this.toggle = this.toggle.bind(this);
     this.startWrangling = this.startWrangling.bind(this);
+    this.loadCatalog = this.loadCatalog.bind(this);
 
     this.state = {
       modal: false,
       inputCSVPath:null,
       catalog:null,
-      selectedCatalog: null,
-      domain: null
+      selectedCatalog: null
     };
+
+    this.domainLoaded = false;
   }
 
   wrangleClicked (id) {
@@ -63,7 +65,7 @@ class WranglerComponent extends Component {
     let html = [];
     for (let j = 0; j < catalogs.catalog.length; j++) {
       let catalog = catalogs.catalog[j];
-      html.push(this.renderParam(catalog.title, catalog.name));
+      html.push(Object.assign({}, this.renderParam(catalog.title, catalog.name), { key: j }));
     }
 
     return html;
@@ -91,10 +93,12 @@ class WranglerComponent extends Component {
     if (!domain) {
       return;
     }
-    if (domain && !this.state.domain) {
-      this.setState({
-        domain: domain
-      });
+    this.loadCatalog(domain);
+  }
+
+  loadCatalog (domain) {
+    if (domain && this.domainLoaded === false) {
+      this.domainLoaded = true;
       let url = 'https://' + domain + '/catalog/list';
       console.log('Fetching catalog url', url);
       fetch(url,
@@ -123,6 +127,7 @@ class WranglerComponent extends Component {
   };
 
   render () {
+    this.loadCatalog(this.props.domain);
     const { accessToken, clientId, domain, jobDescPath, metaCSVPath } = this.props;
     if (!clientId || !this.state.inputCSVPath || !this.state.catalog) return (<div>Not signed in</div>);
     let file = 'https://' + domain + '/opendap/' + accessToken + '/' + clientId.replace('/', '.') + '/' + this.state.inputCSVPath;

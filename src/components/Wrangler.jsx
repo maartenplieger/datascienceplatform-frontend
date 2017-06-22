@@ -6,7 +6,6 @@ import WranglerComponent from './WranglerComponent';
 export default class Wrangler extends Component {
   render () {
     const { dispatch, actions, accessToken, clientId, domain } = this.props;
-    console.log(domain);
     return (
       <div className='MainViewport'>
         <h1>Wrangle data</h1>
