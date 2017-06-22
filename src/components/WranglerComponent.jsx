@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Row, Col, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Row, Card, Col, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Icon from 'react-fa';
 import PreviewComponent from './PreviewComponent';
 import { withRouter } from 'react-router';
@@ -133,11 +133,12 @@ class WranglerComponent extends Component {
     let file = 'https://' + domain + '/opendap/' + accessToken + '/' + clientId.replace('/', '.') + '/' + this.state.inputCSVPath;
     return (
       <div>
-        <Row>
-          <Col>{ clientId !== null ? <p>{clientId}</p> : <p>Your clientID: Not logged in</p> }</Col>
-          <Col>{domain}</Col>
-          <Col>{accessToken}</Col>
-        </Row>
+        { // <Row>
+        //   <Col>{ clientId !== null ? <p>{clientId}</p> : <p>Your clientID: Not logged in</p> }</Col>
+        //   <Col>{domain}</Col>
+        //   <Col>{accessToken}</Col>
+        // </Row>
+        }
         <h3>Provided inputs from upload:</h3>
         <Row style={{ background:'#EEE', margin:'10px' }}>
           <Col xs='2'>
@@ -152,7 +153,7 @@ class WranglerComponent extends Component {
             <Label>jobDescPath</Label>
           </Col>
           <Col>
-             <Label>{jobDescPath}</Label>
+            <Label>{jobDescPath}</Label>
           </Col>
         </Row>
         <Row style={{ background:'#EEE', margin:'10px' }}>
@@ -168,7 +169,7 @@ class WranglerComponent extends Component {
           this.renderCatalogs()
         }
 
-        <p>First 10 rows of data</p>
+        <h3>CSV Preview (10 rows)</h3>
         <PreviewComponent
           file={file}
           numberOfLinesDisplayed={10}
@@ -176,12 +177,19 @@ class WranglerComponent extends Component {
           componentClassName='previewComponent'
         />
         <Button color='primary' style={{ float:'right' }} onClick={this.startWrangling}>Start wrangling</Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <Modal className='catalogMetadataModal' isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Metadata for [{this.state.title}]</ModalHeader>
           <ModalBody>
             <p>Choosed ID = {this.state.id}</p>
-            <Row><Col>Name:</Col><Col> { this.state.selectedCatalog ? this.state.selectedCatalog.name : null }</Col></Row>
+            <Row><Col>Title:</Col><Col> { this.state.selectedCatalog ? this.state.selectedCatalog.title : null }</Col></Row>
             <Row><Col>Datatype:</Col><Col> { this.state.selectedCatalog ? this.state.selectedCatalog.datatype : null }</Col></Row>
+            <span>
+              <hr />
+              <b>Catalog JSON:</b>
+              <Card className='catalogMetadata'>
+                {<pre>{this.state.selectedCatalog ? JSON.stringify(this.state.selectedCatalog, null, 2) : null }</pre>}
+              </Card>
+            </span>
           </ModalBody>
           <ModalFooter>
             <Button color='secondary' onClick={this.toggle}>Close</Button>

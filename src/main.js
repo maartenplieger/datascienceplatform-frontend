@@ -14,7 +14,10 @@ const initialState = {
     domain: null
   },
   WPSState: {
-    statusLocation: null
+    nrOfStartedProcesses: 0,
+    nrOfFailedProcesses: 0,
+    nrOfCompletedProcesses: 0,
+    runningProcesses: {}
   },
   basketState: {
     basket: null,

@@ -49,22 +49,22 @@ export default class TitleComponent extends Component {
         <Navbar color='faded' className='navbar-static-top'>
           <Nav>
             <NavItem>
-              <NavLink href='#/' active={pathname === '/'} >Home</NavLink>
+              <NavLink href='#/' active={pathname === '/'} ><Icon name='home' /> Home</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href='#/demo' active={pathname === '/demo'}>Demo</NavLink>
+              <NavLink href='#/demo' active={pathname === '/demo'}>WPS Demo</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href='#/wrangler' active={pathname === '/wrangler'}>Wrangler</NavLink>
+              <NavLink href='#/wrangler' active={pathname === '/wrangler'}><Icon name='gears' /> Wrangler</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href='#/basket' active={pathname === '/basket'}>Basket</NavLink>
+              <NavLink href='#/basket' active={pathname === '/basket'}><Icon name='shopping-basket' /> Basket</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href='#/joblist' active={pathname === '/joblist'}>Joblist</NavLink>
+              <NavLink href='#/joblist' active={pathname === '/joblist'}><Icon name='list' /> Joblist</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href='#/account' active={pathname === '/account'}>Account</NavLink>
+              <NavLink href='#/account' active={pathname === '/account'}><Icon name='user-o' /> Account</NavLink>
             </NavItem>
           </Nav>
         </Navbar>

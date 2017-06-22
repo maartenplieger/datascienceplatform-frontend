@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { config } from 'static/config.js';
 import { Control, Form } from 'react-redux-form';
 import { withRouter } from 'react-router';
+import { Button } from 'reactstrap';
 
 class FileColumnDescriptionComponent extends Component {
   handleSubmit () {
@@ -30,7 +31,7 @@ class FileColumnDescriptionComponent extends Component {
   render () {
     return (
       <div>
-        <div className='alert alert-info'>
+        <div className='alert alert-info col-6'>
           Please specify the CSV columns with location and time information and their formats.
         </div>
         <div>
@@ -162,9 +163,9 @@ class FileColumnDescriptionComponent extends Component {
 
             <div className='divider-2' />
 
-            <button type='submit' className='btn btn-primary'>
+            <Button type='submit' color='primary'>
               Submit description
-            </button>
+            </Button>
           </Form>
         </div>
       </div>

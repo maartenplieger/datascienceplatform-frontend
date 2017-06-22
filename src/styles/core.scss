@@ -24,6 +24,19 @@ html {
   box-sizing: border-box;
 }
 
+
+.container .row {
+  margin-bottom: 1rem;
+}
+
+.container .row > [class^="col-"] {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  background-color: #E5EDF5;
+  border: 1px solid #C9C1D5;
+  color: #5F5F5F;
+}
+
 html,
 body {
   margin: 0;
@@ -76,7 +89,6 @@ body {
 .previewComponent {
   height: 20em;
   width: 100%;
-  border-bottom: .5px solid black;
 }
 
 .previewTable {
@@ -246,7 +258,7 @@ body {
 }
 
 .navbar img.logo {
-  margin: 0 0.3rem 0.1rem;
+  margin: 0 0.3rem 0.4rem;
   width: 4rem;
 }
 
@@ -264,6 +276,8 @@ body {
     flex-direction: column;
     overflow: hidden;
     padding:10px;
+    width:100vw;
+    display:block;
 }
 
 .MainViewport h1{
@@ -295,4 +309,38 @@ body {
   margin-bottom: 2px;
   display: inline-block;
   position: relative;
+}
+
+.catalogMetadataModal{
+}
+
+.catalogMetadata{
+  font-size:12px;
+  margin-top:20px;
+  background-color:#EEE;
+}
+
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 90%;
+  min-height: 90%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+
+.btn-input-text {
+  margin-bottom: 5px;
 }
