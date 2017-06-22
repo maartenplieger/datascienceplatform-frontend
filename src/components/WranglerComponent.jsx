@@ -176,15 +176,19 @@ class WranglerComponent extends Component {
           componentClassName='previewComponent'
         />
         <Button color='primary' style={{ float:'right' }} onClick={this.startWrangling}>Start wrangling</Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <Modal className='catalogMetadataModal' isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Metadata for [{this.state.title}]</ModalHeader>
           <ModalBody>
             <p>Choosed ID = {this.state.id}</p>
             <Row><Col>Name:</Col><Col> { this.state.selectedCatalog ? this.state.selectedCatalog.name : null }</Col></Row>
             <Row><Col>Datatype:</Col><Col> { this.state.selectedCatalog ? this.state.selectedCatalog.datatype : null }</Col></Row>
-            <Card>
-              {<pre>{JSON.stringify(this.state.selectedCatalog, null, 2) }</pre>}
-            </Card>
+            <span>
+              <hr />
+              <b>Catalog JSON:</b>
+              <Card className='catalogMetadata'>
+                {<pre>{JSON.stringify(this.state.selectedCatalog, null, 2) }</pre>}
+              </Card>
+            </span>
           </ModalBody>
           <ModalFooter>
             <Button color='secondary' onClick={this.toggle}>Close</Button>
