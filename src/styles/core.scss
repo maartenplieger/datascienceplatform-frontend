@@ -75,11 +75,15 @@ body {
 
 .scrollAreaBasket {
   height: 12em;
-  width: 37.5em;
+  width: 60em;
 }
 
 .scrollAreaPageWidth {
   overflow: auto
+}
+
+.selectedRowJobList {
+  background-color: #d9edf7;
 }
 
 .previewComponent {
@@ -105,9 +109,14 @@ body {
   th {
     border: .5px solid black;
     background-color: #d9edf7;
+    border: .5px solid black;
+    padding: .5em;
+    text-align:center;
   };
   td {
     border: .5px solid black;
+    padding: .5em;
+    text-align:center;
   };
   font-size: 0.8em;
   width: 100%;
@@ -117,7 +126,6 @@ body {
 
 .jobListScrollComponent {
   height: 20em;
-  border-bottom: .5px solid black;
 }
 
 .basketButton {

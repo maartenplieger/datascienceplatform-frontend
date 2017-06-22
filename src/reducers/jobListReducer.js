@@ -4,6 +4,7 @@ const updateJobListItems = (state, payload) => {
   if (JSON.stringify(state.jobs) !== JSON.stringify(payload.jsonResponse.jobs)) {
     return Object.assign({}, state, { jobs: payload.jsonResponse.jobs });
   }
+  return Object.assign({}, state);
 };
 
 const ACTION_HANDLERS = {

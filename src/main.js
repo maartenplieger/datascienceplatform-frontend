@@ -17,7 +17,8 @@ const initialState = {
     nrOfStartedProcesses: 0,
     nrOfFailedProcesses: 0,
     nrOfCompletedProcesses: 0,
-    runningProcesses: {}
+    runningProcesses: {},
+    selectedCSVFileForWrangling: null
   },
   basketState: {
     basket: null,

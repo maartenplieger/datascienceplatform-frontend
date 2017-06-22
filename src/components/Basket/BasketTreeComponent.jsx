@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Treebeard } from 'react-treebeard';
+import { Treebeard, decorators } from 'react-treebeard';
 import PropTypes from 'prop-types';
 import treeBeardStyling from '../../styles/stylingBasket/stylingBasket';
 import { Button } from 'reactstrap';
 import ScrollArea from 'react-scrollbar';
 import PreviewComponent from '../PreviewComponent';
 import { withRouter } from 'react-router';
+import Moment from 'react-moment';
 
 class BasketTreeComponent extends Component {
   constructor (props) {
@@ -95,7 +96,46 @@ class BasketTreeComponent extends Component {
     return this.state.cursor.type === 'NODE';
   }
 
+  goToWrangler () {
+    if (!this.state.cursor) return;
+
+    const { dispatch, wpsActions } = this.props;
+
+    let fullId = this.state.cursor.id;
+    const idWithoutGoogleId = fullId.substring(fullId.indexOf('/') + 1);
+
+    dispatch(wpsActions.setCSVFileToWrangle({ fileName: idWithoutGoogleId }));
+    this.props.router.push('/wrangler');
+  }
+
   render () {
+    decorators.Header = (props) => {
+      if (!props.node.type === 'NODE') return;
+      const style = props.style;
+      if (props.node.type === 'LEAF') {
+        return (
+          <div style={{ verticalAlign: 'top', color: '#000000' }}>
+            <div style={style.title}>
+              <div>
+                <span>{props.node.name}</span>
+                <Moment format='MMMM Do YYYY, HH:mm:ss' style={{ float: 'right' }}>{props.node.date}</Moment>
+              </div>
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <div style={style.base}>
+            <div style={style.title}>
+              <div>
+                {props.node.name}
+              </div>
+            </div>
+          </div>
+        );
+      }
+    };
+
     return (
       <div>
         <ScrollArea speed={1} horizontal={false} contentClassName='content' className='scrollAreaBasket' >
@@ -104,13 +144,15 @@ class BasketTreeComponent extends Component {
             data={this.props.data}
             onToggle={this.onToggle}
             style={treeBeardStyling}
+            decorators={decorators}
           />
         </ScrollArea>
         <hr /> {/* Dividing line, for dividing the tree and the buttons. */}
         <Button className='basketButton' onClick={() => this.props.router.push('/upload')}>Upload</Button>
         <Button className='basketButton' onClick={() => this.previewFile()}
           disabled={this.isPreviewButtonDisabled()}>Preview</Button>
-        <Button className='basketButton' disabled={this.isWrangleButtonDisabled()}>Wrangle</Button>
+        <Button className='basketButton' onClick={() => this.goToWrangler()}
+          disabled={this.isWrangleButtonDisabled()}>Wrangle</Button>
         <Button className='basketButton' onClick={() => this.downloadBasketItem()}
           disabled={this.isDownloadButtonDisabled()}>Download</Button>
         <Button className='basketButton' onClick={() => this.deleteBasketItem()}>Delete</Button>
@@ -130,6 +172,7 @@ class BasketTreeComponent extends Component {
 }
 
 BasketTreeComponent.propTypes = {
+  wpsActions: PropTypes.object.isRequired,
   data: PropTypes.object,
   dispatch: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,

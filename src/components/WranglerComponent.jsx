@@ -129,7 +129,7 @@ class WranglerComponent extends Component {
   render () {
     this.loadCatalog(this.props.domain);
     const { accessToken, clientId, domain, jobDescPath, metaCSVPath } = this.props;
-    if (!clientId || !this.state.inputCSVPath || !this.state.catalog) return (<div>Not signed in</div>);
+    if (!clientId || !this.state.catalog) return (<div>Not signed in</div>);
     let file = 'https://' + domain + '/opendap/' + accessToken + '/' + clientId.replace('/', '.') + '/' + this.state.inputCSVPath;
     return (
       <div>
