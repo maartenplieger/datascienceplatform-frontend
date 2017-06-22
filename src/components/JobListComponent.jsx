@@ -86,6 +86,7 @@ export default class JobListComponent extends Component {
     /* Columns for the JsonTable. */
     const columns = [
       { key: 'id', label: 'Job ID' },
+      { key: 'processid', label: 'Process' },
       { key: 'creationtime',
         label: 'Status date',
         cell: function (item, columnKey) {
