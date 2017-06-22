@@ -67,8 +67,15 @@ export default class WPSWranglerDemo extends Component {
 
   wrangleClicked (id) {
     const { accessToken, dispatch, actions, nrOfStartedProcesses, domain } = this.props;
+
+    let dataInputs = 'inputCSVPath=ExportOngevalsData.csv;' +
+      'metaCSVPath=metaDataCsv.json;' +
+      'dataURL=http%3A%2F%2Fopendap.knmi.nl%2Fknmi%2Fthredds%2FdodsC%2FDATALAB%2Fhackathon%2FradarFullWholeData.nc;' +
+      'dataVariables=precipitation_amount;' +
+      'limit=10';
+
     dispatch(actions.startWPSExecute(domain, accessToken, 'wrangleProcess',
-      'inputCSVPath=ExportOngevalsData100lines.csv;metaCSVPath=metaDataCsv.json;jobDescPath=jobDesc.json;limit=101',
+      dataInputs,
       nrOfStartedProcesses));
   };
 
