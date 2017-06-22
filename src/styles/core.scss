@@ -70,8 +70,9 @@ body {
 }
 
 .previewComponent {
-  height: 10em;
-  width: 55em;
+  height: 20em;
+  width: 100%;
+  border-bottom: .5px solid black;
 }
 
 .previewTable {
@@ -82,7 +83,7 @@ body {
   td {
     border: .5px solid black;
   };
-  font-size: 0.5em;
+  font-size: 0.8em;
   width: 100%;
   border: .5px solid black;
   border-collapse: collapse;
@@ -96,10 +97,15 @@ body {
   td {
     border: .5px solid black;
   };
-  font-size: 1em;
+  font-size: 0.8em;
   width: 100%;
   border: .5px solid black;
   border-collapse: collapse;
+}
+
+.jobListScrollComponent {
+  height: 20em;
+  border-bottom: .5px solid black;
 }
 
 .basketButton {
