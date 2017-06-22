@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { config } from 'static/config.js';
 import { Control, Form } from 'react-redux-form';
+import { Button } from 'reactstrap';
 
 export default class FileStructureDescriptionComponent extends Component {
   handleSubmit () {
@@ -92,9 +93,9 @@ export default class FileStructureDescriptionComponent extends Component {
 
             <div className='divider-2' />
 
-            <button type='submit' className='btn btn-primary'>
+            <Button type='submit' color='primary'>
               Submit description
-            </button>
+            </Button>
           </Form>
         </div>
       </div>

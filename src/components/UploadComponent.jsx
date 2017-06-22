@@ -13,13 +13,11 @@ export default class UploadComponent extends Component {
   }
 
   replacer (name, val) {
-
-    console.log("REPLACE!");
-
     // Convert integers to integers.
     if (parseInt(val)) {
       return parseInt(val);
     }
+    // Convert to special caracters.
     if (val === 'tab') {
       return '\t';
     }
@@ -42,7 +40,7 @@ export default class UploadComponent extends Component {
     // TODO: Replace is niet correct doorgestuurd!!!!!
 
     return (
-      <div>
+      <div className='MainViewport'>
         <FileUploadComponent accessToken={this.props.accessToken}
                              dispatch={this.props.dispatch} actions={this.props.actions} />
         <div className='divider-2' />
@@ -52,7 +50,7 @@ export default class UploadComponent extends Component {
           actions={this.props.actions}
           fileName={this.props.fileName}
           fileStructureDescription={this.props.fileStructureDescription}
-          replace={this.replace}/>
+          replace={this.replace} />
         }
 
         <div className='divider-2' />

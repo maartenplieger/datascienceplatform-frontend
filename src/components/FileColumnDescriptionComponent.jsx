@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { config } from 'static/config.js';
 import { Control, Form } from 'react-redux-form';
 import { withRouter } from 'react-router';
+import { Button } from 'reactstrap';
 
 class FileColumnDescriptionComponent extends Component {
   handleSubmit () {
@@ -10,7 +11,7 @@ class FileColumnDescriptionComponent extends Component {
     var fileName = this.props.fileName.replace(/\.[^/.]+$/, '_descr.json');
 
     var formData = new FormData();
-    formData.append('files',new Blob([completeFileDescription], { type:'' }), fileName);
+    formData.append('files', new Blob([completeFileDescription], { type:'' }), fileName);
 
     fetch(config.adagucServicesHost + '/basket/upload?key=' + this.props.accessToken,
       {
@@ -162,9 +163,9 @@ class FileColumnDescriptionComponent extends Component {
 
             <div className='divider-2' />
 
-            <button type='submit' className='btn btn-primary'>
+            <Button type='submit' color='primary'>
               Submit description
-            </button>
+            </Button>
           </Form>
         </div>
       </div>

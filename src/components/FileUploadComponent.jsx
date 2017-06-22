@@ -1,56 +1,61 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { config } from 'static/config.js';
-import { connect } from 'react-redux';
-import { Control, Form } from 'react-redux-form';
-import { actions } from 'react-redux-form';
-import { actions as uploadActions } from '../actions/uploadActions'
+import { Button, Input } from 'reactstrap';
 
-export default class UploadComponent extends React.Component {
+export default class UploadComponent extends Component {
+
+  determineFileName() {
+    console.log('Hallo');
+    console.log(this.fileName);
+    return this.fileName;
+  }
 
   handleFileUpload(event) {
 
     event.preventDefault();
 
     const { backendHost, frontendHost, adagucServicesHost } = config;
-    console.log(this.props);
     const { dispatch, actions } = this.props;
 
     var fileName = this.fileInput.files[0].name;
 
-    var formData  = new FormData();
-    formData.append("files", this.fileInput.files[0], fileName);
+    var formData = new FormData();
+    formData.append('files', this.fileInput.files[0], fileName);
 
-    console.log("Going to fetch!");
-
-    fetch(adagucServicesHost + "/basket/upload?key=" + this.props.accessToken,
+    fetch(adagucServicesHost + '/basket/upload?key=' + this.props.accessToken,
       {
-        credentials:"include",
-        method: "POST",
+        credentials:'include',
+        method: 'POST',
         body: formData
       })
       .then(function(result) {
-        console.log("Fetched!");
         console.log(result);
         dispatch(actions.setUploadedFile(fileName));
-      })
+      });
   }
 
-
-  render() {
-
+  render () {
     return (
       <div>
-        <form onSubmit={(event)=>this.handleFileUpload(event)}>
-          <input
-            type="file"
-            ref={(input) => { this.fileInput = input; }}/>
-          <button className="area"
-                  type="submit">Upload File
-          </button>
+        <div className='alert alert-info'>
+          Please upload your file.
+        </div>
+        <form onSubmit={ (event) => this.handleFileUpload(event) }>
+          <div className='form-group row'>
+            <label className='btn btn-primary btn-file col-3'> Choose file
+              <input
+                type='file'
+                style={{ display: 'none' }}
+                onChange={ (event) => { this.fileName = event.target.files[0].name; this.forceUpdate()}}
+                ref={ (input) => { this.fileInput = input; } }/>
+            </label>
+            <input type='text' className='form-control col-3 btn-input-text'
+                   value={ this.fileName }/>
+          </div>
+          <Button color='primary' type='submit'>Upload File</Button>
         </form>
       </div>
     );
   }
 }
-
