@@ -10,6 +10,8 @@ export default class UploadComponent extends React.Component {
 
   handleFileUpload(event) {
 
+    event.preventDefault();
+
     const { backendHost, frontendHost, adagucServicesHost } = config;
     console.log(this.props);
     const { dispatch, actions } = this.props;
@@ -19,6 +21,8 @@ export default class UploadComponent extends React.Component {
     var formData  = new FormData();
     formData.append("files", this.fileInput.files[0], fileName);
 
+    console.log("Going to fetch!");
+
     fetch(adagucServicesHost + "/basket/upload?key=" + this.props.accessToken,
       {
         credentials:"include",
@@ -26,9 +30,9 @@ export default class UploadComponent extends React.Component {
         body: formData
       })
       .then(function(result) {
+        console.log("Fetched!");
         console.log(result);
         dispatch(actions.setUploadedFile(fileName));
-
       })
   }
 
@@ -41,7 +45,7 @@ export default class UploadComponent extends React.Component {
           <input
             type="file"
             ref={(input) => { this.fileInput = input; }}/>
-          <button className="submitButton"
+          <button className="area"
                   type="submit">Upload File
           </button>
         </form>

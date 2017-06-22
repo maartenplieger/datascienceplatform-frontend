@@ -4,8 +4,9 @@ import { config } from 'static/config.js';
 import { connect } from 'react-redux';
 import { Control, Form } from 'react-redux-form';
 import { actions } from 'react-redux-form';
+import { withRouter } from 'react-router'
 
-export default class UploadComponent extends React.Component {
+class FileColumnDescriptionComponent extends React.Component {
 
   constructor () {
     super();
@@ -13,20 +14,26 @@ export default class UploadComponent extends React.Component {
 
   handleSubmit() {
 
-    const { backendHost, frontendHost, adagucServicesHost } = config;
-
+    var completeFileDescription = JSON.stringify(Object.assign({}, this.props.fileColumnDescription, this.props.fileStructureDescription),this.props.replacer);
     var fileName = this.props.fileName.replace(/\.[^/.]+$/, "_descr.json");
+    var router = this.props.router;
 
     var formData  = new FormData();
-    formData.append("files",new Blob([JSON.stringify( this.props.fileDescription)],{type:""}), fileName);
+    formData.append("files",new Blob([completeFileDescription],{type:""}), fileName);
 
-    fetch(adagucServicesHost + "/basket/upload?key=" + this.props.accessToken,
+    fetch(config.adagucServicesHost + "/basket/upload?key=" + this.props.accessToken,
       {
         credentials:"include",
         method: "POST",
         body: formData
       })
-      .then(function(result) {console.log(result.body);})
+      .then(function(result) {
+        console.log(result.body);
+
+        // TODO: Foutafhandeling
+
+        // TODO: Scanner aanroepen???
+      })
 
   }
 
@@ -38,7 +45,7 @@ export default class UploadComponent extends React.Component {
         Please specify the CSV columns with location and time information and their formats.
       </div>
       <div>
-      <Form model="fileDescription"
+      <Form model="fileColumnDescription"
             onSubmit={() => this.handleSubmit()}>
 
         <h5 className="media-heading">Location information:</h5>
@@ -48,7 +55,7 @@ export default class UploadComponent extends React.Component {
           <Control
             className="form-control col-3"
             type="number"
-            model="fileDescription.columnX"
+            model="fileColumnDescription.columnX"
             required
             min={0}
           />
@@ -59,7 +66,7 @@ export default class UploadComponent extends React.Component {
           <Control
             className="form-control col-3 required"
             type="number"
-            model="fileDescription.columnY"
+            model="fileColumnDescription.columnY"
             required
             min={0}
           />
@@ -67,7 +74,7 @@ export default class UploadComponent extends React.Component {
 
         <div className="form-group row">
           <label className="col-3 col-form-label required">Projection:</label>
-          <Control.select model="fileDescription.projString" className="form-control col-3 required" required>
+          <Control.select model="fileColumnDescription.projString" className="form-control col-3 required" required>
             <option value=""></option>
             <option value="+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs">Rijksdriehoek</option>
             <option value="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">WGS 84</option>
@@ -79,16 +86,18 @@ export default class UploadComponent extends React.Component {
 
         <h5>Time information:</h5>
 
-        <div className="form-group row  required">
-          <label className="col-3 col-form-label">
+        <div className="form-group row">
+          <label className="col-3 col-form-label required">
             Timezone:
           </label>
-          <Control.text
-            model="fileDescription.timeZone"
+          <Control.select
+            model="fileColumnDescription.timeZone"
             className="form-control col-3"
-            required
-            placeholder="CET">
-          </Control.text>
+            required>
+            <option value=""></option>
+            <option value="CET">CET</option>
+            <option value="UTC">UTC</option>
+          </Control.select>
         </div>
 
         <div className="form-group row">
@@ -96,7 +105,7 @@ export default class UploadComponent extends React.Component {
           <Control
             className="form-control col-3"
             type="number"
-            model="fileDescription.columnDate"
+            model="fileColumnDescription.columnDate"
             required
             min={0}
           />
@@ -106,35 +115,41 @@ export default class UploadComponent extends React.Component {
           <label className="col-3 col-form-label required">
             Date format:
           </label>
-          <Control.text
+          <Control.select
               className="form-control col-3"
-              model="fileDescription.dateFormat"
-              required
-              placeholder="%d%b%y (03JAN06)">
-          </Control.text>
-          <small className="text-muted form-text col-6">(check <a href="https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior"> this</a> table for options)</small>
+              model="fileColumnDescription.dateFormat"
+              required>
+            <option value=""></option>
+            <option value="%d%b%y">03JAN06</option>
+            <option value="%Y-%m-%dT%H:%M:%S">2007-03-04T21:08:12</option>
+            <option value="%d-%m-%Y">03-01-2016</option>
+            <option value="%d-%m-%Y %H:%M:%S">03-01-2016 21:03:00</option>
+            <option value="%Y/%m/%d">2016/01/03</option>
+          </Control.select>
+          <small className="text-muted form-text col-6">(it is also possible to provide time information in this column)</small>
          </div>
 
         <div className="form-group row">
-          <label className="col-3 col-form-label">Hour column:</label>
+          <label className="col-3 col-form-label">Time/hour column:</label>
           <Control
             className="form-control col-3"
             type="number"
-            model="fileDescription.columnHour"
+            model="fileColumnDescription.columnHour"
             min={0}
           />
           <small className="text-muted form-text col-6">(optional if the time is provided in a separate column)</small>
         </div>
 
         <div className="form-group row">
-          <label className="col-3 col-form-label">Hour format:</label>
+          <label className="col-3 col-form-label">Time/hour format:</label>
           <Control.select
-            model="fileDescription.hourFormat"
+            model="fileColumnDescription.hourFormat"
             className="form-control col-3">
             <option value=""></option>
-            <option value="hourInterval">Interval (1.00-01.59)</option>
-            <option value="time">Time (13:45)</option>
+            <option value="timeMinutes">Time (13:45)</option>
+            <option value="timeMinutesSeconds">Time (13:45:00)</option>
             <option value="plainHour">Hour (13)</option>
+            <option value="hourInterval">Interval (1.00-01.59)</option>
           </Control.select>
         </div>
 
@@ -142,7 +157,7 @@ export default class UploadComponent extends React.Component {
           <label className="col-3 col-form-label">Minute column:</label>
           <Control
             type="number"
-            model="fileDescription.columnMinute"
+            model="fileColumnDescription.columnMinute"
             className="form-control col-3"
             min={0}
           />
@@ -161,3 +176,5 @@ export default class UploadComponent extends React.Component {
   }
 
 }
+
+export default withRouter(FileColumnDescriptionComponent)
