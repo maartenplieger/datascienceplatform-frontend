@@ -18,7 +18,8 @@ class WranglerComponent extends Component {
       modal: false,
       inputCSVPath:null,
       catalog:null,
-      selectedCatalog: null
+      selectedCatalog: null,
+      domain: null
     };
   }
 
@@ -43,7 +44,6 @@ class WranglerComponent extends Component {
   }
 
   metaDataClicked (title, id, _this) {
-    console.log('metaDataClicked');
     let catalogs = this.state.catalog;
     for (let j = 0; j < catalogs.catalog.length; j++) {
       let catalog = catalogs.catalog[j];
@@ -56,7 +56,6 @@ class WranglerComponent extends Component {
         });
       }
     }
-    console.log(title);
   };
 
   renderCatalogs () {
@@ -64,7 +63,6 @@ class WranglerComponent extends Component {
     let html = [];
     for (let j = 0; j < catalogs.catalog.length; j++) {
       let catalog = catalogs.catalog[j];
-      console.log(catalog);
       html.push(this.renderParam(catalog.title, catalog.name));
     }
 
@@ -88,32 +86,37 @@ class WranglerComponent extends Component {
     alert('OK');
   };
 
+  componentWillReceiveProps (nextProps) {
+    const { domain } = nextProps;
+    if (!domain) {
+      return;
+    }
+    if (domain && !this.state.domain) {
+      this.setState({
+        domain: domain
+      });
+      let url = 'https://' + domain + '/catalog/list';
+      console.log('Fetching catalog url', url);
+      fetch(url,
+        {
+          credentials:'include'
+        }).then((result) => {
+          return result.json();
+        }).then((json) => {
+          this.setState({
+            catalog: json
+          });
+        });
+    }
+  };
+
   componentDidMount () {
-    const { domain } = this.props;
     this.setState({
       inputCSVPath: this.props.inputCSVPath
     });
-
-    if (!domain) {
-      console.log('domain not set');
-      return;
-    }
-    let url = 'https://' + domain + '/catalog/list';
-    console.log('catalog url', url);
-    fetch(url,
-      {
-        credentials:'include'
-      }).then((result) => {
-        return result.json();
-      }).then((json) => {
-        this.setState({
-          catalog: json
-        });
-      });
   }
 
   handleChange (name, value) {
-    console.log(name, value);
     this.setState({
       [name]: value
     });
@@ -123,7 +126,6 @@ class WranglerComponent extends Component {
     const { accessToken, clientId, domain, jobDescPath, metaCSVPath } = this.props;
     if (!clientId || !this.state.inputCSVPath || !this.state.catalog) return (<div>Not signed in</div>);
     let file = 'https://' + domain + '/opendap/' + accessToken + '/' + clientId.replace('/', '.') + '/' + this.state.inputCSVPath;
-    console.log(file);
     return (
       <div>
         <Row>

@@ -6,6 +6,7 @@ import WranglerComponent from './WranglerComponent';
 export default class Wrangler extends Component {
   render () {
     const { dispatch, actions, accessToken, clientId, domain } = this.props;
+    console.log(domain);
     return (
       <div className='MainViewport'>
         <h1>Wrangle data</h1>
@@ -27,8 +28,5 @@ Wrangler.propTypes = {
   clientId: PropTypes.string,
   domain: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
-  actions: PropTypes.object.isRequired,
-  nrOfStartedProcesses: PropTypes.number,
-  nrOfFailedProcesses: PropTypes.number,
-  nrOfCompletedProcesses: PropTypes.number
+  actions: PropTypes.object.isRequired
 };

@@ -10,7 +10,7 @@ export default class UploadComponent extends React.Component {
 
   handleFileUpload(event) {
 
-    const { backendHost, frontendHost, adagucServicesHost } = config;
+    const { backendHost, adagucServicesHost } = config;
     console.log(this.props);
     const { dispatch, actions } = this.props;
 

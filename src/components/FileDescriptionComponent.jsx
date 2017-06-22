@@ -13,7 +13,7 @@ export default class UploadComponent extends React.Component {
 
   handleSubmit() {
 
-    const { backendHost, frontendHost, adagucServicesHost } = config;
+    const { backendHost, adagucServicesHost } = config;
 
     var fileName = this.props.fileName.replace(/\.[^/.]+$/, "_descr.json");
 
