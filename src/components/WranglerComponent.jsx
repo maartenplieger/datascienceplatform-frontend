@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Row, Col, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Row, Card, Col, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Icon from 'react-fa';
 import PreviewComponent from './PreviewComponent';
 import { withRouter } from 'react-router';
@@ -182,6 +182,9 @@ class WranglerComponent extends Component {
             <p>Choosed ID = {this.state.id}</p>
             <Row><Col>Name:</Col><Col> { this.state.selectedCatalog ? this.state.selectedCatalog.name : null }</Col></Row>
             <Row><Col>Datatype:</Col><Col> { this.state.selectedCatalog ? this.state.selectedCatalog.datatype : null }</Col></Row>
+            <Card>
+              {<pre>{JSON.stringify(this.state.selectedCatalog, null, 2) }</pre>}
+            </Card>
           </ModalBody>
           <ModalFooter>
             <Button color='secondary' onClick={this.toggle}>Close</Button>
