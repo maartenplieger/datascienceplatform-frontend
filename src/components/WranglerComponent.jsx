@@ -27,7 +27,7 @@ class RenderProcesses extends Component {
           <Row><hr /></Row>
           <Row>
             <Col>{ value && value.length > 0 ? <b>Succesfully wrangled, your result:</b> : null }</Col>
-            <Col><Button color='primary' onClick={() => { window.location = value; }}><Icon name='download' /> Download CSV</Button></Col>
+            <Col>{ value && value.length > 0 ? <Button color='primary' onClick={() => { window.location = value; }}><Icon name='download' /> Download CSV</Button> : null }</Col>
           </Row>
         </Card>
         <PreviewComponent
@@ -66,7 +66,7 @@ const defaultWranglingSettings = {
   metaCSVPath : 'ExportOngevalsData_descr.json',
   dataURL : 'http://opendap.knmi.nl/knmi/thredds/dodsC/DATALAB/hackathon/radarFullWholeData.nc',
   dataVariables : 'image1_image_data',
-  limit : '150'
+  limit : '100'
 };
 
 class WranglerComponent extends Component {
