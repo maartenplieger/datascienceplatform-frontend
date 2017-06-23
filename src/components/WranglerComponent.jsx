@@ -13,31 +13,40 @@ class RenderProcesses extends Component {
     try {
       value = process.result.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.value;
       value = value.replace('/opendap/', '/opendap/' + accessToken + '/');
+      console.log(value);
     } catch (e) {
     }
     return (
-      <Card>
-        <Row>
-          <Col> <div className='text-center'>{process.percentageComplete} </div><Progress value={process.percentageComplete} /></Col>
-          <Col>{process.message}</Col>
-          <Col>{value}</Col>
-        </Row>
-        { value && value.length > 0 ? <h2>Succesfully wrangled:</h2> : null }
+      <span>
+        <Card>
+          <Row>
+            <Col> <div className='text-center'>{process.percentageComplete} </div><Progress value={process.percentageComplete + '%'} /></Col>
+            <Col>{process.message}</Col>
+            <Col>{value}</Col>
+          </Row>
+          <Row><hr /></Row>
+          <Row>
+            <Col>{ value && value.length > 0 ? <b>Succesfully wrangled, your result:</b> : null }</Col>
+            <Col><Button color='primary' onClick={() => { window.location = value; }}><Icon name='download' /> Download CSV</Button></Col>
+          </Row>
+        </Card>
         <PreviewComponent
           file={value}
           numberOfLinesDisplayed={10}
           tableClassName='previewTable'
           componentClassName='previewComponent'
         />
+      </span>
 
-      </Card>
     );
   }
 
   iterProcesses (runningProcesses) {
     let result = [];
     for (var process in runningProcesses) {
-      result.push(Object.assign({}, this.renderProcess(runningProcesses[process]), { key: process }));
+      if (runningProcesses[process].identifier === 'wrangleProcess') {
+        result.push(Object.assign({}, this.renderProcess(runningProcesses[process]), { key: process }));
+      }
     };
     return result;
   }
@@ -80,11 +89,6 @@ class WranglerComponent extends Component {
 
     this.domainLoaded = false;
   }
-
-  calculateClicked (id) {
-    const { accessToken, dispatch, actions, nrOfStartedProcesses, domain } = this.props;
-    dispatch(actions.startWPSExecute(domain, accessToken, 'binaryoperatorfornumbers_10sec', 'inputa=10;inputb=2;operator=divide', nrOfStartedProcesses));
-  };
 
   toggle () {
     this.setState({
@@ -220,6 +224,14 @@ class WranglerComponent extends Component {
   }
 
   handleChange (name, value) {
+    if (name === 'limit') {
+      this.setState({
+        wpsWranglerSettings: Object.assign({}, this.state.wpsWranglerSettings, {
+          limit : value
+        })
+      });
+      return;
+    }
     this.setState({
       [name]: value
     });
@@ -260,8 +272,15 @@ class WranglerComponent extends Component {
           this.renderCatalogs()
         }
 
+        <Row>
+          <Col><h3>Record limit (-1 for all records):</h3></Col>
+          <Col><Input onChange={(event) => { this.handleChange('limit', event.target.value); }} value={this.state.wpsWranglerSettings.limit} /></Col>
+          <Col></Col>
+        </Row>
+        <hr />
+        <h3>Review wrangler settings:</h3>
         {<pre>{this.state.wpsWranglerSettings ? JSON.stringify(this.state.wpsWranglerSettings, null, 2) : null }</pre>}
-        <h3>CSV Preview (10 rows)</h3>
+        <h3>Input CSV Preview (10 rows)</h3>
         <PreviewComponent
           file={file}
           numberOfLinesDisplayed={10}
