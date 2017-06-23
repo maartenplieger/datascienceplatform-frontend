@@ -20,7 +20,7 @@ class RenderProcesses extends Component {
       <span>
         <Card>
           <Row>
-            <Col> <div className='text-center'>{process.percentageComplete} </div><Progress value={process.percentageComplete + '%'} /></Col>
+            <Col> <div className='text-center'>{process.percentageComplete  + '%'} </div><Progress value={process.percentageComplete} /></Col>
             <Col>{process.message}</Col>
             <Col>{value}</Col>
           </Row>
@@ -32,7 +32,7 @@ class RenderProcesses extends Component {
         </Card>
         <PreviewComponent
           file={value}
-          numberOfLinesDisplayed={10}
+          numberOfLinesDisplayed={100}
           tableClassName='previewTable'
           componentClassName='previewComponent'
         />
