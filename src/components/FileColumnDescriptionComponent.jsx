@@ -96,6 +96,7 @@ class FileColumnDescriptionComponent extends Component {
                 model='fileColumnDescription.columnX'
                 required
                 min={0}
+                value={this.props.fileColumnDescription.columnX}
               />
             </div>
 
@@ -107,13 +108,16 @@ class FileColumnDescriptionComponent extends Component {
                 model='fileColumnDescription.columnY'
                 required
                 min={0}
+                value={this.props.fileColumnDescription.columnY}
               />
             </div>
 
             <div className='form-group row'>
               <label className='col-3 col-form-label required'>Projection:</label>
-              <Control.select model='fileColumnDescription.projString' className='form-control col-3 required' required>
-                <option value='' />
+              <Control.select model='fileColumnDescription.projString'
+                className='form-control col-3 required'
+                required
+                defaultValue={this.props.fileColumnDescription.projString}>
                 <option
                   value='+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs'>
                   Rijksdriehoek
@@ -135,7 +139,7 @@ class FileColumnDescriptionComponent extends Component {
                 model='fileColumnDescription.timeZone'
                 className='form-control col-3'
                 required>
-                <option value='' />
+                defaultValue={this.props.fileColumnDescription.timeZone}
                 <option value='CET'>CET</option>
                 <option value='UTC'>UTC</option>
               </Control.select>
@@ -149,6 +153,7 @@ class FileColumnDescriptionComponent extends Component {
                 model='fileColumnDescription.columnDate'
                 required
                 min={0}
+                value={this.props.fileColumnDescription.columnDate}
               />
             </div>
 
@@ -159,8 +164,8 @@ class FileColumnDescriptionComponent extends Component {
               <Control.select
                 className='form-control col-3'
                 model='fileColumnDescription.dateFormat'
-                required>
-                <option value='' />
+                required
+                defaultValue={this.props.fileColumnDescription.dateFormat} >
                 <option value='%d%b%y'>03JAN06</option>
                 <option value='%Y-%m-%dT%H:%M:%S'>2007-03-04T21:08:12</option>
                 <option value='%d-%m-%Y'>03-01-2016</option>
@@ -179,6 +184,7 @@ class FileColumnDescriptionComponent extends Component {
                 type='number'
                 model='fileColumnDescription.columnHour'
                 min={0}
+                value={this.props.fileColumnDescription.columnHour}
               />
               <small className='text-muted form-text col-6'>(optional if the time is provided in a separate column)
               </small>
@@ -188,12 +194,13 @@ class FileColumnDescriptionComponent extends Component {
               <label className='col-3 col-form-label'>Time/hour format:</label>
               <Control.select
                 model='fileColumnDescription.hourFormat'
-                className='form-control col-3'>
+                className='form-control col-3'
+                defaultValue={this.props.fileColumnDescription.hourFormat}>
+                <option value='hourInterval'>Interval (1.00-01.59)</option>
                 <option value='' />
                 <option value='timeMinutes'>Time (13:45)</option>
                 <option value='timeMinutesSeconds'>Time (13:45:00)</option>
                 <option value='plainHour'>Hour (13)</option>
-                <option value='hourInterval'>Interval (1.00-01.59)</option>
               </Control.select>
             </div>
 
@@ -204,6 +211,7 @@ class FileColumnDescriptionComponent extends Component {
                 model='fileColumnDescription.columnMinute'
                 className='form-control col-3'
                 min={0}
+                value={this.props.fileColumnDescription.columnMinute}
               />
               <small className='text-muted form-text col-6'>(optional if minutes are provided in a separate column)
               </small>

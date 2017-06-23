@@ -44,8 +44,8 @@ export default class FileStructureDescriptionComponent extends Component {
                 className='form-control col-3'
                 model='fileStructureDescription.columnSeparator'
                 required
+                defaultValue={this.props.fileStructureDescription.columnSeparator}
               >
-                <option value='' />
                 <option value=','>comma (,)</option>
                 <option value=';'>semicolon (;)</option>
                 <option value='tab'>tab (\t)</option>
@@ -58,10 +58,10 @@ export default class FileStructureDescriptionComponent extends Component {
                 className='form-control col-3'
                 model='fileStructureDescription.rowSeparator'
                 required
+                defaultValue={this.props.fileStructureDescription.rowSeparator}
               >
-                <option value='' />
-                <option value='CR'>Carriage return (\r)</option>
                 <option value='LF'>Line feed (\n)</option>
+                <option value='CR'>Carriage return (\r)</option>
                 <option value='CRLF'>Carriage return line feed (\r\n)</option>
               </Control.select>
             </div>
@@ -85,6 +85,7 @@ export default class FileStructureDescriptionComponent extends Component {
                 type='number'
                 model='fileStructureDescription.rowWithFieldNames'
                 min={0}
+                value={this.props.fileStructureDescription.rowWithFieldNames}
               />
               <small className='text-muted form-text col-6'>(optional if you want to see the column names in the
                 preview)
