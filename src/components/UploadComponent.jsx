@@ -56,7 +56,7 @@ export default class UploadComponent extends Component {
           <PreviewComponent
             file={config.adagucServicesHost + '/opendap/' + this.props.accessToken + '/' + this.props.clientId.replace('/','.') +'/' + this.props.fileName}
             tableClassName='previewTable'
-            componentClassName='previewComponent'
+            componentClassName='previewComponentUpload'
             numberOfLinesDisplayed={5}/>
         </div>
         }
